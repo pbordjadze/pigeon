@@ -1,0 +1,212 @@
+name: CI
+
+# Every run publishes a report (STATUS.md, trimmed logs, compiler errors, test results,
+# screenshots, the string catalog check under core/strings-check.log) to the ref
+# `refs/ci-shots/<branch>`: outside refs/heads, so a clone never downloads reports, and readable
+# with plain git (see ci/fetch.sh).
+#   core     Linux: PigeonCore's tests, the warnings gate, the string catalog check
+#   iphone   Debug build, screenshots, unit and UI tests, then a Release build checked for the
+#            privacy manifest, the background modes and Debug-only code that must not ship
+#   compile  `[compile]` in a branch's pushed commit's message (never main's), instead of iphone:
+#            the Debug build (app and both test targets), the Release build and its check and the
+#            warnings gate, on one runner with no simulator; `core` only builds. A branch's quick
+#            check before it takes a full slot.
+# The macOS runners (5 at once) are shared with pbordjadze/paint-by-number: one job per push here.
+
+on:
+  push:
+    branches-ignore: ['ci-shots/**']
+  workflow_dispatch:
+    inputs:
+      scenarios:
+        description: 'Demo scenarios to screenshot (space separated, optional @timeout-seconds)'
+        required: false
+
+# Read only, but for the report job, which pushes the report's ref.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  COMPILE: ${{ (github.ref_name != 'main' && contains(github.event.head_commit.message, '[compile]')) && '1' || '0' }}
+  DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+  PROJECT: App/Pigeon.xcodeproj
+  SCHEME: Pigeon
+  APP: build/dd/Build/Products/Debug-iphonesimulator/Pigeon.app
+
+jobs:
+  core:
+    name: PigeonCore tests and string catalog (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.2-noble
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with: { persist-credentials: false }
+      - name: Install Python
+        shell: bash
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: apt-get update -qq && apt-get install -y -qq --no-install-recommends python3 > /dev/null
+      - name: Test
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p out
+          if [[ "$COMPILE" == 1 ]]; then BUILD=(build --build-tests); else BUILD=(test); fi
+          swift "${BUILD[@]}" 2>&1 | grep -vE '^\[[0-9]+/[0-9]+\]' | tee out/core-test.log | tail -60
+      - name: Compiler warnings
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: ci/warnings.sh out/warnings.txt out/core-test.log
+      - name: String catalog
+        # The app's sources and Localizable.xcstrings drifting apart only shows on a device, as a
+        # string that silently stays English; nothing extracts strings here.
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 tools/strings_check.py --self-test
+          python3 tools/strings_check.py | tee out/strings-check.log
+      - name: CI report script
+        # The report job runs ci/report.py once, at the end: a break there costs every waiter the run.
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: python3 ci/report.py --self-test
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with: { name: core, path: out, if-no-files-found: ignore }
+
+  apple:
+    name: ${{ matrix.job == 'compile' && 'iPhone — compile check' || 'iPhone — build, screenshots, tests, Release check' }}
+    runs-on: macos-26
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        # The report job asks the same.
+        job: ${{ fromJSON((github.ref_name != 'main' && contains(github.event.head_commit.message, '[compile]')) && '["compile"]' || '["iphone"]') }}
+    steps:
+      - uses: actions/checkout@v5
+        with: { persist-credentials: false }
+      - name: Start simulator
+        id: sim
+        if: env.COMPILE != '1'
+        run: |
+          # The first boot on a fresh runner takes minutes; it overlaps the build.
+          read -r _ UDID MODEL RUNTIME < <(ci/simulators.sh iphone)
+          echo "$MODEL $RUNTIME $UDID"
+          mkdir -p out
+          nohup xcrun simctl boot "$UDID" > out/boot.log 2>&1 &
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Build for testing
+        id: build
+        run: |
+          # arm64 only: a generic destination builds every simulator architecture, and the
+          # runners are Apple silicon. No index store: nothing here reads it.
+          set -o pipefail
+          mkdir -p out
+          xcodebuild build-for-testing -project "$PROJECT" -scheme "$SCHEME" -configuration Debug \
+            -IDEBuildingContinueBuildingAfterErrors=YES \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd -quiet \
+            ARCHS=arm64 COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee out/app-build.log | tail -120
+      - name: Wait for simulator
+        id: boot
+        if: env.COMPILE != '1'
+        run: |
+          xcrun simctl bootstatus "${{ steps.sim.outputs.udid }}" -b > /dev/null
+          xcrun simctl ui "${{ steps.sim.outputs.udid }}" appearance light || true
+      - name: Screenshots
+        id: shots
+        if: ${{ env.COMPILE != '1' && steps.build.outcome == 'success' && steps.boot.outcome == 'success' }}
+        env:
+          SCENARIOS: ${{ github.event.inputs.scenarios }}
+        run: |
+          # One argument per scenario.
+          # shellcheck disable=SC2086
+          ci/screenshots.sh "$APP" out/shots iphone "${{ steps.sim.outputs.udid }}" ${SCENARIOS:-$(cat ci/scenarios.txt)}
+      - name: Test
+        id: test
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.boot.outcome == 'success' }}
+        run: |
+          # A failed test runs once more and counts as passed if that run passes; the report
+          # names it ("passed when run again"), as a flake still needs its cause found.
+          set -o pipefail
+          xcodebuild test-without-building -project "$PROJECT" -scheme "$SCHEME" -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" -derivedDataPath build/dd \
+            -retry-tests-on-failure -test-iterations 2 -resultBundlePath build/Tests.xcresult -quiet \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee out/app-test.log | tail -120
+      - name: Release build
+        id: release
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          # Debug-only code is compiled out of Release (`#if DEBUG`): build it, and check what the
+          # shipped app must and must not contain.
+          set -o pipefail
+          xcodebuild build -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/release -quiet \
+            ARCHS=arm64 COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee out/release-build.log | tail -60
+          ci/check_release.sh build/release/Build/Products/Release-iphonesimulator/Pigeon.app 2>&1 | tee out/release-check.log
+      - name: Compiler warnings
+        id: warnings
+        # A new warning in the app, its tests or PigeonCore fails the job (main has none).
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: ci/warnings.sh out/warnings.txt out/app-build.log out/release-build.log
+      - name: Collect diagnostics
+        if: always()
+        env:
+          OUTCOMES: >-
+            simulator=${{ steps.sim.outcome }} build=${{ steps.build.outcome }} boot=${{ steps.boot.outcome }}
+            screenshots=${{ steps.shots.outcome }} tests=${{ steps.test.outcome }}
+            release=${{ steps.release.outcome }} warnings=${{ steps.warnings.outcome }}
+        run: |
+          mkdir -p out
+          echo "$OUTCOMES" > out/outcomes.txt
+          ci/collect.sh "${{ steps.sim.outputs.udid }}"
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with: { name: "${{ matrix.job }}", path: out, if-no-files-found: ignore }
+
+  report:
+    name: Publish report
+    needs: [core, apple]
+    # Not always(): a run cancelled by a newer push must not overwrite the newer run's report.
+    if: ${{ !cancelled() }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with: { path: src, sparse-checkout: ci }
+      - uses: actions/download-artifact@v5
+        with: { path: report }
+      - name: Write status and push to refs/ci-shots/${{ github.ref_name }}
+        run: |
+          mkdir -p report && cd report
+          find . -name '*.log' | while read -r f; do
+            # Long logs keep every diagnostic line, the app's own lines and the tail; the rest stay whole.
+            if [ "$(wc -l < "$f")" -gt 3000 ]; then
+              { grep -nE "error:|warning:|failed|FAIL|✘|Fatal|crash" "$f" | head -400
+                echo "----- the app's own lines -----"; grep -n "com.pbordjadze.pigeon:" "$f" | head -2000
+                echo "----- tail -----"; tail -200 "$f"; } > "$f.trimmed"
+              mv "$f.trimmed" "$f"
+            fi
+          done
+          {
+            echo "commit: ${GITHUB_SHA}"
+            echo "run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            if [[ "$COMPILE" == 1 ]]; then JOB=compile; else JOB=iphone; fi
+            # Should the script break, the jobs' results still reach the ref (and its waiters).
+            python3 ../src/ci/report.py . core=${{ needs.core.result }} "$JOB=${{ needs.apple.result }}" \
+              || printf '%s\n' "core: ${{ needs.core.result }}" "$JOB: ${{ needs.apple.result }}" \
+                "" "ci/report.py failed: no details (its error is in this job's log)"
+          } > STATUS.md
+          cat STATUS.md
+          echo "${GITHUB_SHA}" > COMMIT
+          git init -q && git checkout -q -b shots
+          git add -A
+          git -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -qm "CI report for ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" "shots:refs/ci-shots/${GITHUB_REF_NAME}"
