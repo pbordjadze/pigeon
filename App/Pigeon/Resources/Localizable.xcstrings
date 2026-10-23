@@ -1,0 +1,18 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "No Routes Yet": {
+      "comment": "Title of the empty route list, before any route is saved.",
+      "extractionState": "manual"
+    },
+    "Routes": {
+      "comment": "Navigation title of the first screen: the saved routes.",
+      "extractionState": "manual"
+    },
+    "Save a route you drive often. Each time you drive it, Pigeon helps a little less, until you don’t need it.": {
+      "comment": "Explains the app on the empty route list.",
+      "extractionState": "manual"
+    }
+  },
+  "version": "1.0"
+}

@@ -1,0 +1,11 @@
+.build/
+.swiftpm/
+*.xcuserstate
+xcuserdata/
+DerivedData/
+build/
+.DS_Store
+/out/
+.claude/worktrees/
+ci-report/
+__pycache__/
