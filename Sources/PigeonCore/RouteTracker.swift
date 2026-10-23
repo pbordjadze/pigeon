@@ -30,10 +30,12 @@ public struct LocationFix: Sendable, Equatable {
 /// - Off the line: a usable fix (accuracy no worse than `worstUsableAccuracy`) further than both
 ///   `offRouteDistance` and its own accuracy from the line counts once; `confirmations` such fixes
 ///   in a row are leaving the route. Only a fix within `offRouteDistance` resets the count: one
-///   further off but within its own accuracy is inconclusive and changes nothing.
+///   further off but within its own accuracy is inconclusive and changes nothing, until
+///   `inconclusiveFixes` of them in a row, after which each counts as off (a road beside the
+///   route mustn't pass for it just because the fixes are loose).
 /// - Wrong way: `confirmations` fixes in a row more than `backtrackLimit` metres (plus the fix's
 ///   accuracy) back from the furthest point reached, at any speed and with or without a course
-///   (only fixes within `preciseAccuracy` move that point on); or, sooner, moving faster than
+///   (each fix moves that point on to its place less its accuracy); or, sooner, moving faster than
 ///   `wrongWayMinimumSpeed` on a course more than 135° from the line's direction for
 ///   `wrongWayFixes` fixes in a row (a U-turn on the route). A fix with no course or speed leaves
 ///   that count as it was.
@@ -58,7 +60,7 @@ public struct RouteTracker: Sendable {
         public var wrongWayFixes = 3
         public var wrongWayMinimumSpeed = 5.0
         public var backtrackLimit = 60.0
-        public var preciseAccuracy = 20.0
+        public var inconclusiveFixes = 5
         public var arrivalRadius = 40.0
         /// Seconds without a usable fix (or since the start, before the first) before
         /// `signalLost(at:)` says so.
@@ -96,6 +98,7 @@ public struct RouteTracker: Sendable {
     private var furthestAlong = 0.0
     private var backCount = 0
     private var offCount = 0
+    private var inconclusiveCount = 0
     private var wrongWayCount = 0
 
     public init(line: RouteLine, startTime: TimeInterval, settings: Settings = Settings()) {
@@ -158,7 +161,9 @@ public struct RouteTracker: Sendable {
         if match.offset > settings.offRouteDistance {
             // Off by more than the fix's own uncertainty counts; within it, the fix can't tell.
             // Neither kind moves where the driver is taken to be.
-            if match.offset > fix.horizontalAccuracy {
+            let conclusive = match.offset > fix.horizontalAccuracy
+            inconclusiveCount = conclusive ? 0 : inconclusiveCount + 1
+            if conclusive || inconclusiveCount > settings.inconclusiveFixes {
                 offCount += 1
                 if offCount >= settings.confirmations {
                     phase = .left(.offLine)
@@ -167,6 +172,7 @@ public struct RouteTracker: Sendable {
             return phase
         }
         offCount = 0
+        inconclusiveCount = 0
 
         if furthestAlong - match.along > settings.backtrackLimit + fix.horizontalAccuracy {
             backCount += 1
@@ -190,9 +196,7 @@ public struct RouteTracker: Sendable {
 
         lastMatch = match
         lastMatchTime = fix.time
-        if fix.horizontalAccuracy <= settings.preciseAccuracy {
-            furthestAlong = max(furthestAlong, match.along)
-        }
+        furthestAlong = max(furthestAlong, match.along - fix.horizontalAccuracy)
         if line.length - match.along <= settings.arrivalRadius {
             phase = .arrived
         }

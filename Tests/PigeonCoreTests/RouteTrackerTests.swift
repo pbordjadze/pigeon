@@ -273,15 +273,40 @@ struct RouteTrackerTests {
         #expect(tracker.phase == .arrived)
     }
 
-    @Test func aRunOfInconclusiveFixesDoesNotNarrowTheSearch() {
-        // 45 m off with 48 m accuracy can't be told from the road: it never becomes "left" on its own.
+    @Test func aShortRunOfInconclusiveFixesDoesNotNarrowTheSearch() {
+        // A few loose fixes, then clear ones on the line pick the driver up where they are by then.
         var tracker = RouteTracker(line: R.northThenEast, startTime: 0)
         run(R.drive(from: 0, to: 300), tracker: &tracker)
-        for i in 0..<40 {
+        for i in 0..<5 {
             tracker.update(R.fix(east: 45, north: 310 + 14 * Double(i), t: 25 + TimeInterval(i), accuracy: 48))
         }
         #expect(tracker.phase == .onRoute)
-        // Clear fixes on the line afterwards pick the driver up where they are.
-        #expect(tracker.update(R.fix(east: 0, north: 880, t: 65)) == .onRoute)
+        #expect(tracker.update(R.fix(east: 0, north: 1000, t: 80)) == .onRoute)
+    }
+
+    @Test func aLongRunOfInconclusiveFixesIsLeaving() {
+        var tracker = RouteTracker(line: R.northThenEast, startTime: 0)
+        run(R.drive(from: 0, to: 300), tracker: &tracker)
+        var count = 0
+        while tracker.phase == .onRoute, count < 60 {
+            tracker.update(R.fix(east: 45, north: 310 + 14 * Double(count), t: 25 + TimeInterval(count), accuracy: 48))
+            count += 1
+        }
+        #expect(tracker.phase == .left(.offLine))
+        #expect(count <= 7)
+    }
+
+    @Test func backingUpIsCaughtWithLooseFixesToo() {
+        var tracker = RouteTracker(line: R.northThenEast, startTime: 0)
+        var t = 0.0
+        for along in stride(from: 0.0, through: 1500, by: 14) {
+            tracker.update(R.fix(east: 0, north: along, t: t, accuracy: 35)); t += 1
+        }
+        var phase = tracker.phase
+        for north in stride(from: 1496.0, through: 0, by: -4) {
+            phase = tracker.update(R.fix(east: 0, north: north, t: t, accuracy: 35)); t += 1
+            if case .left = phase { break }
+        }
+        #expect(phase == .left(.wrongWay))
     }
 }
