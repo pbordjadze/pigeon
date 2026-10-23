@@ -16,6 +16,11 @@ struct ShipHygieneTests {
         #expect(manifest["NSPrivacyTracking"] as? Bool == false)
         #expect((manifest["NSPrivacyTrackingDomains"] as? [Any])?.isEmpty == true)
         #expect((manifest["NSPrivacyCollectedDataTypes"] as? [Any])?.isEmpty == true)
+        // Required-reason APIs the shipped code uses: none yet. Adding one adds it here and to
+        // the manifest together.
+        let reasons = (manifest["NSPrivacyAccessedAPITypes"] as? [[String: Any]] ?? [])
+            .compactMap { $0["NSPrivacyAccessedAPIType"] as? String }
+        #expect(reasons == [])
     }
 
     @Test func locationIsAskedForOnlyWhileInUse() {

@@ -173,7 +173,8 @@ jobs:
   report:
     name: Publish report
     needs: [core, apple]
-    if: always()
+    # Not always(): a run cancelled by a newer push must not overwrite the newer run's report.
+    if: ${{ !cancelled() }}
     permissions:
       contents: write
     runs-on: ubuntu-latest

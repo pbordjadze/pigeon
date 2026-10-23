@@ -11,7 +11,7 @@
 set -euo pipefail
 APP="$1"; OUT="$2"; KIND="$3"; UDID="$4"; shift 4
 SCENARIOS=("$@")
-[[ ${#SCENARIOS[@]} -eq 0 ]] && SCENARIOS=(paint)
+[[ ${#SCENARIOS[@]} -eq 0 ]] && SCENARIOS=(routes-empty)
 BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Info.plist")
 mkdir -p "$OUT"
 exec > >(tee -a "$OUT/${KIND}-steps.log") 2>&1

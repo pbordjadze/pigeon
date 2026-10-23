@@ -34,10 +34,10 @@ the rules.
 The owner is legally responsible for this app. When a design choice trades safety for the idea,
 safety wins and the choice goes to the owner.
 
-- Nothing to read or touch while the car moves: spoken guidance and one glanceable thing on
-  screen. Controls that need reading or typing are locked while moving.
-- The screen is the main surface (and CarPlay, when it comes): stages fade what it shows; the
-  voice is optional and fades the same way.
+- Nothing to read or touch while the car moves: one glanceable thing on screen at a time, and
+  controls that need reading or typing are locked while moving. The screen is the main surface
+  (and CarPlay, when it comes): stages fade what it shows; the voice is optional and fades the
+  same way.
 - Leaving the route brings full guidance back at once and reroutes, at every stage
   (`RouteTracker` reports `.left`; it leans towards a false alarm over a missed one). A new or
   unfamiliar route starts at full guidance.
@@ -51,7 +51,8 @@ device. What MapKit sends to Apple (a route's start and destination when saved, 
 tiles) is in `PRIVACY.md`; a change to what leaves the phone changes `PRIVACY.md`,
 `Resources/PrivacyInfo.xcprivacy` and `ShipHygieneTests` together. A required-reason API
 (UserDefaults, file timestamps, disk space, boot time) adds its category and reason to the
-manifest. Location is While Using only, with background updates during a drive.
+manifest, and to the list `ShipHygieneTests` pins (Debug-only code, like `DemoMode`'s
+UserDefaults, doesn't ship and doesn't count). Location is While Using only, with background updates during a drive.
 
 ## Working here (Linux, no Xcode)
 

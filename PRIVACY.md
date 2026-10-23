@@ -18,8 +18,11 @@ app: not your location, your routes, your drives or anything about how you use i
 
 Pigeon gets its routes, place names and map from Apple Maps (Apple's MapKit, built into iOS):
 
+- When you look for a destination, what you type is sent to Apple as you type it, with the area
+  the map shows, to suggest places.
 - When you save a route, the route's start and destination are sent to Apple to work out the
-  route and the landmarks along it.
+  route and the landmarks along it, and a position may be sent to look up its street or place
+  name.
 - If you leave the route during a drive, your position and destination are sent to Apple to work
   out a new route.
 - While the map is on screen, Apple's map tiles for the area you are viewing are loaded.

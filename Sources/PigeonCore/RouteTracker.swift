@@ -27,12 +27,15 @@ public struct LocationFix: Sendable, Equatable {
 /// back and reroutes, whatever the stage. It leans towards saying "left": a false alarm costs a
 /// few seconds of extra directions; a missed one leaves a driver lost in silence.
 ///
-/// - Off the line: a usable fix (accuracy no worse than `worstUsableAccuracy`) further than
-///   `offRouteDistance` from the line, or further than its own accuracy when that is larger, counts
-///   once; `confirmations` such fixes in a row are leaving the route. A fix back on the line resets
-///   the count.
-/// - Wrong way: moving faster than `wrongWayMinimumSpeed` on a course more than 135° from the
-///   line's direction for `wrongWayFixes` fixes in a row (a U-turn on the route).
+/// - Off the line: a usable fix (accuracy no worse than `worstUsableAccuracy`) further than both
+///   `offRouteDistance` and its own accuracy from the line counts once; `confirmations` such fixes
+///   in a row are leaving the route. Only a fix within `offRouteDistance` resets the count: one
+///   further off but within its own accuracy is inconclusive and changes nothing.
+/// - Wrong way: going back along the route more than `backtrackLimit` metres from the furthest
+///   point reached, at any speed and with or without a course; or, sooner, moving faster than
+///   `wrongWayMinimumSpeed` on a course more than 135° from the line's direction for
+///   `wrongWayFixes` fixes in a row (a U-turn on the route). A fix with no course or speed leaves
+///   that count as it was.
 /// - Joining: a drive may start a little away from the line (a driveway, a parking lot). A first
 ///   usable fix within `joinRadius` of the line's first `joinSearch` metres waits up to
 ///   `joinTimeout` seconds for the driver to reach them; further away, or slower than that, is
@@ -40,7 +43,8 @@ public struct LocationFix: Sendable, Equatable {
 /// - Each fix is matched only near where the last one was (`searchBehind` metres back, and ahead as
 ///   far as `maximumSpeed` could carry the driver since), so a route that passes the same place
 ///   twice, or a shortcut that rejoins it further on, can't pass for being on it.
-/// - Arrived: on the line within `arrivalRadius` of its end. `.left` and `.arrived` are final; a
+/// - Arrived: on the line within `arrivalRadius` of its end, having covered at least half the line
+///   since joining it (so a very short route doesn't arrive on its first fix). `.left` and `.arrived` are final; a
 ///   reroute is a new line and a new tracker.
 public struct RouteTracker: Sendable {
     public struct Settings: Sendable, Equatable {
@@ -52,8 +56,10 @@ public struct RouteTracker: Sendable {
         public var joinSearch = 500.0
         public var wrongWayFixes = 3
         public var wrongWayMinimumSpeed = 5.0
+        public var backtrackLimit = 60.0
         public var arrivalRadius = 40.0
-        /// Seconds without a usable fix before `signalLost(at:)` says so.
+        /// Seconds without a usable fix (or since the start, before the first) before
+        /// `signalLost(at:)` says so.
         public var signalTimeout: TimeInterval = 20
         public var searchBehind = 150.0
         /// Metres per second, for how far ahead the next fix may be found (about 160 km/h).
@@ -82,12 +88,16 @@ public struct RouteTracker: Sendable {
     /// The last usable fix's place on the line.
     public private(set) var lastMatch: RouteLine.Match?
     public private(set) var lastUsableFixTime: TimeInterval?
-    private var firstUsableFixTime: TimeInterval?
+    /// When the drive started, on the fixes' clock.
+    public let startTime: TimeInterval
+    private var joinedAlong: Double?
+    private var furthestAlong = 0.0
     private var offCount = 0
     private var wrongWayCount = 0
 
-    public init(line: RouteLine, settings: Settings = Settings()) {
+    public init(line: RouteLine, startTime: TimeInterval, settings: Settings = Settings()) {
         self.line = line
+        self.startTime = startTime
         self.settings = settings
     }
 
@@ -107,7 +117,6 @@ public struct RouteTracker: Sendable {
         }
         if let last = lastUsableFixTime, fix.time < last { return phase }  // out of order
         let elapsed = lastUsableFixTime.map { fix.time - $0 } ?? 0
-        firstUsableFixTime = firstUsableFixTime ?? fix.time
         lastUsableFixTime = fix.time
 
         let range: ClosedRange<Double>
@@ -121,15 +130,15 @@ public struct RouteTracker: Sendable {
             phase = .left(.offLine)
             return phase
         }
-        let limit = max(settings.offRouteDistance, fix.horizontalAccuracy)
-
         if phase == .joining {
-            if match.offset <= limit {
+            if match.offset <= settings.offRouteDistance {
                 phase = .onRoute
+                joinedAlong = match.along
+                furthestAlong = match.along
             } else if match.offset > settings.joinRadius {
                 phase = .left(.neverJoined)
                 return phase
-            } else if fix.time - (firstUsableFixTime ?? fix.time) > settings.joinTimeout {
+            } else if fix.time - startTime > settings.joinTimeout {
                 phase = .left(.neverJoined)
                 return phase
             } else {
@@ -137,39 +146,49 @@ public struct RouteTracker: Sendable {
             }
         }
 
-        if match.offset > limit {
-            offCount += 1
-            if offCount >= settings.confirmations {
-                phase = .left(.offLine)
-                return phase
+        if match.offset > settings.offRouteDistance {
+            // Off by more than the fix's own uncertainty counts; within it, the fix can't tell.
+            // Neither kind moves where the driver is taken to be.
+            if match.offset > fix.horizontalAccuracy {
+                offCount += 1
+                if offCount >= settings.confirmations {
+                    phase = .left(.offLine)
+                }
             }
-            // An unconfirmed stray fix doesn't move where the driver is taken to be.
             return phase
         }
         offCount = 0
 
-        if let course = fix.course, let speed = fix.speed, speed >= settings.wrongWayMinimumSpeed,
-           abs(Geo.turn(from: match.bearing, to: course)) > 135 {
-            wrongWayCount += 1
-            if wrongWayCount >= settings.wrongWayFixes {
-                phase = .left(.wrongWay)
-                return phase
+        if furthestAlong - match.along > settings.backtrackLimit {
+            phase = .left(.wrongWay)
+            return phase
+        }
+        if let course = fix.course, let speed = fix.speed {
+            if speed >= settings.wrongWayMinimumSpeed, abs(Geo.turn(from: match.bearing, to: course)) > 135 {
+                wrongWayCount += 1
+                if wrongWayCount >= settings.wrongWayFixes {
+                    phase = .left(.wrongWay)
+                    return phase
+                }
+            } else {
+                wrongWayCount = 0
             }
-        } else {
-            wrongWayCount = 0
         }
 
         lastMatch = match
-        if line.length - match.along <= settings.arrivalRadius {
+        furthestAlong = max(furthestAlong, match.along)
+        let covered = match.along - (joinedAlong ?? 0)
+        if line.length - match.along <= settings.arrivalRadius, covered >= line.length / 2 {
             phase = .arrived
         }
         return phase
     }
 
-    /// True once the drive has gone `signalTimeout` seconds without a usable fix (a tunnel, a
-    /// garage, a phone that lost the sky). The app says so rather than staying silent.
+    /// True once the drive has gone `signalTimeout` seconds without a usable fix, or since its
+    /// start before the first (a tunnel, a garage, a phone that lost the sky). The app says so
+    /// rather than staying silent.
     public func signalLost(at now: TimeInterval) -> Bool {
-        guard !isFinal, let last = lastUsableFixTime else { return false }
-        return now - last > settings.signalTimeout
+        guard !isFinal else { return false }
+        return now - (lastUsableFixTime ?? startTime) > settings.signalTimeout
     }
 }
