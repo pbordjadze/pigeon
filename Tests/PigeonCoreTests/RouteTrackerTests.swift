@@ -303,10 +303,14 @@ struct RouteTrackerTests {
             tracker.update(R.fix(east: 0, north: along, t: t, accuracy: 35)); t += 1
         }
         var phase = tracker.phase
+        var reversed = 0.0
         for north in stride(from: 1496.0, through: 0, by: -4) {
             phase = tracker.update(R.fix(east: 0, north: north, t: t, accuracy: 35)); t += 1
+            reversed = 1500 - north
             if case .left = phase { break }
         }
         #expect(phase == .left(.wrongWay))
+        // The price of tolerating wobble at stops: caught within 150 m of driving back, not sooner.
+        #expect(reversed <= 150)
     }
 }
