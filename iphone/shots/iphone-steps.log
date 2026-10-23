@@ -1,0 +1,11 @@
+21:41:37 iphone: booted
+21:42:05 iphone: installed
+21:42:12 iphone: launch routes-empty: com.pbordjadze.pigeon: 17021 
+21:42:13 iphone: routes-empty ready after 1 s
+21:42:16 iphone: captured routes-empty
+21:42:20 iphone: launch routes-empty-dark: com.pbordjadze.pigeon: 17206 
+21:42:20 iphone: routes-empty-dark ready after 0 s
+21:42:23 iphone: captured routes-empty-dark
+21:42:26 iphone: launch routes-empty-long-text: com.pbordjadze.pigeon: 17296 
+21:42:26 iphone: routes-empty-long-text ready after 0 s
+21:42:29 iphone: captured routes-empty-long-text

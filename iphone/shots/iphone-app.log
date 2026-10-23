@@ -1,0 +1,474 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-23 21:42:12.284 Df Pigeon[17021:ce16] [com.apple.xpc:connection] [0x1039372d0] activating connection: mach=true listener=false peer=false name=com.apple.cfprefsd.daemon
+2026-10-23 21:42:12.284 Df Pigeon[17021:cde4] (libMobileGestalt.dylib) No persisted cache on this platform.
+2026-10-23 21:42:12.286 Df Pigeon[17021:ce19] [com.apple.BoardServices:XPCErrors] [C:1] Alloc com.apple.frontboard.systemappservices
+2026-10-23 21:42:12.288 Df Pigeon[17021:ce19] [com.apple.xpc:connection] [0x104158000] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:12.292 A  Pigeon[17021:ce18] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-10-23 21:42:12.292 Df Pigeon[17021:ce16] [com.apple.UIKit:BackgroundTask] Creating new assertion because there is no existing background assertion.
+2026-10-23 21:42:12.295 Df Pigeon[17021:ce16] [com.apple.UIKit:BackgroundTask] Creating new background assertion
+2026-10-23 21:42:12.296 Df Pigeon[17021:ce16] [com.apple.UIKit:BackgroundTask] Created new background assertion <BKSProcessAssertion: 0x10393c4d0>
+2026-10-23 21:42:12.296 Df Pigeon[17021:ce16] [com.apple.runningboard:connection] Initializing connection
+2026-10-23 21:42:12.296 Df Pigeon[17021:ce16] [com.apple.runningboard:process] Removing all cached process handles
+2026-10-23 21:42:12.296 Df Pigeon[17021:ce16] [com.apple.runningboard:connection] Creating connection to com.apple.runningboard
+2026-10-23 21:42:12.296 Df Pigeon[17021:ce16] [com.apple.xpc:connection] [0x104158280] activating connection: mach=true listener=false peer=false name=com.apple.runningboard
+2026-10-23 21:42:12.297 Df Pigeon[17021:ce1a] [com.apple.runningboard:connection] Sending handshake request attempt #1 to server
+2026-10-23 21:42:12.298 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason added: 10; deactivation reasons: 0 -> 1024; animating application lifecycle event: 0
+2026-10-23 21:42:12.298 A  Pigeon[17021:ce1c] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:12.299 Df Pigeon[17021:cde4] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.open
+2026-10-23 21:42:12.299 Df Pigeon[17021:cde4] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.workspace-service
+2026-10-23 21:42:12.299 Df Pigeon[17021:ce1a] [com.apple.runningboard:connection] Handshake succeeded
+2026-10-23 21:42:12.300 Df Pigeon[17021:ce1a] [com.apple.runningboard:connection] Identity resolved as app<com.pbordjadze.pigeon((null))>
+2026-10-23 21:42:12.300 Df Pigeon[17021:cde4] [com.apple.FrontBoard:Common] FBSWorkspace registering source: com.apple.frontboard.systemappservices
+2026-10-23 21:42:12.301 Df Pigeon[17021:cde4] [com.apple.FrontBoard:Common] FBSWorkspace connected to endpoint : <BSServiceConnectionEndpoint: 0x104100880; target: com.apple.frontboard.systemappservices; service: com.apple.frontboard.workspace-service>
+2026-10-23 21:42:12.301 Df Pigeon[17021:cde4] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x1040d01e0 com.apple.frontboard.systemappservices> attempting immediate handshake from activate
+2026-10-23 21:42:12.301 Df Pigeon[17021:cde4] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x1040d01e0 com.apple.frontboard.systemappservices> sent handshake
+2026-10-23 21:42:12.301 Df Pigeon[17021:ce16] [com.apple.UIKit:BackgroundTask] Incrementing reference count for background assertion <BKSProcessAssertion: 0x10393c4d0>
+2026-10-23 21:42:12.302 Df Pigeon[17021:cde4] [com.apple.runningboard:general] Added observer for process assertions expiration warning: <_RBSExpirationWarningClient: 0x104100c80>
+2026-10-23 21:42:12.302 Df Pigeon[17021:ce16] [com.apple.UIKit:BackgroundTask] Created background task <_UIBackgroundTaskInfo: 0x104088a00>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1020 (elapsed = 0).
+2026-10-23 21:42:12.302 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UIApplicationSceneKeyboardSettings on FBSSceneSettings
+2026-10-23 21:42:12.304 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneOcclusionSettings> on FBSSceneSettings
+2026-10-23 21:42:12.305 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneInterfaceProtectionSettings> on FBSSceneSettings
+2026-10-23 21:42:12.306 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferencesHostSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:12.306 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneSafeAreaSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:12.307 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferenceClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:12.307 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UIHomeAffordanceHostSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:12.308 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISystemShellSceneHostingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:12.308 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneRenderingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:12.308 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneRenderingEnvironmentClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:12.308 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneTransitioningHostSettings> on FBSSceneSettings
+2026-10-23 21:42:12.309 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneFocusSystemSettings> on FBSSceneSettings
+2026-10-23 21:42:12.309 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:12.310 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:12.310 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneWindowingControlClientSettings on FBSSceneClientSettings
+2026-10-23 21:42:12.311 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingContentSizePreferenceClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:12.311 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneHostingTraitCollectionPropagationSettings on FBSSceneSettings
+2026-10-23 21:42:12.312 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationSettings> on FBSSceneSettings
+2026-10-23 21:42:12.313 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:12.313 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingEventDeferringSettings> on FBSSceneSettings
+2026-10-23 21:42:12.313 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:12.314 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneClientSettings
+2026-10-23 21:42:12.314 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingViewControllerPreferencePropagationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:12.314 Df Pigeon[17021:ce16] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneZoomTransitionSettings> on FBSSceneSettings
+2026-10-23 21:42:12.315 Df Pigeon[17021:ce1c] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneSettingsCore on FBSSceneSettings
+2026-10-23 21:42:12.317 Df Pigeon[17021:ce1c] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneClientSettingsCore on FBSSceneClientSettings
+2026-10-23 21:42:12.321 Df Pigeon[17021:ce1c] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneSettings setting counterpart class: UIApplicationSceneSettings
+2026-10-23 21:42:12.322 Df Pigeon[17021:ce1c] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneClientSettings setting counterpart class: UIApplicationSceneClientSettings
+2026-10-23 21:42:12.322 Df Pigeon[17021:ce1c] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneTransitionContextCore on FBSSceneTransitionContext
+2026-10-23 21:42:12.327 Df Pigeon[17021:cde4] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x104158500> for initial
+2026-10-23 21:42:12.327 Df Pigeon[17021:cde4] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x104158500> for CADisplay KVO
+2026-10-23 21:42:12.330 Df Pigeon[17021:cde4] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 1, category name = (null)
+2026-10-23 21:42:12.331 Df Pigeon[17021:cde4] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 0, category name = (null)
+2026-10-23 21:42:12.346 Df Pigeon[17021:cde4] [com.apple.dt.xctest:Default] Registering for test daemon availability notify post.
+2026-10-23 21:42:12.347 Df Pigeon[17021:cde4] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:12.348 Df Pigeon[17021:cde4] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:12.348 Df Pigeon[17021:cde4] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:12.349 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason added: 11; deactivation reasons: 1024 -> 3072; animating application lifecycle event: 0
+2026-10-23 21:42:12.352 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason removed: 10; deactivation reasons: 3072 -> 2048; animating application lifecycle event: 0
+2026-10-23 21:42:12.353 Df Pigeon[17021:cde4] [com.apple.UIKit:EventBus] Event Timing Profile for Touch: not found, path="/System/Library/EventTimingProfiles/Sim.Touch.plist"
+2026-10-23 21:42:12.354 Df Pigeon[17021:cde4] [com.apple.UIKit:EventBus] Event Timing Profile for Pencil: not found, path="/System/Library/EventTimingProfiles/Sim.Pencil.plist"
+2026-10-23 21:42:12.354 Df Pigeon[17021:cde4] [com.apple.UIKit:UpdateScheduler] Selected display: name=LCD (PurpleMain), id=1
+2026-10-23 21:42:12.360 Df Pigeon[17021:cde4] [com.apple.xpc:connection] [0x104158b40] activating connection: mach=true listener=false peer=false name=com.apple.lsd.mapdb
+2026-10-23 21:42:12.474 Df Pigeon[17021:cde4] [com.apple.BoardServices:XPCErrors] [C:2] Alloc com.apple.backboard.hid-services.xpc
+2026-10-23 21:42:12.474 Df Pigeon[17021:cde4] [com.apple.xpc:connection] [0x104158dc0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:12.477 Df Pigeon[17021:cde4] [com.apple.app_launch_measurement:ApplicationLaunch] alm_acquire_pageins_recording_assertion: acquired pageins recording assertion!
+2026-10-23 21:42:12.484 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Will add backgroundTask with taskName: Persistent SceneSession Map Update, expirationHandler: <__NSGlobalBlock__: 0x1e78c84e8>
+2026-10-23 21:42:12.484 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Reusing background assertion <BKSProcessAssertion: 0x10393c4d0>
+2026-10-23 21:42:12.485 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Incrementing reference count for background assertion <BKSProcessAssertion: 0x10393c4d0>
+2026-10-23 21:42:12.488 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Created background task <_UIBackgroundTaskInfo: 0x10408aa40>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1020 (elapsed = 0).
+2026-10-23 21:42:12.493 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason added: 5; deactivation reasons: 2048 -> 2080; animating application lifecycle event: 1
+2026-10-23 21:42:12.493 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Should send trait collection or coordinate space update, interface style 1 -> 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.494 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.494 Df Pigeon[17021:cde4] [com.apple.UIKit:HomeAffordanceObservation] Initializing: <_UIHomeAffordanceSceneNotifier: 0x104208fc0>; with scene: <UIWindowScene: 0x103933fa0>
+2026-10-23 21:42:12.494 Df Pigeon[17021:cde4] [com.apple.BacklightServices:scenes] 0x1040265b0 setDelegate:<0x1040266a0 _UIBacklightEnvironment> hasDelegate:YES for environment:sceneID:com.pbordjadze.pigeon-default
+2026-10-23 21:42:12.495 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.495 Df Pigeon[17021:cde4] [com.apple.UIKit:EventDeferring] [0x104209030] Initialized with scene: <UIWindowScene: 0x103933fa0>; behavior: <_UIEventDeferringBehavior_iOS: 0x1043401c0>; availableForProcess: 1, systemShellManagesKeyboardFocus: 1
+2026-10-23 21:42:12.501 Df Pigeon[17021:cde4] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x104049e60; process scope; status: target> was:none
+2026-10-23 21:42:12.501 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to LastOneWins
+2026-10-23 21:42:12.501 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Scene target of keyboard event deferring environment did change: 1; scene: UIWindowScene: 0x103933fa0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:12.501 Df Pigeon[17021:cde4] [com.apple.UIKit:EventDeferring] [0x104209030] Scene target of event deferring environments did update: scene: 0x103933fa0; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:12.501 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x103933fa0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:12.502 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Stack[KeyWindow] 0x104026250: Taking no further action for migration from LastOneWins -> SystemShellManaged as there are no scenes
+2026-10-23 21:42:12.502 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to SystemShellManaged
+2026-10-23 21:42:12.502 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Key window needs update: 0; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x103933fa0; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x0; reason: UIWindowScene: 0x103933fa0: Window scene became target of keyboard environment
+2026-10-23 21:42:12.503 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.503 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.505 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.509 Df Pigeon[17021:ce1c] [com.apple.BackBoard:EventDelivery] BKSHIDEventObserver - connection activation
+2026-10-23 21:42:12.509 Df Pigeon[17021:ce1e] [com.apple.BackBoard:EventDelivery] BKSHIDEventDeliveryManager - connection activation
+2026-10-23 21:42:12.746 Df Pigeon[17021:cde4] [com.apple.UIKit:Orientation] <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787) Scene updated orientation preferences: none -> ( Pu Ll Lr )
+2026-10-23 21:42:12.756 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Key window API is scene-level: YES
+2026-10-23 21:42:12.756 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] UIWindowScene: 0x103933fa0: Window became key in scene: UIWindow: 0x10419c400; contextId: 0x94258ED1: reason: UIWindowScene: 0x103933fa0: Window requested to become key in scene: 0x10419c400
+2026-10-23 21:42:12.756 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Key window needs update: 1; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x103933fa0; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x10419c400; reason: UIWindowScene: 0x103933fa0: Window requested to become key in scene: 0x10419c400
+2026-10-23 21:42:12.756 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Window did become application key: UIWindow: 0x10419c400; contextId: 0x94258ED1; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:12.756 Df Pigeon[17021:cde4] [com.apple.UIKit:EventDeferring] [0x104209030] Begin local event deferring requested for token: 0x1040495c0; environments: 1; reason: UIWindowScene: 0x103933fa0: Begin event deferring in keyboardFocus for window: 0x10419c400
+2026-10-23 21:42:12.758 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.763 Df Pigeon[17021:cde4] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:12.764 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Ignoring already applied deactivation reason: 5; deactivation reasons: 2080
+2026-10-23 21:42:12.764 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason added: 12; deactivation reasons: 2080 -> 6176; animating application lifecycle event: 1
+2026-10-23 21:42:12.764 Df Pigeon[17021:ce1e] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x104049e60; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default; status: ancestor> was:target
+2026-10-23 21:42:12.764 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason removed: 11; deactivation reasons: 6176 -> 4128; animating application lifecycle event: 1
+2026-10-23 21:42:12.765 Df Pigeon[17021:cde4] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneIntelligenceSupportSettings> on FBSSceneSettings
+2026-10-23 21:42:12.768 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:12.790 A  Pigeon[17021:cde4] (CoreFoundation) Updating Key-Value Observers Of Preferences
+2026-10-23 21:42:12.799 Df Pigeon[17021:ce1e] [com.apple.UIIntelligenceSupport:xpc] establishing connection to agent
+2026-10-23 21:42:12.806 Df Pigeon[17021:ce1e] [com.apple.xpc:session] [0x10418aa80] Session created.
+2026-10-23 21:42:12.806 Df Pigeon[17021:ce1e] [com.apple.xpc:session] [0x10418aa80] Session created from connection [0x10439c8c0]
+2026-10-23 21:42:12.806 Df Pigeon[17021:ce1e] [com.apple.xpc:connection] [0x10439c8c0] activating connection: mach=true listener=false peer=false name=com.apple.uiintelligencesupport.agent
+2026-10-23 21:42:12.811 Df Pigeon[17021:ce1e] [com.apple.xpc:session] [0x10418aa80] Session activated
+2026-10-23 21:42:12.948 Df Pigeon[17021:ce1c] [com.apple.xpc:connection] [0x10439d540] activating connection: mach=true listener=false peer=false name=com.apple.fontservicesd
+2026-10-23 21:42:13.006 Df Pigeon[17021:ce1a] [com.apple.UIKit:BackgroundTask] Ending background task with UIBackgroundTaskIdentifier: 2
+2026-10-23 21:42:13.007 Df Pigeon[17021:ce1a] [com.apple.UIKit:BackgroundTask] Ending task with identifier 2 and description: <_UIBackgroundTaskInfo: 0x10408aa40>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1020 (elapsed = 0), _expireHandler: <__NSGlobalBlock__: 0x1e78c84e8>
+2026-10-23 21:42:13.007 Df Pigeon[17021:ce1a] [com.apple.UIKit:BackgroundTask] Decrementing reference count for assertion <BKSProcessAssertion: 0x10393c4d0> (used by background task with identifier 2: <_UIBackgroundTaskInfo: 0x10408aa40>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1020 (elapsed = 0))
+2026-10-23 21:42:13.142 Df Pigeon[17021:cde4] [PrototypeTools:domain] Not observing PTDefaults on customer install.
+2026-10-23 21:42:13.291 Df Pigeon[17021:ce1a] [com.apple.CoreAnalytics:client] No XPC connection in Simulator
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:1 [B4137C8A-A06D-4A7B-8072-DE4FBA9E422B] (reporting strategy default)>
+2026-10-23 21:42:13.291 E  Pigeon[17021:ce1a] [com.apple.app_launch_measurement:General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:2 [232E8969-7E39-4D42-91EE-68C9EFE9DD86] (reporting strategy default)>
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.network:activity] Set activity <nw_activity 50:1 [B4137C8A-A06D-4A7B-8072-DE4FBA9E422B] (reporting strategy default)> as the global parent
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Ending background task with UIBackgroundTaskIdentifier: 1
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Ending task with identifier 1 and description: <_UIBackgroundTaskInfo: 0x104088a00>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1020 (elapsed = 1), _expireHandler: (null)
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Decrementing reference count for assertion <BKSProcessAssertion: 0x10393c4d0> (used by background task with identifier 1: <_UIBackgroundTaskInfo: 0x104088a00>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1020 (elapsed = 1))
+2026-10-23 21:42:13.291 Df Pigeon[17021:cde4] [com.apple.UIKit:BackgroundTask] Will invalidate assertion: <BKSProcessAssertion: 0x10393c4d0> for task identifier: 1
+2026-10-23 21:42:13.292 Df Pigeon[17021:cde4] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:13.292 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:13.292 Df Pigeon[17021:cde4] [com.apple.UIKit:UpdateScheduler] Target list changed: <CADisplay:LCD PurpleMain>
+2026-10-23 21:42:13.296 A  Pigeon[17021:ce1a] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:13.299 Df Pigeon[17021:cde4] [com.apple.UIKit:EventDeferring] [0x104209030] Scene target of event deferring environments did update: scene: 0x103933fa0; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:13.299 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x103933fa0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:13.299 Df Pigeon[17021:cde4] [com.apple.Accessibility:AXCommon] Read Per-App on Init: Smart invert = (null)
+2026-10-23 21:42:13.300 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:13.300 Df Pigeon[17021:cde4] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:13.300 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+2026-10-23 21:42:13.300 Df Pigeon[17021:cde4] [com.apple.KeyboardArbiter:Client] Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+2026-10-23 21:42:13.301 Df Pigeon[17021:cde4] [com.apple.UIKit:Application] Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+2026-10-23 21:42:13.302 A  Pigeon[17021:ce1e] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:13.305 Df Pigeon[17021:cde4] [com.apple.KeyboardArbiter:Client] startConnection
+2026-10-23 21:42:13.305 Df Pigeon[17021:cde4] [com.apple.xpc:connection] [0x106e08f00] activating connection: mach=true listener=false peer=false name=com.apple.UIKit.KeyboardManagement.hosted
+2026-10-23 21:42:13.308 Df Pigeon[17021:cde4] [com.apple.KeyboardArbiter:Client] handleKeyboardChange: set currentKeyboard:N (wasKeyboard:N)
+2026-10-23 21:42:13.320 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyboardSceneDelegate] forceReloadInputViews
+2026-10-23 21:42:13.320 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyboardSceneDelegate] Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+2026-10-23 21:42:13.321 Df Pigeon[17021:cde4] [com.apple.UIKit:KeyboardArbiterClientLog] isWritingToolsHandlingKeyboardTracking:Y (WT ready:Y, Arbiter ready:Y)
+2026-10-23 21:42:13.363 Df Pigeon[17021:cde4] [com.apple.network:activity] <nw_activity 50:1 [B4137C8A-A06D-4A7B-8072-DE4FBA9E422B] (global parent) (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 1641ms
+2026-10-23 21:42:13.363 Df Pigeon[17021:cde4] [com.apple.network:activity] <nw_activity 50:2 [232E8969-7E39-4D42-91EE-68C9EFE9DD86] (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 1641ms
+2026-10-23 21:42:13.363 Df Pigeon[17021:cde4] [com.apple.network:activity] Unsetting the global parent activity <nw_activity 50:1 [B4137C8A-A06D-4A7B-8072-DE4FBA9E422B] (global parent) (reporting strategy default) complete (reason success)>
+2026-10-23 21:42:13.363 Df Pigeon[17021:cde4] [com.apple.network:activity] Unset the global parent activity
+2026-10-23 21:42:13.364 Df Pigeon[17021:cde4] [com.apple.app_launch_measurement:ApplicationLaunch] alm_release_pageins_recording_assertion: releasing pageins recording assertion
+2026-10-23 21:42:13.365 E  Pigeon[17021:ce1a] [com.apple.app_launch_measurement:General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-10-23 21:42:13.400 A  Pigeon[17021:ce1a] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:16.946 Df Pigeon[17021:cde4] [com.apple.runningboard:connection] Creating side-channel connection to com.apple.runningboard
+2026-10-23 21:42:16.946 Df Pigeon[17021:cde4] [com.apple.xpc:connection] [0x106e09cc0] activating connection: mach=true listener=false peer=false name=com.apple.runningboard
+2026-10-23 21:42:16.947 Df Pigeon[17021:cde4] [com.apple.runningboard:process] Hit the server for a process handle bbb7d90000427d that resolved to: [app<com.pbordjadze.pigeon((null))>:17021]
+2026-10-23 21:42:16.948 Df Pigeon[17021:cde4] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:16.948 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Scene did update interface style to 2, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:16.961 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:16.965 Df Pigeon[17021:cde4] [com.apple.UIKit:InterfaceStyle] Push traits update to screen for new style 2, <UIWindowScene: 0x103933fa0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:17.003 Df Pigeon[17021:cde4] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:18.014 Df Pigeon[17021:cde4] [com.apple.UIKit:EventEnvironment] Enqueuing clear events of window: <_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow: 0x10419c800>; contextId: 0x39CA415C
+2026-10-23 21:42:18.015 Df Pigeon[17021:cde4] [com.apple.UIKit:EventEnvironment] Performing clear events of window: <_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow: 0x10419c800>; contextId: 0x0
+2026-10-23 21:42:19.906 Df Pigeon[17206:cfd0] (libMobileGestalt.dylib) No persisted cache on this platform.
+2026-10-23 21:42:19.908 Df Pigeon[17206:cfd3] [com.apple.xpc:connection] [0x1031dd270] activating connection: mach=true listener=false peer=false name=com.apple.cfprefsd.daemon
+2026-10-23 21:42:19.911 Df Pigeon[17206:cfd7] [com.apple.BoardServices:XPCErrors] [C:1] Alloc com.apple.frontboard.systemappservices
+2026-10-23 21:42:19.916 Df Pigeon[17206:cfd7] [com.apple.xpc:connection] [0x103930140] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:19.918 Df Pigeon[17206:cfd3] [com.apple.UIKit:BackgroundTask] Creating new assertion because there is no existing background assertion.
+2026-10-23 21:42:19.926 Df Pigeon[17206:cfd3] [com.apple.UIKit:BackgroundTask] Creating new background assertion
+2026-10-23 21:42:19.926 Df Pigeon[17206:cfd3] [com.apple.UIKit:BackgroundTask] Created new background assertion <BKSProcessAssertion: 0x1031dec30>
+2026-10-23 21:42:19.926 Df Pigeon[17206:cfd3] [com.apple.runningboard:connection] Initializing connection
+2026-10-23 21:42:19.926 Df Pigeon[17206:cfd3] [com.apple.runningboard:process] Removing all cached process handles
+2026-10-23 21:42:19.928 Df Pigeon[17206:cfd3] [com.apple.runningboard:connection] Creating connection to com.apple.runningboard
+2026-10-23 21:42:19.928 Df Pigeon[17206:cfd3] [com.apple.xpc:connection] [0x103930280] activating connection: mach=true listener=false peer=false name=com.apple.runningboard
+2026-10-23 21:42:19.928 Df Pigeon[17206:cfdb] [com.apple.runningboard:connection] Sending handshake request attempt #1 to server
+2026-10-23 21:42:19.929 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason added: 10; deactivation reasons: 0 -> 1024; animating application lifecycle event: 0
+2026-10-23 21:42:19.929 Df Pigeon[17206:cfd0] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.open
+2026-10-23 21:42:19.929 Df Pigeon[17206:cfd0] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.workspace-service
+2026-10-23 21:42:19.930 Df Pigeon[17206:cfd0] [com.apple.FrontBoard:Common] FBSWorkspace registering source: com.apple.frontboard.systemappservices
+2026-10-23 21:42:19.930 Df Pigeon[17206:cfdb] [com.apple.runningboard:connection] Handshake succeeded
+2026-10-23 21:42:19.930 Df Pigeon[17206:cfdb] [com.apple.runningboard:connection] Identity resolved as app<com.pbordjadze.pigeon((null))>
+2026-10-23 21:42:19.931 Df Pigeon[17206:cfd0] [com.apple.FrontBoard:Common] FBSWorkspace connected to endpoint : <BSServiceConnectionEndpoint: 0x1038fc980; target: com.apple.frontboard.systemappservices; service: com.apple.frontboard.workspace-service>
+2026-10-23 21:42:19.932 Df Pigeon[17206:cfd0] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x1038dce60 com.apple.frontboard.systemappservices> attempting immediate handshake from activate
+2026-10-23 21:42:19.932 Df Pigeon[17206:cfd0] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x1038dce60 com.apple.frontboard.systemappservices> sent handshake
+2026-10-23 21:42:19.932 Df Pigeon[17206:cfd3] [com.apple.UIKit:BackgroundTask] Incrementing reference count for background assertion <BKSProcessAssertion: 0x1031dec30>
+2026-10-23 21:42:19.933 Df Pigeon[17206:cfd0] [com.apple.runningboard:general] Added observer for process assertions expiration warning: <_RBSExpirationWarningClient: 0x1038fcbe0>
+2026-10-23 21:42:19.933 Df Pigeon[17206:cfd3] [com.apple.UIKit:BackgroundTask] Created background task <_UIBackgroundTaskInfo: 0x103884900>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1027 (elapsed = 0).
+2026-10-23 21:42:19.933 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UIApplicationSceneKeyboardSettings on FBSSceneSettings
+2026-10-23 21:42:19.935 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneOcclusionSettings> on FBSSceneSettings
+2026-10-23 21:42:19.935 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneInterfaceProtectionSettings> on FBSSceneSettings
+2026-10-23 21:42:19.936 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferencesHostSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:19.936 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneSafeAreaSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:19.937 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferenceClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:19.937 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UIHomeAffordanceHostSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:19.938 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISystemShellSceneHostingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:19.938 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneRenderingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:19.938 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneRenderingEnvironmentClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:19.939 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneTransitioningHostSettings> on FBSSceneSettings
+2026-10-23 21:42:19.940 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneFocusSystemSettings> on FBSSceneSettings
+2026-10-23 21:42:19.940 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:19.940 Df Pigeon[17206:cfd0] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x103930500> for initial
+2026-10-23 21:42:19.941 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:19.941 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneWindowingControlClientSettings on FBSSceneClientSettings
+2026-10-23 21:42:19.941 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingContentSizePreferenceClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:19.941 Df Pigeon[17206:cfd0] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x103930500> for CADisplay KVO
+2026-10-23 21:42:19.942 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneHostingTraitCollectionPropagationSettings on FBSSceneSettings
+2026-10-23 21:42:19.943 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationSettings> on FBSSceneSettings
+2026-10-23 21:42:19.943 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:19.944 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingEventDeferringSettings> on FBSSceneSettings
+2026-10-23 21:42:19.945 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:19.945 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneClientSettings
+2026-10-23 21:42:19.946 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingViewControllerPreferencePropagationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:19.946 Df Pigeon[17206:cfd3] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneZoomTransitionSettings> on FBSSceneSettings
+2026-10-23 21:42:19.947 Df Pigeon[17206:cfdc] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneSettingsCore on FBSSceneSettings
+2026-10-23 21:42:19.948 Df Pigeon[17206:cfd0] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 1, category name = (null)
+2026-10-23 21:42:19.948 Df Pigeon[17206:cfd0] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 0, category name = (null)
+2026-10-23 21:42:19.950 Df Pigeon[17206:cfdc] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneClientSettingsCore on FBSSceneClientSettings
+2026-10-23 21:42:19.956 Df Pigeon[17206:cfdc] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneSettings setting counterpart class: UIApplicationSceneSettings
+2026-10-23 21:42:19.956 Df Pigeon[17206:cfdc] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneClientSettings setting counterpart class: UIApplicationSceneClientSettings
+2026-10-23 21:42:19.957 Df Pigeon[17206:cfdc] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneTransitionContextCore on FBSSceneTransitionContext
+2026-10-23 21:42:19.958 Df Pigeon[17206:cfd0] [com.apple.dt.xctest:Default] Registering for test daemon availability notify post.
+2026-10-23 21:42:19.960 Df Pigeon[17206:cfd0] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:19.960 Df Pigeon[17206:cfd0] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:19.961 Df Pigeon[17206:cfd0] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:19.962 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason added: 11; deactivation reasons: 1024 -> 3072; animating application lifecycle event: 0
+2026-10-23 21:42:19.963 A  Pigeon[17206:cfda] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:19.965 A  Pigeon[17206:cfd6] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-10-23 21:42:19.976 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason removed: 10; deactivation reasons: 3072 -> 2048; animating application lifecycle event: 0
+2026-10-23 21:42:19.976 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventBus] Event Timing Profile for Touch: not found, path="/System/Library/EventTimingProfiles/Sim.Touch.plist"
+2026-10-23 21:42:19.977 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventBus] Event Timing Profile for Pencil: not found, path="/System/Library/EventTimingProfiles/Sim.Pencil.plist"
+2026-10-23 21:42:19.977 Df Pigeon[17206:cfd0] [com.apple.UIKit:UpdateScheduler] Selected display: name=LCD (PurpleMain), id=1
+2026-10-23 21:42:19.985 Df Pigeon[17206:cfd0] [com.apple.xpc:connection] [0x103930b40] activating connection: mach=true listener=false peer=false name=com.apple.lsd.mapdb
+2026-10-23 21:42:20.037 Df Pigeon[17206:cfd0] [com.apple.BoardServices:XPCErrors] [C:2] Alloc com.apple.backboard.hid-services.xpc
+2026-10-23 21:42:20.037 Df Pigeon[17206:cfd0] [com.apple.xpc:connection] [0x103930dc0] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:20.041 Df Pigeon[17206:cfd0] [com.apple.app_launch_measurement:ApplicationLaunch] alm_acquire_pageins_recording_assertion: acquired pageins recording assertion!
+2026-10-23 21:42:20.042 Df Pigeon[17206:cfdd] [com.apple.BackBoard:EventDelivery] BKSHIDEventDeliveryManager - connection activation
+2026-10-23 21:42:20.043 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason added: 5; deactivation reasons: 2048 -> 2080; animating application lifecycle event: 1
+2026-10-23 21:42:20.043 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Should send trait collection or coordinate space update, interface style 2 -> 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.045 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.045 Df Pigeon[17206:cfd0] [com.apple.UIKit:HomeAffordanceObservation] Initializing: <_UIHomeAffordanceSceneNotifier: 0x103a1d0a0>; with scene: <UIWindowScene: 0x1031e5cb0>
+2026-10-23 21:42:20.045 Df Pigeon[17206:cfd0] [com.apple.BacklightServices:scenes] 0x103827540 setDelegate:<0x103826cd0 _UIBacklightEnvironment> hasDelegate:YES for environment:sceneID:com.pbordjadze.pigeon-default
+2026-10-23 21:42:20.048 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.048 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventDeferring] [0x103a1d110] Initialized with scene: <UIWindowScene: 0x1031e5cb0>; behavior: <_UIEventDeferringBehavior_iOS: 0x103b44380>; availableForProcess: 1, systemShellManagesKeyboardFocus: 1
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x10384aca0; process scope; status: target> was:none
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfde] [com.apple.BackBoard:EventDelivery] BKSHIDEventObserver - connection activation
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to LastOneWins
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Scene target of keyboard event deferring environment did change: 1; scene: UIWindowScene: 0x1031e5cb0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventDeferring] [0x103a1d110] Scene target of event deferring environments did update: scene: 0x1031e5cb0; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x1031e5cb0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Stack[KeyWindow] 0x103826eb0: Taking no further action for migration from LastOneWins -> SystemShellManaged as there are no scenes
+2026-10-23 21:42:20.051 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to SystemShellManaged
+2026-10-23 21:42:20.052 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Key window needs update: 0; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x1031e5cb0; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x0; reason: UIWindowScene: 0x1031e5cb0: Window scene became target of keyboard environment
+2026-10-23 21:42:20.052 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.053 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.054 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.109 Df Pigeon[17206:cfd0] [com.apple.UIKit:Orientation] <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787) Scene updated orientation preferences: none -> ( Pu Ll Lr )
+2026-10-23 21:42:20.117 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Key window API is scene-level: YES
+2026-10-23 21:42:20.117 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] UIWindowScene: 0x1031e5cb0: Window became key in scene: UIWindow: 0x10398c400; contextId: 0x7F1C694F: reason: UIWindowScene: 0x1031e5cb0: Window requested to become key in scene: 0x10398c400
+2026-10-23 21:42:20.117 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Key window needs update: 1; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x1031e5cb0; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x10398c400; reason: UIWindowScene: 0x1031e5cb0: Window requested to become key in scene: 0x10398c400
+2026-10-23 21:42:20.117 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Window did become application key: UIWindow: 0x10398c400; contextId: 0x7F1C694F; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:20.117 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventDeferring] [0x103a1d110] Begin local event deferring requested for token: 0x1038488a0; environments: 1; reason: UIWindowScene: 0x1031e5cb0: Begin event deferring in keyboardFocus for window: 0x10398c400
+2026-10-23 21:42:20.121 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.123 Df Pigeon[17206:cfd0] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:20.124 Df Pigeon[17206:cfdc] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x10384aca0; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default; status: ancestor> was:target
+2026-10-23 21:42:20.124 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Ignoring already applied deactivation reason: 5; deactivation reasons: 2080
+2026-10-23 21:42:20.125 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason added: 12; deactivation reasons: 2080 -> 6176; animating application lifecycle event: 1
+2026-10-23 21:42:20.125 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason removed: 11; deactivation reasons: 6176 -> 4128; animating application lifecycle event: 1
+2026-10-23 21:42:20.125 Df Pigeon[17206:cfd0] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneIntelligenceSupportSettings> on FBSSceneSettings
+2026-10-23 21:42:20.126 Df Pigeon[17206:cfdc] [com.apple.UIIntelligenceSupport:xpc] establishing connection to agent
+2026-10-23 21:42:20.127 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.128 Df Pigeon[17206:cfdc] [com.apple.xpc:session] [0x1039899a0] Session created.
+2026-10-23 21:42:20.128 Df Pigeon[17206:cfdc] [com.apple.xpc:session] [0x1039899a0] Session created from connection [0x103b9af80]
+2026-10-23 21:42:20.128 Df Pigeon[17206:cfdc] [com.apple.xpc:connection] [0x103b9af80] activating connection: mach=true listener=false peer=false name=com.apple.uiintelligencesupport.agent
+2026-10-23 21:42:20.128 Df Pigeon[17206:cfdc] [com.apple.xpc:session] [0x1039899a0] Session activated
+2026-10-23 21:42:20.137 A  Pigeon[17206:cfd0] (CoreFoundation) Updating Key-Value Observers Of Preferences
+2026-10-23 21:42:20.193 Df Pigeon[17206:cfdc] [com.apple.xpc:connection] [0x103b992c0] activating connection: mach=true listener=false peer=false name=com.apple.fontservicesd
+2026-10-23 21:42:20.274 Df Pigeon[17206:cfd0] [PrototypeTools:domain] Not observing PTDefaults on customer install.
+2026-10-23 21:42:20.328 Df Pigeon[17206:cfd0] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:1 [F08C3D4F-A9E5-4BBA-8D2E-15E2D09EA064] (reporting strategy default)>
+2026-10-23 21:42:20.328 Df Pigeon[17206:cfd0] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:2 [35B8D409-4CB8-4F39-BFA6-70E79D31462E] (reporting strategy default)>
+2026-10-23 21:42:20.328 Df Pigeon[17206:cfd0] [com.apple.network:activity] Set activity <nw_activity 50:1 [F08C3D4F-A9E5-4BBA-8D2E-15E2D09EA064] (reporting strategy default)> as the global parent
+2026-10-23 21:42:20.328 Df Pigeon[17206:cfd0] [com.apple.UIKit:BackgroundTask] Ending background task with UIBackgroundTaskIdentifier: 1
+2026-10-23 21:42:20.328 Df Pigeon[17206:cfd0] [com.apple.UIKit:BackgroundTask] Ending task with identifier 1 and description: <_UIBackgroundTaskInfo: 0x103884900>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1027 (elapsed = 1), _expireHandler: (null)
+2026-10-23 21:42:20.329 Df Pigeon[17206:cfd0] [com.apple.UIKit:BackgroundTask] Decrementing reference count for assertion <BKSProcessAssertion: 0x1031dec30> (used by background task with identifier 1: <_UIBackgroundTaskInfo: 0x103884900>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1027 (elapsed = 1))
+2026-10-23 21:42:20.329 Df Pigeon[17206:cfd0] [com.apple.UIKit:BackgroundTask] Will invalidate assertion: <BKSProcessAssertion: 0x1031dec30> for task identifier: 1
+2026-10-23 21:42:20.330 Df Pigeon[17206:cfd0] [com.apple.UIKit:UpdateScheduler] Target list changed: <CADisplay:LCD PurpleMain>
+2026-10-23 21:42:20.332 Df Pigeon[17206:cfd0] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:20.333 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.336 A  Pigeon[17206:cfde] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:20.337 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventDeferring] [0x103a1d110] Scene target of event deferring environments did update: scene: 0x1031e5cb0; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:20.338 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x1031e5cb0; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:20.340 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 2, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:20.341 Df Pigeon[17206:cfd0] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:20.341 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+2026-10-23 21:42:20.341 Df Pigeon[17206:cfd0] [com.apple.KeyboardArbiter:Client] Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+2026-10-23 21:42:20.342 Df Pigeon[17206:cfd0] [com.apple.UIKit:Application] Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+2026-10-23 21:42:20.348 Df Pigeon[17206:cfd0] [com.apple.KeyboardArbiter:Client] startConnection
+2026-10-23 21:42:20.349 Df Pigeon[17206:cfd0] [com.apple.xpc:connection] [0x106614dc0] activating connection: mach=true listener=false peer=false name=com.apple.UIKit.KeyboardManagement.hosted
+2026-10-23 21:42:20.352 Df Pigeon[17206:cfd0] [com.apple.KeyboardArbiter:Client] handleKeyboardChange: set currentKeyboard:N (wasKeyboard:N)
+2026-10-23 21:42:20.357 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyboardSceneDelegate] forceReloadInputViews
+2026-10-23 21:42:20.357 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyboardSceneDelegate] Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+2026-10-23 21:42:20.359 Df Pigeon[17206:cfd0] [com.apple.UIKit:KeyboardArbiterClientLog] isWritingToolsHandlingKeyboardTracking:Y (WT ready:Y, Arbiter ready:Y)
+2026-10-23 21:42:20.404 Df Pigeon[17206:cfd0] [com.apple.network:activity] <nw_activity 50:1 [F08C3D4F-A9E5-4BBA-8D2E-15E2D09EA064] (global parent) (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 1032ms
+2026-10-23 21:42:20.404 Df Pigeon[17206:cfd0] [com.apple.network:activity] <nw_activity 50:2 [35B8D409-4CB8-4F39-BFA6-70E79D31462E] (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 1032ms
+2026-10-23 21:42:20.404 Df Pigeon[17206:cfd0] [com.apple.network:activity] Unsetting the global parent activity <nw_activity 50:1 [F08C3D4F-A9E5-4BBA-8D2E-15E2D09EA064] (global parent) (reporting strategy default) complete (reason success)>
+2026-10-23 21:42:20.404 Df Pigeon[17206:cfd0] [com.apple.network:activity] Unset the global parent activity
+2026-10-23 21:42:20.404 Df Pigeon[17206:cfd0] [com.apple.app_launch_measurement:ApplicationLaunch] alm_release_pageins_recording_assertion: releasing pageins recording assertion
+2026-10-23 21:42:20.474 Df Pigeon[17206:cfd0] [com.apple.Accessibility:AXCommon] Read Per-App on Init: Smart invert = (null)
+2026-10-23 21:42:21.044 A  Pigeon[17206:cfde] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:23.548 Df Pigeon[17206:cfd0] [com.apple.runningboard:connection] Creating side-channel connection to com.apple.runningboard
+2026-10-23 21:42:23.548 Df Pigeon[17206:cfd0] [com.apple.xpc:connection] [0x106615a40] activating connection: mach=true listener=false peer=false name=com.apple.runningboard
+2026-10-23 21:42:23.548 Df Pigeon[17206:cfd0] [com.apple.runningboard:process] Hit the server for a process handle 16aee81d00004336 that resolved to: [app<com.pbordjadze.pigeon((null))>:17206]
+2026-10-23 21:42:23.549 Df Pigeon[17206:cfd0] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:23.549 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Scene did update interface style to 1, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:23.563 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:23.563 Df Pigeon[17206:cfd0] [com.apple.UIKit:InterfaceStyle] Push traits update to screen for new style 1, <UIWindowScene: 0x1031e5cb0> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:23.582 Df Pigeon[17206:cfd0] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:24.121 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventEnvironment] Enqueuing clear events of window: <_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow: 0x10398c800>; contextId: 0x3C4CC551
+2026-10-23 21:42:24.123 Df Pigeon[17206:cfd0] [com.apple.UIKit:EventEnvironment] Performing clear events of window: <_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow: 0x10398c800>; contextId: 0x0
+2026-10-23 21:42:25.784 Df Pigeon[17296:d14a] (libMobileGestalt.dylib) No persisted cache on this platform.
+2026-10-23 21:42:25.785 Df Pigeon[17296:d14f] [com.apple.xpc:connection] [0x10171c0b0] activating connection: mach=true listener=false peer=false name=com.apple.cfprefsd.daemon
+2026-10-23 21:42:25.790 Df Pigeon[17296:d14f] [com.apple.UIKit:BackgroundTask] Creating new assertion because there is no existing background assertion.
+2026-10-23 21:42:25.790 Df Pigeon[17296:d14f] [com.apple.UIKit:BackgroundTask] Creating new background assertion
+2026-10-23 21:42:25.791 Df Pigeon[17296:d14f] [com.apple.UIKit:BackgroundTask] Created new background assertion <BKSProcessAssertion: 0x101722860>
+2026-10-23 21:42:25.791 Df Pigeon[17296:d14f] [com.apple.runningboard:connection] Initializing connection
+2026-10-23 21:42:25.791 Df Pigeon[17296:d14f] [com.apple.runningboard:process] Removing all cached process handles
+2026-10-23 21:42:25.793 Df Pigeon[17296:d154] [com.apple.BoardServices:XPCErrors] [C:1] Alloc com.apple.frontboard.systemappservices
+2026-10-23 21:42:25.793 Df Pigeon[17296:d14f] [com.apple.runningboard:connection] Creating connection to com.apple.runningboard
+2026-10-23 21:42:25.794 Df Pigeon[17296:d14f] [com.apple.xpc:connection] [0x101d6c140] activating connection: mach=true listener=false peer=false name=com.apple.runningboard
+2026-10-23 21:42:25.794 Df Pigeon[17296:d154] [com.apple.xpc:connection] [0x101d6c000] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:25.796 Df Pigeon[17296:d153] [com.apple.runningboard:connection] Sending handshake request attempt #1 to server
+2026-10-23 21:42:25.809 A  Pigeon[17296:d152] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-10-23 21:42:25.812 A  Pigeon[17296:d156] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:25.813 Df Pigeon[17296:d153] [com.apple.runningboard:connection] Handshake succeeded
+2026-10-23 21:42:25.814 Df Pigeon[17296:d153] [com.apple.runningboard:connection] Identity resolved as app<com.pbordjadze.pigeon((null))>
+2026-10-23 21:42:25.815 Df Pigeon[17296:d14f] [com.apple.UIKit:BackgroundTask] Incrementing reference count for background assertion <BKSProcessAssertion: 0x101722860>
+2026-10-23 21:42:25.816 Df Pigeon[17296:d14f] [com.apple.UIKit:BackgroundTask] Created background task <_UIBackgroundTaskInfo: 0x101c886c0>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1033 (elapsed = 0).
+2026-10-23 21:42:25.816 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason added: 10; deactivation reasons: 0 -> 1024; animating application lifecycle event: 0
+2026-10-23 21:42:25.816 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UIApplicationSceneKeyboardSettings on FBSSceneSettings
+2026-10-23 21:42:25.818 Df Pigeon[17296:d14a] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.open
+2026-10-23 21:42:25.818 Df Pigeon[17296:d14a] [com.apple.BoardServices:Injection] activating monitor for service com.apple.frontboard.workspace-service
+2026-10-23 21:42:25.819 Df Pigeon[17296:d14a] [com.apple.FrontBoard:Common] FBSWorkspace registering source: com.apple.frontboard.systemappservices
+2026-10-23 21:42:25.820 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneOcclusionSettings> on FBSSceneSettings
+2026-10-23 21:42:25.820 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneInterfaceProtectionSettings> on FBSSceneSettings
+2026-10-23 21:42:25.821 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferencesHostSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:25.821 Df Pigeon[17296:d14a] [com.apple.FrontBoard:Common] FBSWorkspace connected to endpoint : <BSServiceConnectionEndpoint: 0x101d3c720; target: com.apple.frontboard.systemappservices; service: com.apple.frontboard.workspace-service>
+2026-10-23 21:42:25.821 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneSafeAreaSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:25.821 Df Pigeon[17296:d14a] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x101ce4820 com.apple.frontboard.systemappservices> attempting immediate handshake from activate
+2026-10-23 21:42:25.822 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneLayoutPreferenceClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:25.822 Df Pigeon[17296:d14a] [com.apple.FrontBoard:Common] <FBSWorkspaceScenesClient:0x101ce4820 com.apple.frontboard.systemappservices> sent handshake
+2026-10-23 21:42:25.823 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UIHomeAffordanceHostSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:25.823 Df Pigeon[17296:d14a] [com.apple.runningboard:general] Added observer for process assertions expiration warning: <_RBSExpirationWarningClient: 0x101d3d2a0>
+2026-10-23 21:42:25.824 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISystemShellSceneHostingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:25.826 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneRenderingEnvironmentSettings on FBSSceneSettings
+2026-10-23 21:42:25.827 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneRenderingEnvironmentClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:25.827 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneTransitioningHostSettings> on FBSSceneSettings
+2026-10-23 21:42:25.828 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneFocusSystemSettings> on FBSSceneSettings
+2026-10-23 21:42:25.828 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationSettingsExtension on FBSSceneSettings
+2026-10-23 21:42:25.828 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneOrientationClientSettingsExtension on FBSSceneClientSettings
+2026-10-23 21:42:25.828 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneWindowingControlClientSettings on FBSSceneClientSettings
+2026-10-23 21:42:25.828 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingContentSizePreferenceClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:25.829 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension _UISceneHostingTraitCollectionPropagationSettings on FBSSceneSettings
+2026-10-23 21:42:25.830 Df Pigeon[17296:d14a] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x101d6c3c0> for initial
+2026-10-23 21:42:25.833 Df Pigeon[17296:d14a] [com.apple.UIKit:UIScreen] Evaluated capturing state as 0 on <UIScreen: 0x101d6c3c0> for CADisplay KVO
+2026-10-23 21:42:25.833 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationSettings> on FBSSceneSettings
+2026-10-23 21:42:25.842 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingSheetPresentationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:25.842 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingEventDeferringSettings> on FBSSceneSettings
+2026-10-23 21:42:25.843 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneSettings
+2026-10-23 21:42:25.843 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <UIKit__UITypedKeyValueSceneSettings> on FBSSceneClientSettings
+2026-10-23 21:42:25.844 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneHostingViewControllerPreferencePropagationClientSettings> on FBSSceneClientSettings
+2026-10-23 21:42:25.844 Df Pigeon[17296:d14a] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 1, category name = (null)
+2026-10-23 21:42:25.845 Df Pigeon[17296:d14a] [com.apple.Accessibility:AXSupportCommon] Read CategoryName: per-app = 0, category name = (null)
+2026-10-23 21:42:25.846 Df Pigeon[17296:d14f] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneZoomTransitionSettings> on FBSSceneSettings
+2026-10-23 21:42:25.847 Df Pigeon[17296:d154] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneSettingsCore on FBSSceneSettings
+2026-10-23 21:42:25.848 Df Pigeon[17296:d154] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneClientSettingsCore on FBSSceneClientSettings
+2026-10-23 21:42:25.851 Df Pigeon[17296:d154] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneSettings setting counterpart class: UIApplicationSceneSettings
+2026-10-23 21:42:25.852 Df Pigeon[17296:d154] [com.apple.FrontBoard:SceneExtension] UIMutableApplicationSceneClientSettings setting counterpart class: UIApplicationSceneClientSettings
+2026-10-23 21:42:25.852 Df Pigeon[17296:d154] [com.apple.FrontBoard:SceneExtension] Realizing settings extension FBSSceneTransitionContextCore on FBSSceneTransitionContext
+2026-10-23 21:42:25.853 Df Pigeon[17296:d14a] [com.apple.dt.xctest:Default] Registering for test daemon availability notify post.
+2026-10-23 21:42:25.854 Df Pigeon[17296:d14a] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:25.855 Df Pigeon[17296:d14a] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:25.855 Df Pigeon[17296:d14a] [com.apple.dt.xctest:Default] notify_get_state check indicated test daemon not ready.
+2026-10-23 21:42:25.857 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason added: 11; deactivation reasons: 1024 -> 3072; animating application lifecycle event: 0
+2026-10-23 21:42:25.862 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason removed: 10; deactivation reasons: 3072 -> 2048; animating application lifecycle event: 0
+2026-10-23 21:42:25.870 Df Pigeon[17296:d14a] [com.apple.UIKit:EventBus] Event Timing Profile for Touch: not found, path="/System/Library/EventTimingProfiles/Sim.Touch.plist"
+2026-10-23 21:42:25.871 Df Pigeon[17296:d14a] [com.apple.UIKit:EventBus] Event Timing Profile for Pencil: not found, path="/System/Library/EventTimingProfiles/Sim.Pencil.plist"
+2026-10-23 21:42:25.871 Df Pigeon[17296:d14a] [com.apple.UIKit:UpdateScheduler] Selected display: name=LCD (PurpleMain), id=1
+2026-10-23 21:42:25.882 Df Pigeon[17296:d14a] [com.apple.xpc:connection] [0x101d6ca00] activating connection: mach=true listener=false peer=false name=com.apple.lsd.mapdb
+2026-10-23 21:42:25.934 Df Pigeon[17296:d14a] [com.apple.BoardServices:XPCErrors] [C:2] Alloc com.apple.backboard.hid-services.xpc
+2026-10-23 21:42:25.935 Df Pigeon[17296:d14a] [com.apple.xpc:connection] [0x101d6cc80] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-10-23 21:42:25.939 Df Pigeon[17296:d14a] [com.apple.app_launch_measurement:ApplicationLaunch] alm_acquire_pageins_recording_assertion: acquired pageins recording assertion!
+2026-10-23 21:42:25.943 Df Pigeon[17296:d14f] [com.apple.BackBoard:EventDelivery] BKSHIDEventDeliveryManager - connection activation
+2026-10-23 21:42:25.946 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Will add backgroundTask with taskName: Persistent SceneSession Map Update, expirationHandler: <__NSGlobalBlock__: 0x1e78c84e8>
+2026-10-23 21:42:25.947 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Reusing background assertion <BKSProcessAssertion: 0x101722860>
+2026-10-23 21:42:25.947 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Incrementing reference count for background assertion <BKSProcessAssertion: 0x101722860>
+2026-10-23 21:42:25.947 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Created background task <_UIBackgroundTaskInfo: 0x101c8ad80>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1033 (elapsed = 0).
+2026-10-23 21:42:25.947 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason added: 5; deactivation reasons: 2048 -> 2080; animating application lifecycle event: 1
+2026-10-23 21:42:25.948 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Should send trait collection or coordinate space update, interface style 1 -> 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:25.949 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:25.949 Df Pigeon[17296:d14a] [com.apple.UIKit:HomeAffordanceObservation] Initializing: <_UIHomeAffordanceSceneNotifier: 0x101e310a0>; with scene: <UIWindowScene: 0x101728410>
+2026-10-23 21:42:25.950 Df Pigeon[17296:d14a] [com.apple.BacklightServices:scenes] 0x101c269d0 setDelegate:<0x101c26970 _UIBacklightEnvironment> hasDelegate:YES for environment:sceneID:com.pbordjadze.pigeon-default
+2026-10-23 21:42:25.950 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:25.951 Df Pigeon[17296:d14a] [com.apple.UIKit:EventDeferring] [0x101e31110] Initialized with scene: <UIWindowScene: 0x101728410>; behavior: <_UIEventDeferringBehavior_iOS: 0x101f5c380>; availableForProcess: 1, systemShellManagesKeyboardFocus: 1
+2026-10-23 21:42:25.953 Df Pigeon[17296:d159] [com.apple.BackBoard:EventDelivery] BKSHIDEventObserver - connection activation
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x101c49140; process scope; status: target> was:none
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to LastOneWins
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Scene target of keyboard event deferring environment did change: 1; scene: UIWindowScene: 0x101728410; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:EventDeferring] [0x101e31110] Scene target of event deferring environments did update: scene: 0x101728410; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x101728410; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Stack[KeyWindow] 0x101c26cd0: Taking no further action for migration from LastOneWins -> SystemShellManaged as there are no scenes
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Setting default evaluation strategy for UIUserInterfaceIdiomPhone to SystemShellManaged
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Key window needs update: 0; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x101728410; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x0; reason: UIWindowScene: 0x101728410: Window scene became target of keyboard environment
+2026-10-23 21:42:25.954 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:25.955 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:25.957 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:26.018 Df Pigeon[17296:d14a] [com.apple.UIKit:Orientation] <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787) Scene updated orientation preferences: none -> ( Pu Ll Lr )
+2026-10-23 21:42:26.025 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Key window API is scene-level: YES
+2026-10-23 21:42:26.025 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] UIWindowScene: 0x101728410: Window became key in scene: UIWindow: 0x101d98400; contextId: 0xCCEFF411: reason: UIWindowScene: 0x101728410: Window requested to become key in scene: 0x101d98400
+2026-10-23 21:42:26.025 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Key window needs update: 1; currentKeyWindowScene: 0x0; evaluatedKeyWindowScene: 0x101728410; currentApplicationKeyWindow: 0x0; evaluatedApplicationKeyWindow: 0x101d98400; reason: UIWindowScene: 0x101728410: Window requested to become key in scene: 0x101d98400
+2026-10-23 21:42:26.026 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Window did become application key: UIWindow: 0x101d98400; contextId: 0xCCEFF411; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:26.026 Df Pigeon[17296:d14a] [com.apple.UIKit:EventDeferring] [0x101e31110] Begin local event deferring requested for token: 0x101c49c20; environments: 1; reason: UIWindowScene: 0x101728410: Begin event deferring in keyboardFocus for window: 0x101d98400
+2026-10-23 21:42:26.030 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:26.031 Df Pigeon[17296:d14a] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:26.031 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Ignoring already applied deactivation reason: 5; deactivation reasons: 2080
+2026-10-23 21:42:26.032 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason added: 12; deactivation reasons: 2080 -> 6176; animating application lifecycle event: 1
+2026-10-23 21:42:26.032 Df Pigeon[17296:d152] [com.apple.BackBoard:EventDelivery] policyStatus:<BKSHIDEventDeliveryPolicyObserver: 0x101c49140; token: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default; status: ancestor> was:target
+2026-10-23 21:42:26.032 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason removed: 11; deactivation reasons: 6176 -> 4128; animating application lifecycle event: 1
+2026-10-23 21:42:26.032 Df Pigeon[17296:d14a] [com.apple.FrontBoard:SceneExtension] Realizing settings extension <_UISceneIntelligenceSupportSettings> on FBSSceneSettings
+2026-10-23 21:42:26.033 Df Pigeon[17296:d152] [com.apple.UIIntelligenceSupport:xpc] establishing connection to agent
+2026-10-23 21:42:26.035 Df Pigeon[17296:d152] [com.apple.xpc:session] [0x101d91b30] Session created.
+2026-10-23 21:42:26.035 Df Pigeon[17296:d152] [com.apple.xpc:session] [0x101d91b30] Session created from connection [0x101fa2800]
+2026-10-23 21:42:26.035 Df Pigeon[17296:d152] [com.apple.xpc:connection] [0x101fa2800] activating connection: mach=true listener=false peer=false name=com.apple.uiintelligencesupport.agent
+2026-10-23 21:42:26.035 Df Pigeon[17296:d152] [com.apple.xpc:session] [0x101d91b30] Session activated
+2026-10-23 21:42:26.035 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:26.042 A  Pigeon[17296:d14a] (CoreFoundation) Updating Key-Value Observers Of Preferences
+2026-10-23 21:42:26.102 Df Pigeon[17296:d153] [com.apple.xpc:connection] [0x101fa1400] activating connection: mach=true listener=false peer=false name=com.apple.fontservicesd
+2026-10-23 21:42:26.187 Df Pigeon[17296:d14a] [PrototypeTools:domain] Not observing PTDefaults on customer install.
+2026-10-23 21:42:26.249 Df Pigeon[17296:d14a] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:1 [FB0DA189-F5CC-4A9E-83A8-EA64E3C6EEB9] (reporting strategy default)>
+2026-10-23 21:42:26.249 Df Pigeon[17296:d14a] [com.apple.network:activity] Create activity from XPC object <nw_activity 50:2 [8C0EE93D-816F-4FA9-B8A0-1FFCFA5E8100] (reporting strategy default)>
+2026-10-23 21:42:26.249 Df Pigeon[17296:d14a] [com.apple.network:activity] Set activity <nw_activity 50:1 [FB0DA189-F5CC-4A9E-83A8-EA64E3C6EEB9] (reporting strategy default)> as the global parent
+2026-10-23 21:42:26.250 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Ending background task with UIBackgroundTaskIdentifier: 1
+2026-10-23 21:42:26.250 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Ending task with identifier 1 and description: <_UIBackgroundTaskInfo: 0x101c886c0>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1033 (elapsed = 1), _expireHandler: (null)
+2026-10-23 21:42:26.250 Df Pigeon[17296:d14a] [com.apple.UIKit:BackgroundTask] Decrementing reference count for assertion <BKSProcessAssertion: 0x101722860> (used by background task with identifier 1: <_UIBackgroundTaskInfo: 0x101c886c0>: taskID = 1, taskName = Launch Background Task for Coalescing, creationTime = 1033 (elapsed = 1))
+2026-10-23 21:42:26.250 A  Pigeon[17296:d153] (RunningBoardServices) didChangeInheritances
+2026-10-23 21:42:26.251 Df Pigeon[17296:d14a] [com.apple.UIKit:UpdateScheduler] Target list changed: <CADisplay:LCD PurpleMain>
+2026-10-23 21:42:26.252 Df Pigeon[17296:d14a] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:26.253 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:26.257 Df Pigeon[17296:d14a] [com.apple.UIKit:EventDeferring] [0x101e31110] Scene target of event deferring environments did update: scene: 0x101728410; current systemShellManagesKeyboardFocus: 1; systemShellManagesKeyboardFocusForScene: 1; eligibleForRecordRemoval: 1;
+2026-10-23 21:42:26.257 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyWindow] Scene became target of keyboard event deferring environment: UIWindowScene: 0x101728410; scene identity: com.apple.frontboard.systemappservices/FBSceneManager:sceneID%3Acom.pbordjadze.pigeon-default
+2026-10-23 21:42:26.258 Df Pigeon[17296:d14a] [com.apple.UIKit:InterfaceStyle] Not push traits update to screen for new style 1, <UIWindowScene: 0x101728410> (49238895-E51A-441A-94FB-2F2C5EC57787)
+2026-10-23 21:42:26.258 Df Pigeon[17296:d14a] [com.apple.UIKit:AppLifecycle] sceneOfRecord: sceneID: sceneID:com.pbordjadze.pigeon-default  persistentID: 49238895-E51A-441A-94FB-2F2C5EC57787
+2026-10-23 21:42:26.259 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason removed: 12; deactivation reasons: 4128 -> 32; animating application lifecycle event: 1
+2026-10-23 21:42:26.259 Df Pigeon[17296:d14a] [com.apple.KeyboardArbiter:Client] Send setDeactivating: N (-DeactivationReason:SuspendedEventsOnly)
+2026-10-23 21:42:26.259 Df Pigeon[17296:d14a] [com.apple.UIKit:Application] Deactivation reason removed: 5; deactivation reasons: 32 -> 0; animating application lifecycle event: 0
+2026-10-23 21:42:26.260 Df Pigeon[17296:d14a] [com.apple.KeyboardArbiter:Client] startConnection
+2026-10-23 21:42:26.260 Df Pigeon[17296:d14a] [com.apple.xpc:connection] [0x104a14c80] activating connection: mach=true listener=false peer=false name=com.apple.UIKit.KeyboardManagement.hosted
+2026-10-23 21:42:26.263 Df Pigeon[17296:d14a] [com.apple.KeyboardArbiter:Client] handleKeyboardChange: set currentKeyboard:N (wasKeyboard:N)
+2026-10-23 21:42:26.270 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyboardSceneDelegate] forceReloadInputViews
+2026-10-23 21:42:26.270 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyboardSceneDelegate] Reloading input views for key-window scene responder: <(null): 0x0; > force:Y
+2026-10-23 21:42:26.271 Df Pigeon[17296:d14a] [com.apple.UIKit:KeyboardArbiterClientLog] isWritingToolsHandlingKeyboardTracking:Y (WT ready:Y, Arbiter ready:Y)
+2026-10-23 21:42:26.316 Df Pigeon[17296:d14a] [com.apple.network:activity] <nw_activity 50:1 [FB0DA189-F5CC-4A9E-83A8-EA64E3C6EEB9] (global parent) (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 901ms
+2026-10-23 21:42:26.316 Df Pigeon[17296:d14a] [com.apple.network:activity] <nw_activity 50:2 [8C0EE93D-816F-4FA9-B8A0-1FFCFA5E8100] (reporting strategy default) complete (reason success)> complete with reason 2 (success), duration 901ms
+2026-10-23 21:42:26.316 Df Pigeon[17296:d14a] [com.apple.network:activity] Unsetting the global parent activity <nw_activity 50:1 [FB0DA189-F5CC-4A9E-83A8-EA64E3C6EEB9] (global parent) (reporting strategy default) complete (reason success)>
+2026-10-23 21:42:26.316 Df Pigeon[17296:d14a] [com.apple.network:activity] Unset the global parent activity
+2026-10-23 21:42:26.316 Df Pigeon[17296:d14a] [com.apple.app_launch_measurement:ApplicationLaunch] alm_release_pageins_recording_assertion: releasing pageins recording assertion
+2026-10-23 21:42:26.369 Df Pigeon[17296:d14a] [com.apple.Accessibility:AXCommon] Read Per-App on Init: Smart invert = (null)
+2026-10-23 21:42:26.471 Df Pigeon[17296:d159] [com.apple.UIKit:BackgroundTask] Ending background task with UIBackgroundTaskIdentifier: 2
+2026-10-23 21:42:26.471 Df Pigeon[17296:d159] [com.apple.UIKit:BackgroundTask] Ending task with identifier 2 and description: <_UIBackgroundTaskInfo: 0x101c8ad80>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1033 (elapsed = 1), _expireHandler: <__NSGlobalBlock__: 0x1e78c84e8>
+2026-10-23 21:42:26.471 Df Pigeon[17296:d159] [com.apple.UIKit:BackgroundTask] Decrementing reference count for assertion <BKSProcessAssertion: 0x101722860> (used by background task with identifier 2: <_UIBackgroundTaskInfo: 0x101c8ad80>: taskID = 2, taskName = Persistent SceneSession Map Update, creationTime = 1033 (elapsed = 1))
+2026-10-23 21:42:26.471 Df Pigeon[17296:d159] [com.apple.UIKit:BackgroundTask] Will invalidate assertion: <BKSProcessAssertion: 0x101722860> for task identifier: 2
+2026-10-23 21:42:26.971 A  Pigeon[17296:d159] (RunningBoardServices) didChangeInheritances

@@ -1,0 +1,5 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-23 21:42:13.200 I  Pigeon[17021:cde4] [com.pbordjadze.pigeon:demo] demo-ready routes-empty
+2026-10-23 21:42:20.284 I  Pigeon[17206:cfd0] [com.pbordjadze.pigeon:demo] demo-ready routes-empty-dark
+2026-10-23 21:42:26.193 I  Pigeon[17296:d14a] [com.pbordjadze.pigeon:demo] demo-ready routes-empty-long-text
+2026-10-23 21:43:36.234 I  Pigeon[20268:ee26] [com.pbordjadze.pigeon:demo] demo-ready routes-empty

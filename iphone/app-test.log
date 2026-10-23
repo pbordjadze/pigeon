@@ -1,0 +1,14 @@
+Retrying tests on failure. Running tests repeatedly up to 2 times.
+
+Writing result bundle at path:
+	/Users/runner/work/pigeon/pigeon/build/Tests.xcresult
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:77AA4492-C787-4EEE-A772-05D4B3E9ECCD, OS:26.5, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:x86_64, id:77AA4492-C787-4EEE-A772-05D4B3E9ECCD, OS:26.5, name:iPhone 17 Pro }
+2026-10-23 21:43:21.359 xcodebuild[17883:54859] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-10-23 21:43:21.359 xcodebuild[17883:54859] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-23 21:43:43.089 xcodebuild[17883:54859] [MT] IDETestOperationsObserverDebug: 55.674 elapsed -- Testing started completed.
+2026-10-23 21:43:43.089 xcodebuild[17883:54859] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-23 21:43:43.089 xcodebuild[17883:54859] [MT] IDETestOperationsObserverDebug: 55.674 sec, +55.674 sec -- end
+Testing started

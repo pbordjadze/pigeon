@@ -1,0 +1,1 @@
+simulator=success build=success boot=success screenshots=success tests=success release=success warnings=success
