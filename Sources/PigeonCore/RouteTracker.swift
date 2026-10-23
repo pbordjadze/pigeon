@@ -31,8 +31,9 @@ public struct LocationFix: Sendable, Equatable {
 ///   `offRouteDistance` and its own accuracy from the line counts once; `confirmations` such fixes
 ///   in a row are leaving the route. Only a fix within `offRouteDistance` resets the count: one
 ///   further off but within its own accuracy is inconclusive and changes nothing.
-/// - Wrong way: going back along the route more than `backtrackLimit` metres from the furthest
-///   point reached, at any speed and with or without a course; or, sooner, moving faster than
+/// - Wrong way: `confirmations` fixes in a row more than `backtrackLimit` metres (plus the fix's
+///   accuracy) back from the furthest point reached, at any speed and with or without a course
+///   (only fixes within `preciseAccuracy` move that point on); or, sooner, moving faster than
 ///   `wrongWayMinimumSpeed` on a course more than 135° from the line's direction for
 ///   `wrongWayFixes` fixes in a row (a U-turn on the route). A fix with no course or speed leaves
 ///   that count as it was.
@@ -43,8 +44,8 @@ public struct LocationFix: Sendable, Equatable {
 /// - Each fix is matched only near where the last one was (`searchBehind` metres back, and ahead as
 ///   far as `maximumSpeed` could carry the driver since), so a route that passes the same place
 ///   twice, or a shortcut that rejoins it further on, can't pass for being on it.
-/// - Arrived: on the line within `arrivalRadius` of its end, having covered at least half the line
-///   since joining it (so a very short route doesn't arrive on its first fix). `.left` and `.arrived` are final; a
+/// - Arrived: on the line within `arrivalRadius` of its end, on a fix after the one that joined it
+///   (so a very short route doesn't arrive on its first fix). `.left` and `.arrived` are final; a
 ///   reroute is a new line and a new tracker.
 public struct RouteTracker: Sendable {
     public struct Settings: Sendable, Equatable {
@@ -57,6 +58,7 @@ public struct RouteTracker: Sendable {
         public var wrongWayFixes = 3
         public var wrongWayMinimumSpeed = 5.0
         public var backtrackLimit = 60.0
+        public var preciseAccuracy = 20.0
         public var arrivalRadius = 40.0
         /// Seconds without a usable fix (or since the start, before the first) before
         /// `signalLost(at:)` says so.
@@ -90,8 +92,9 @@ public struct RouteTracker: Sendable {
     public private(set) var lastUsableFixTime: TimeInterval?
     /// When the drive started, on the fixes' clock.
     public let startTime: TimeInterval
-    private var joinedAlong: Double?
+    private var lastMatchTime: TimeInterval?
     private var furthestAlong = 0.0
+    private var backCount = 0
     private var offCount = 0
     private var wrongWayCount = 0
 
@@ -116,8 +119,10 @@ public struct RouteTracker: Sendable {
             return phase
         }
         if let last = lastUsableFixTime, fix.time < last { return phase }  // out of order
-        let elapsed = lastUsableFixTime.map { fix.time - $0 } ?? 0
         lastUsableFixTime = fix.time
+        // From the last fix that placed the driver: inconclusive fixes in between mustn't narrow
+        // how far ahead they may be by now.
+        let elapsed = lastMatchTime.map { fix.time - $0 } ?? 0
 
         let range: ClosedRange<Double>
         if let last = lastMatch {
@@ -126,15 +131,19 @@ public struct RouteTracker: Sendable {
         } else {
             range = 0...settings.joinSearch
         }
-        guard let match = line.match(fix.point, within: range) else {
+        // The course breaks a tie between two legs of the route only when it means something.
+        let heading = (fix.speed ?? 0) >= settings.wrongWayMinimumSpeed ? fix.course : nil
+        guard let match = line.match(fix.point, within: range, near: lastMatch?.along, heading: heading) else {
             phase = .left(.offLine)
             return phase
         }
         if phase == .joining {
             if match.offset <= settings.offRouteDistance {
                 phase = .onRoute
-                joinedAlong = match.along
+                lastMatch = match
+                lastMatchTime = fix.time
                 furthestAlong = match.along
+                return phase
             } else if match.offset > settings.joinRadius {
                 phase = .left(.neverJoined)
                 return phase
@@ -159,10 +168,14 @@ public struct RouteTracker: Sendable {
         }
         offCount = 0
 
-        if furthestAlong - match.along > settings.backtrackLimit {
-            phase = .left(.wrongWay)
+        if furthestAlong - match.along > settings.backtrackLimit + fix.horizontalAccuracy {
+            backCount += 1
+            if backCount >= settings.confirmations {
+                phase = .left(.wrongWay)
+            }
             return phase
         }
+        backCount = 0
         if let course = fix.course, let speed = fix.speed {
             if speed >= settings.wrongWayMinimumSpeed, abs(Geo.turn(from: match.bearing, to: course)) > 135 {
                 wrongWayCount += 1
@@ -176,9 +189,11 @@ public struct RouteTracker: Sendable {
         }
 
         lastMatch = match
-        furthestAlong = max(furthestAlong, match.along)
-        let covered = match.along - (joinedAlong ?? 0)
-        if line.length - match.along <= settings.arrivalRadius, covered >= line.length / 2 {
+        lastMatchTime = fix.time
+        if fix.horizontalAccuracy <= settings.preciseAccuracy {
+            furthestAlong = max(furthestAlong, match.along)
+        }
+        if line.length - match.along <= settings.arrivalRadius {
             phase = .arrived
         }
         return phase

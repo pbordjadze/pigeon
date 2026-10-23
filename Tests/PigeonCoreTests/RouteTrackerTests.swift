@@ -238,4 +238,50 @@ struct RouteTrackerTests {
         }
         #expect(tracker.phase == .arrived)
     }
+
+    @Test func joiningPastHalfwayStillArrives() {
+        let line = RouteLine(points: [R.point(east: 0, north: 0), R.point(east: 0, north: 300)])!
+        var tracker = RouteTracker(line: line, startTime: 0)
+        #expect(tracker.update(R.fix(east: 0, north: 200, t: 0)) == .onRoute)
+        #expect(tracker.update(R.fix(east: 0, north: 230, t: 2)) == .onRoute)
+        #expect(tracker.update(R.fix(east: 0, north: 270, t: 4)) == .arrived)
+    }
+
+    @Test func oneStrayFixAlongTheRoadAtAStopIsForgiven() {
+        // Stopped at 1000 m; one fix jumps 70 m ahead along the road, then the true position again.
+        var tracker = RouteTracker(line: R.northThenEast, startTime: 0)
+        run(R.drive(from: 0, to: 1000), tracker: &tracker)
+        tracker.update(R.fix(east: 0, north: 1070, t: 80, accuracy: 30))
+        for i in 1...10 {
+            tracker.update(R.fix(east: 0, north: 1000, t: 80 + TimeInterval(i), accuracy: 10))
+        }
+        #expect(tracker.phase == .onRoute)
+    }
+
+    @Test func anIdenticalOutAndBackRouteTurnsAroundCleanly() {
+        // Out 1 km and back on exactly the same points: the legs tie, and progress decides.
+        let out = (0...10).map { R.point(east: 0, north: Double($0) * 100) }
+        let line = RouteLine(points: out + out.reversed().dropFirst())!
+        var tracker = RouteTracker(line: line, startTime: 0)
+        var t = 0.0
+        for north in stride(from: 0.0, through: 1000, by: 14) {
+            tracker.update(R.fix(east: 0, north: north, t: t, course: 0, speed: 14)); t += 1
+        }
+        for north in stride(from: 990.0, through: 0, by: -14) {
+            tracker.update(R.fix(east: 0, north: north, t: t, course: 180, speed: 14)); t += 1
+        }
+        #expect(tracker.phase == .arrived)
+    }
+
+    @Test func aRunOfInconclusiveFixesDoesNotNarrowTheSearch() {
+        // 45 m off with 48 m accuracy can't be told from the road: it never becomes "left" on its own.
+        var tracker = RouteTracker(line: R.northThenEast, startTime: 0)
+        run(R.drive(from: 0, to: 300), tracker: &tracker)
+        for i in 0..<40 {
+            tracker.update(R.fix(east: 45, north: 310 + 14 * Double(i), t: 25 + TimeInterval(i), accuracy: 48))
+        }
+        #expect(tracker.phase == .onRoute)
+        // Clear fixes on the line afterwards pick the driver up where they are.
+        #expect(tracker.update(R.fix(east: 0, north: 880, t: 65)) == .onRoute)
+    }
 }

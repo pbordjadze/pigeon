@@ -60,8 +60,12 @@ public struct RouteLine: Sendable, Hashable, Codable {
 
     /// The nearest place on the line to `p`, searching only the part of the line between `range`'s
     /// bounds (metres along; the whole line when nil). A route that passes the same spot twice (a
-    /// loop, a road and the bridge over it) is told apart by searching near where the driver was.
-    public func match(_ p: GeoPoint, within range: ClosedRange<Double>? = nil) -> Match? {
+    /// loop, a road and the bridge over it) is told apart by searching near where the driver was;
+    /// where two places are within `tieTolerance` metres of equally near (both directions of one
+    /// road), the one whose direction is closest to `heading` wins, or without one, the one closest
+    /// to `near` metres along.
+    public func match(_ p: GeoPoint, within range: ClosedRange<Double>? = nil, near: Double? = nil,
+                      heading: Double? = nil) -> Match? {
         let lower = range?.lowerBound ?? 0, upper = range?.upperBound ?? length
         guard lower <= length, upper >= 0 else { return nil }
         let frame = LocalFrame(origin: p)
@@ -80,13 +84,26 @@ public struct RouteLine: Sendable, Hashable, Codable {
             let u = segmentLength > 0 ? (along - cumulative[i]) / segmentLength : 0
             let x = a.x + u * dx, y = a.y + u * dy
             let offset = (x * x + y * y).squareRoot()
-            if best.map({ offset < $0.offset }) ?? true {
-                best = Match(offset: offset, along: along, segment: i, bearing: Geo.bearing(points[i], points[i + 1]))
+            let candidate = Match(offset: offset, along: along, segment: i, bearing: Geo.bearing(points[i], points[i + 1]))
+            if let current = best {
+                if abs(offset - current.offset) <= Self.tieTolerance, let heading {
+                    let a = abs(Geo.turn(from: candidate.bearing, to: heading))
+                    let b = abs(Geo.turn(from: current.bearing, to: heading))
+                    if a < b - 1 || (abs(a - b) <= 1 && offset < current.offset) { best = candidate }
+                } else if abs(offset - current.offset) <= Self.tieTolerance, let near {
+                    if abs(along - near) < abs(current.along - near) { best = candidate }
+                } else if offset < current.offset {
+                    best = candidate
+                }
+            } else {
+                best = candidate
             }
             i += 1
         }
         return best
     }
+
+    static let tieTolerance = 3.0
 
     /// The point `along` metres from the start (clamped to the line).
     public func point(at along: Double) -> GeoPoint {
