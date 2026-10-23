@@ -5,6 +5,7 @@ import Testing
 struct RouteTrackerTests {
     typealias R = TestRoutes
 
+    @discardableResult
     func run(_ fixes: [LocationFix], tracker: inout RouteTracker) -> [RouteTracker.Phase] {
         fixes.map { tracker.update($0) }
     }

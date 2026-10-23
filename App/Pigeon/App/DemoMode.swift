@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+import os
 
 /// Deterministic, launch-argument-driven app states for screenshots and UI tests.
 ///

@@ -25,6 +25,9 @@ the rules.
 - Plans, briefs and the backlog are not committed here: they live in the private
   `painting-company` repository (Pigeon is its row 121). A commit message says what changed and
   why, and cites a row by number; it quotes no one and names no one.
+- No real person's routes or places (homes, addresses, coordinates from a drive) in the repository,
+  its fixtures, GPX files, screenshots, commits or issues: test routes are made up or run between
+  public landmarks.
 
 ## Safety (hard rules)
 
@@ -33,6 +36,8 @@ safety wins and the choice goes to the owner.
 
 - Nothing to read or touch while the car moves: spoken guidance and one glanceable thing on
   screen. Controls that need reading or typing are locked while moving.
+- The screen is the main surface (and CarPlay, when it comes): stages fade what it shows; the
+  voice is optional and fades the same way.
 - Leaving the route brings full guidance back at once and reroutes, at every stage
   (`RouteTracker` reports `.left`; it leans towards a false alarm over a missed one). A new or
   unfamiliar route starts at full guidance.
