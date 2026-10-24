@@ -13,7 +13,8 @@ the rules.
   `RouteTracker` (one drive: on the route, left it, arrived; its doc comment is the off-route rule),
   `Stage` and `RouteProgress` (the four stages and the rule that moves a route between them),
   `Guidance` (what the drive screen shows at each stage: the one place the fading is decided),
-  `Maneuver` and `Turn`, `SavedRoute` and `RouteFile` (the routes file and its version).
+  `Maneuver` and `Turn`, `SavedRoute` and `RouteFile` (the routes file and its version), `Motion`
+  (whether the car is moving, for the lock on reading and touching).
 - `Tests/PigeonCoreTests` (Swift Testing; `TestRoutes` lays routes and drives out in metres).
 - `App/`: `Pigeon.xcodeproj` (synchronized folders: adding files needs no project edit), `Pigeon/`
   (`App/` the app, its root list and `DemoMode`; `Model/` `RouteStore`, the routes file on the

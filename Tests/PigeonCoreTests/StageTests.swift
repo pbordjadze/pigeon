@@ -137,3 +137,31 @@ struct SavedRouteTests {
         #expect(throws: (any Error).self) { try RouteFile.read(Data("not json".utf8)) }
     }
 }
+
+struct MotionTests {
+    typealias R = TestRoutes
+
+    @Test func aMovingCarStaysMovingThroughAShortStop() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0, speed: 14))
+        #expect(motion.isMoving(at: 0))
+        motion.update(R.fix(east: 0, north: 10, t: 1, speed: 0))
+        #expect(motion.isMoving(at: 5))
+        #expect(!motion.isMoving(at: 11))
+    }
+
+    @Test func aMissingSpeedIsEstimatedFromTheFixes() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0))
+        motion.update(R.fix(east: 0, north: 15, t: 1))   // 15 m in a second, no speed reported
+        #expect(motion.isMoving(at: 1))
+    }
+
+    @Test func standingStillWithLooseFixesIsStill() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0))
+        motion.update(R.fix(east: 0, north: 2, t: 1))
+        motion.update(R.fix(east: 1, north: 0, t: 2, speed: 0.3))
+        #expect(!motion.isMoving(at: 2))
+    }
+}

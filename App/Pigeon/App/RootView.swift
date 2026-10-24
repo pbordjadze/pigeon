@@ -20,9 +20,13 @@ struct RootView: View {
                     Label("Your routes were saved by a newer version of Pigeon. Update Pigeon to see them.",
                           systemImage: "exclamationmark.arrow.circlepath")
                         .foregroundStyle(.orange)
+                } else if store.unreadable {
+                    Label("Pigeon couldn’t open your saved routes. They’re kept as they are; open Pigeon again to retry.",
+                          systemImage: "exclamationmark.triangle")
+                        .foregroundStyle(.orange)
                 }
                 ForEach(store.routes) { route in
-                    Button { drive = DriveSession(route: route) } label: {
+                    Button { drive = DriveSession(route: route, record: record) } label: {
                         RouteRow(route: route)
                     }
                     .accessibilityHint(Text("Starts a drive on this route"))
@@ -32,7 +36,7 @@ struct RootView: View {
                 }
             }
             .overlay {
-                if store.routes.isEmpty && !store.needsNewerApp {
+                if store.routes.isEmpty && !store.needsNewerApp && !store.unreadable {
                     ContentUnavailableView {
                         Label("No Routes Yet", systemImage: "point.topleft.down.to.point.bottomright.curvepath")
                     } description: {
@@ -44,7 +48,7 @@ struct RootView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button("New Route", systemImage: "plus") { adding = true }
-                        .disabled(store.needsNewerApp)
+                        .disabled(store.needsNewerApp || store.unreadable)
                 }
             }
             .sheet(isPresented: $adding) { AddRouteView() }
@@ -53,7 +57,7 @@ struct RootView: View {
             }
             #if DEBUG
             .onAppear {
-                switch DemoMode.screen {
+                switch DemoMode.screen(record: record) {
                 case .drive(let session): drive = session
                 case .addRoute: adding = true
                 case .list: DemoMode.markReady()
@@ -62,6 +66,14 @@ struct RootView: View {
             }
             #endif
         }
+    }
+
+    /// Moves a route's stage by a finished drive's outcome and saves it.
+    private func record(_ id: SavedRoute.ID, _ outcome: RouteProgress.Outcome) -> SavedRoute? {
+        guard var route = store.route(id) else { return nil }
+        route.recordDrive(outcome, at: Date())
+        store.update(route)
+        return route
     }
 }
 

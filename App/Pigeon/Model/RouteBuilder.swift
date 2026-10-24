@@ -7,7 +7,7 @@ import PigeonCore
 /// Turns Apple Maps' directions into a route Pigeon can keep: its line, its turns, and a landmark
 /// near each turn. Everything Apple Maps is asked is listed in PRIVACY.md.
 enum RouteBuilder {
-    enum BuildError: LocalizedError {
+    nonisolated enum BuildError: LocalizedError {
         case noRoute
 
         var errorDescription: String? {

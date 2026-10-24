@@ -36,6 +36,16 @@ struct RouteStoreTests {
         #expect(try Data(contentsOf: url) == newer)
     }
 
+    @Test func aFileThatCantBeReadIsNeverOverwritten() throws {
+        // A folder where the file should be: reading fails, and not because nothing was saved.
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        let store = RouteStore(url: url)
+        #expect(store.unreadable)
+        store.add(route("Market"))
+        var isFolder: ObjCBool = false
+        #expect(FileManager.default.fileExists(atPath: url.path, isDirectory: &isFolder) && isFolder.boolValue)
+    }
+
     @Test func aDamagedFileIsMovedAsideNotOverwritten() throws {
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         try Data("{ not json".utf8).write(to: url)

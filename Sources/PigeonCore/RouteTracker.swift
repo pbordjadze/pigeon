@@ -107,6 +107,9 @@ public struct RouteTracker: Sendable {
         self.settings = settings
     }
 
+    /// Whether the drive was ever on the line (a drive that never joined it didn't leave it).
+    public var joined: Bool { lastMatch != nil }
+
     public var isFinal: Bool {
         switch phase {
         case .left, .arrived: true

@@ -31,33 +31,41 @@ enum DemoMode {
         case drive(DriveSession)
     }
 
+    /// The stage a drive scenario's route is at (the first sample route, in the store too).
+    private static var driveStage: Stage? {
+        guard let base else { return nil }
+        return switch base {
+        case "drive-full": .full
+        case "drive-landmarks", "arrival-clean": .landmarks
+        case "drive-turns", "drive-rerouting": .turnsOnly
+        case "drive-quiet": .quiet
+        default: nil
+        }
+    }
+
     /// The routes a demo launch starts with; nil when not a demo.
     static var routes: [SavedRoute]? {
         guard let base else { return nil }
         if base == "routes-empty" { return [] }
-        return sampleRoutes
+        var routes = sampleRoutes
+        if let driveStage { routes[0].progress = RouteProgress(stage: driveStage) }
+        return routes
     }
 
-    /// What the scenario opens over the route list.
-    static var screen: Screen? {
+    /// What the scenario opens over the route list; drives record on the store's routes.
+    static func screen(record: @escaping DriveSession.Record) -> Screen? {
         guard let base else { return nil }
-        let route = sampleRoutes[0]
-        func at(_ stage: Stage) -> SavedRoute {
-            var r = route
-            r.progress = RouteProgress(stage: stage)
-            return r
+        guard let stage = driveStage, var route = routes?.first else {
+            return base == "add-route" ? .addRoute : .list
         }
-        switch base {
-        case "routes-empty", "routes-list": return .list
-        case "add-route": return .addRoute
-        case "drive-full": return .drive(DriveSession(demo: at(.full), along: 900, speed: 14))
-        case "drive-landmarks": return .drive(DriveSession(demo: at(.landmarks), along: 900, speed: 14))
-        case "drive-turns": return .drive(DriveSession(demo: at(.turnsOnly), along: 1020, speed: 14))
-        case "drive-quiet": return .drive(DriveSession(demo: at(.quiet), along: 900, speed: 14))
-        case "drive-rerouting": return .drive(DriveSession(demo: at(.turnsOnly), along: 900, speed: 14, leftRoute: true))
-        case "arrival-clean": return .drive(DriveSession(demo: at(.landmarks), along: route.line.length - 60, speed: 8, arrived: true))
-        default: return .list
+        route.progress = RouteProgress(stage: stage)
+        let along: Double = base == "drive-turns" ? 1020 : 900
+        let session = switch base {
+        case "drive-rerouting": DriveSession(demo: route, along: along, speed: 14, leftRoute: true, record: record)
+        case "arrival-clean": DriveSession(demo: route, along: route.line.length - 60, speed: 8, arrived: true, record: record)
+        default: DriveSession(demo: route, along: along, speed: 14, record: record)
         }
+        return .drive(session)
     }
 
     /// Four made-up routes around Boston Common, one at each stage; the first has three turns.

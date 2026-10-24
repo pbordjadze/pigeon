@@ -1,6 +1,10 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Arrived": {
+      "comment": "Drive screen after arriving, while the car is still moving; the summary follows once it stops.",
+      "extractionState": "manual"
+    },
     "Bear left": {
       "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
       "extractionState": "manual"
@@ -77,12 +81,16 @@
       "comment": "Title of the empty route list, before any route is saved.",
       "extractionState": "manual"
     },
-    "Off route: full directions are back": {
-      "comment": "Drive screen notice right after the driver leaves the route.",
+    "Off route: finding a new route": {
+      "comment": "Drive screen notice after the driver leaves the route, until a new route comes; full guidance follows.",
       "extractionState": "manual"
     },
     "On Route": {
       "comment": "Large title of the drive screen at the Quiet stage.",
+      "extractionState": "manual"
+    },
+    "Pigeon couldn’t open your saved routes. They’re kept as they are; open Pigeon again to retry.": {
+      "comment": "Route list notice when the routes file can't be read right now; nothing is saved over it.",
       "extractionState": "manual"
     },
     "Pull Over to Add a Route": {

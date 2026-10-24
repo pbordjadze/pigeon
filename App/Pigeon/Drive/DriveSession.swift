@@ -6,42 +6,56 @@ import Observation
 import os
 import PigeonCore
 
-/// One drive along a saved route: follows the location, decides what the screen shows, and when
-/// the driver leaves the route brings full guidance back and finds a new route to the destination.
+/// One drive along a saved route: follows the location, decides what the screen shows, brings full
+/// guidance back and finds a new route when the driver leaves the route, and records how the drive
+/// went on the route the moment it ends, whether or not the screen is on.
 ///
 /// The route's stage is fixed for the drive; leaving the route switches the rest of the drive to
-/// `full` (CLAUDE.md › Safety). The outcome, recorded at the end, moves the route's stage.
+/// `full` (CLAUDE.md › Safety).
 @Observable
 final class DriveSession {
+    /// Driving directions from here to a place: Apple Maps' in the app, a stand-in in tests.
+    typealias Directions = (GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver])
+    /// Records a finished drive's outcome on its route and returns the route as it now stands.
+    typealias Record = (SavedRoute.ID, RouteProgress.Outcome) -> SavedRoute?
+
     let routeID: SavedRoute.ID
     let name: String
     /// The route's stage when the drive began.
     let routeStage: Stage
     private(set) var line: RouteLine
     private(set) var maneuvers: [Maneuver]
-    /// Whether this drive has left the route; from then on it shows `full`.
+    /// Whether this drive has left the route (or never reached it); from then on it shows `full`.
     private(set) var leftRoute = false
+    /// Whether the drive was ever on the saved route: one that never was didn't leave it.
+    private(set) var joinedSavedRoute = false
+    /// Waiting for a new route after leaving this one.
+    private(set) var rerouting = false
     private(set) var position: LocationFix?
     private(set) var screen: GuidanceScreen
-    private(set) var finished = false
+    /// The route after this drive was recorded on it; set once, when the drive ends.
+    private(set) var result: SavedRoute?
+    private(set) var outcome: RouteProgress.Outcome?
 
     private var tracker: RouteTracker
+    private var motion = Motion()
     private var now: TimeInterval
     private var tasks: [Task<Void, Never>] = []
     private var sessions: [AnyObject] = []
     private let destination: GeoPoint
+    private let directions: Directions
+    private let record: Record
 
     var stage: Stage { leftRoute ? .full : routeStage }
-    /// Faster than walking pace: the screen's controls wait until the car stops.
-    var isMoving: Bool { (position?.speed ?? 0) > 2 }
 
-    /// How the drive went, once it is over: clean if it arrived without ever leaving the route.
-    var outcome: RouteProgress.Outcome {
-        if leftRoute { return .leftRoute }
-        return screen.status == .arrived ? .clean : .unchanged
+    /// Whether the car is moving at `date` (`Motion`): the screen's controls and the after-drive
+    /// summary wait until it isn't.
+    func isMoving(at date: Date = Date()) -> Bool {
+        motion.isMoving(at: date.timeIntervalSinceReferenceDate)
     }
 
-    init(route: SavedRoute, startTime: TimeInterval = Date().timeIntervalSinceReferenceDate) {
+    init(route: SavedRoute, startTime: TimeInterval = Date().timeIntervalSinceReferenceDate,
+         directions: @escaping Directions = DriveSession.appleMaps, record: @escaping Record) {
         routeID = route.id
         name = route.name
         routeStage = route.progress.stage
@@ -51,16 +65,23 @@ final class DriveSession {
         now = startTime
         tracker = RouteTracker(line: route.line, startTime: startTime)
         screen = GuidanceScreen(map: .route(faint: false), banner: nil, status: .joining)
+        self.directions = directions
+        self.record = record
     }
 
-    /// Starts following the location: in the background too, until `stop()`.
+    static func appleMaps(to destination: GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver]) {
+        let place = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
+        return try await RouteBuilder.directions(to: MKMapItem(location: place, address: nil))
+    }
+
+    /// Starts following the location, in the background too, until the drive ends.
     func start() {
         // Held for the drive: While Using authorization, and updates with the screen locked.
         sessions = [CLServiceSession(authorization: .whenInUse), CLBackgroundActivitySession()]
         tasks.append(Task { [weak self] in
             do {
                 for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
-                    guard let self, !self.finished else { return }
+                    guard let self, self.result == nil else { return }
                     if let location = update.location { self.handle(LocationFix(location)) }
                 }
             } catch {
@@ -71,50 +92,82 @@ final class DriveSession {
         tasks.append(Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))
-                guard let self, !self.finished else { return }
-                self.now = Date().timeIntervalSinceReferenceDate
-                self.refresh()
+                guard let self, self.result == nil else { return }
+                self.tick(Date().timeIntervalSinceReferenceDate)
             }
         })
     }
 
+    func handle(_ fix: LocationFix) {
+        guard outcome == nil else { return }
+        position = fix
+        motion.update(fix)
+        now = max(now, fix.time)
+        let before = tracker.phase
+        let phase = tracker.update(fix)
+        if !leftRoute && tracker.joined { joinedSavedRoute = true }
+        if case .left(let reason) = phase, before != phase {
+            Log.drive.info("left the route (\(String(describing: reason), privacy: .public)); rerouting")
+            leftRoute = true
+            rerouting = true
+            AudioServicesPlaySystemSound(1007)  // one chime, voice or not
+            tasks.append(Task { [weak self] in await self?.reroute() })
+        }
+        refresh()
+        if phase == .arrived { finish() }
+    }
+
+    func tick(_ time: TimeInterval) {
+        guard outcome == nil else { return }
+        now = max(now, time)
+        refresh()
+    }
+
+    /// Ends the drive (on arrival, or when the driver ends it), stops following the location and
+    /// records the outcome on the route, once.
+    func finish() {
+        guard outcome == nil else { return }
+        let outcome: RouteProgress.Outcome
+        if !joinedSavedRoute {
+            outcome = .unchanged  // never on the route: neither learned nor left
+        } else if leftRoute {
+            outcome = .leftRoute
+        } else {
+            outcome = tracker.phase == .arrived ? .clean : .unchanged
+        }
+        self.outcome = outcome
+        stop()
+        Log.drive.info("drive ended: \(String(describing: outcome), privacy: .public)")
+        result = record(routeID, outcome)
+    }
+
     func stop() {
-        finished = true
         tasks.forEach { $0.cancel() }
         tasks = []
         sessions = []
     }
 
-    func handle(_ fix: LocationFix) {
-        position = fix
-        now = max(now, fix.time)
-        let before = tracker.phase
-        let phase = tracker.update(fix)
-        if case .left(let reason) = phase, before != phase {
-            Log.drive.info("left the route (\(String(describing: reason), privacy: .public)); rerouting")
-            leftRoute = true
-            AudioServicesPlaySystemSound(1007)  // one chime, voice or not
-            tasks.append(Task { [weak self] in await self?.reroute() })
-        }
-        refresh()
-    }
-
     private func refresh() {
-        screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now),
-                                 along: tracker.lastMatch?.along ?? 0, speed: position?.speed, maneuvers: maneuvers)
+        var screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now),
+                                     along: tracker.lastMatch?.along ?? 0, speed: position?.speed, maneuvers: maneuvers)
+        if rerouting { screen = GuidanceScreen(map: .route(faint: false), banner: nil, status: .rerouting) }
+        self.screen = screen
     }
 
-    /// Asks Apple Maps for a route from here to the destination until it gives one, then follows
-    /// that route in full.
+    /// Asks for a route from here to the destination until one comes, then follows it in full. The
+    /// new line starts where the car was when it was asked for, so its whole length is searched
+    /// for the car's first fix on it.
     private func reroute() async {
-        let item = MKMapItem(location: CLLocation(latitude: destination.latitude, longitude: destination.longitude), address: nil)
-        while !finished && !Task.isCancelled {
+        while outcome == nil && !Task.isCancelled {
             do {
-                let built = try await RouteBuilder.directions(to: item)
-                guard !finished else { return }
+                let built = try await directions(destination)
+                guard outcome == nil else { return }
                 line = built.line
                 maneuvers = built.maneuvers
-                tracker = RouteTracker(line: built.line, startTime: now)
+                var settings = RouteTracker.Settings()
+                settings.joinSearch = built.line.length
+                tracker = RouteTracker(line: built.line, startTime: now, settings: settings)
+                rerouting = false
                 refresh()
                 return
             } catch {
@@ -126,10 +179,13 @@ final class DriveSession {
 
     #if DEBUG
     /// A drive frozen `along` metres down `route` at `speed`, for demo scenarios: no location, no
-    /// clock.
-    convenience init(demo route: SavedRoute, along: Double, speed: Double, leftRoute: Bool = false, arrived: Bool = false) {
-        self.init(route: route, startTime: 0)
-        var t = 0.0
+    /// clock, no directions.
+    convenience init(demo route: SavedRoute, along: Double, speed: Double, leftRoute: Bool = false,
+                     arrived: Bool = false, record: @escaping Record) {
+        // Fixes an hour ahead read as moving for the screenshot; an arrival's, long ago, as stopped.
+        let base = arrived ? 0 : Date().timeIntervalSinceReferenceDate + 3600
+        self.init(route: route, startTime: base, directions: { _ in throw CancellationError() }, record: record)
+        var t = base
         var at = 0.0
         while at < along {
             handle(LocationFix(point: route.line.point(at: at), horizontalAccuracy: 5, speed: speed, time: t))
@@ -142,7 +198,8 @@ final class DriveSession {
         }
         if leftRoute {
             self.leftRoute = true
-            screen = GuidanceScreen(map: .route(faint: false), banner: nil, status: .rerouting)
+            rerouting = true
+            refresh()
         }
     }
     #endif

@@ -7,12 +7,17 @@ import PigeonCore
 ///
 /// A file this app can't read is never overwritten: one from a newer app stays as it is and the
 /// list says an update is needed; a damaged one is moved aside (`routes.damaged-<time>.json`) before
-/// a fresh list starts, so nothing the driver saved is lost to a bug.
+/// a fresh list starts; one that can't be read right now (an I/O or protection error), or a damaged
+/// one that can't be moved aside, blocks saving until the next launch. Nothing the driver saved is
+/// lost to a bug.
 @Observable
 final class RouteStore {
     private(set) var routes: [SavedRoute] = []
     /// Set when the file was written by a newer app: the list shows it and saves nothing.
     private(set) var needsNewerApp = false
+    /// Set when the file couldn't be read or set aside: the list shows it and saves nothing.
+    private(set) var unreadable = false
+    private var savingBlocked: Bool { needsNewerApp || unreadable }
     private let url: URL?
 
     /// The store the app uses: the file in Application Support (an empty store in memory for demo
@@ -55,7 +60,17 @@ final class RouteStore {
     }
 
     private func load() {
-        guard let url, let data = try? Data(contentsOf: url) else { return }
+        guard let url else { return }
+        let data: Data
+        do {
+            data = try Data(contentsOf: url)
+        } catch CocoaError.fileReadNoSuchFile {
+            return  // nothing saved yet
+        } catch {
+            Log.store.error("routes.json can't be read now: \(error.localizedDescription, privacy: .public)")
+            unreadable = true
+            return
+        }
         do {
             routes = try RouteFile.read(data).routes
         } catch RouteFile.ReadError.newerVersion {
@@ -64,12 +79,16 @@ final class RouteStore {
             Log.store.error("routes.json unreadable, moved aside: \(error.localizedDescription, privacy: .public)")
             let aside = url.deletingLastPathComponent()
                 .appending(path: "routes.damaged-\(Int(Date().timeIntervalSince1970)).json")
-            try? FileManager.default.moveItem(at: url, to: aside)
+            do {
+                try FileManager.default.moveItem(at: url, to: aside)
+            } catch {
+                unreadable = true
+            }
         }
     }
 
     private func save() {
-        guard let url, !needsNewerApp else { return }
+        guard let url, !savingBlocked else { return }
         do {
             try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
             // Readable while the phone is locked during a drive, once it has been unlocked since

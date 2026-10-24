@@ -9,29 +9,36 @@ import UIKit
 /// The screen during a drive: one glanceable thing at a time, nothing to read closely or touch
 /// while the car moves (CLAUDE.md › Safety). What it shows comes from `GuidanceScreen`.
 ///
+/// The drive ends itself on arrival (`DriveSession.finish`), screen on or off; this view only
+/// shows it.
+///
 /// Demo scenarios (Debug builds): `drive-full`, `drive-landmarks`, `drive-turns`, `drive-quiet`
 /// (and `drive-quiet-dark`, `drive-full-long-text`), `drive-rerouting`, `arrival-clean`.
 struct DriveView: View {
-    @Environment(RouteStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State var session: DriveSession
     @State private var camera: MapCameraPosition = .automatic
-    @State private var result: SavedRoute?
 
     var body: some View {
         ZStack(alignment: .top) {
-            if let result {
-                ArrivalView(route: result, outcome: session.outcome) { dismiss() }
+            if let result = session.result, let outcome = session.outcome {
+                // The summary is for reading: it waits until the car has stopped.
+                TimelineView(.periodic(from: .now, by: 1)) { context in
+                    if session.isMoving(at: context.date) {
+                        ArrivedView(name: session.name)
+                    } else {
+                        ArrivalView(route: result, outcome: outcome) { dismiss() }
+                    }
+                }
             } else {
                 guidance
             }
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
+            follow()
             #if DEBUG
             if DemoMode.isActive {
-                follow()
-                if session.screen.status == .arrived { finish() }
                 DemoMode.markReady()
                 return
             }
@@ -43,9 +50,6 @@ struct DriveView: View {
             session.stop()
         }
         .onChange(of: session.position) { follow() }
-        .onChange(of: session.screen.status) { _, status in
-            if status == .arrived { finish() }
-        }
     }
 
     @ViewBuilder private var guidance: some View {
@@ -65,11 +69,13 @@ struct DriveView: View {
             }
         }
         .overlay(alignment: .bottom) {
-            if !session.isMoving {
-                Button("End Drive", role: .destructive) { finish() }
-                    .buttonStyle(.glassProminent)
-                    .controlSize(.large)
-                    .padding()
+            TimelineView(.periodic(from: .now, by: 1)) { context in
+                if !session.isMoving(at: context.date) {
+                    Button("End Drive", role: .destructive) { session.finish() }
+                        .buttonStyle(.glassProminent)
+                        .controlSize(.large)
+                        .padding()
+                }
             }
         }
     }
@@ -77,7 +83,7 @@ struct DriveView: View {
     @ViewBuilder private func notice(_ status: GuidanceScreen.Status) -> some View {
         switch status {
         case .rerouting:
-            NoticeView(symbol: "exclamationmark.triangle.fill", text: Text("Off route: full directions are back"), tint: .orange)
+            NoticeView(symbol: "exclamationmark.triangle.fill", text: Text("Off route: finding a new route"), tint: .orange)
         case .signalLost:
             NoticeView(symbol: "location.slash.fill", text: Text("No GPS signal: showing the whole route"), tint: .orange)
         case .joining:
@@ -112,17 +118,6 @@ struct DriveView: View {
         let center = session.position?.point ?? session.line.start
         camera = .camera(MapCamera(centerCoordinate: center.coordinate, distance: 900,
                                    heading: session.position?.course ?? 0, pitch: 40))
-    }
-
-    /// Ends the drive and records how it went on the route.
-    private func finish() {
-        guard result == nil else { return }
-        session.stop()
-        guard var route = store.route(session.routeID) else { dismiss(); return }
-        route.recordDrive(session.outcome, at: Date())
-        store.update(route)
-        Log.drive.info("drive ended: \(String(describing: session.outcome), privacy: .public)")
-        result = route
     }
 }
 
@@ -176,6 +171,26 @@ private struct NoticeView: View {
             .padding(.horizontal)
             .frame(maxWidth: .infinity)
             .background(tint.gradient)
+    }
+}
+
+/// Arrived, still rolling: one word until the car stops.
+private struct ArrivedView: View {
+    let name: String
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "flag.checkered")
+                .font(.system(size: 96, weight: .light))
+                .foregroundStyle(.tint)
+            Text("Arrived")
+                .font(.largeTitle.bold())
+            Text(name)
+                .font(.title3)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityElement(children: .combine)
     }
 }
 
