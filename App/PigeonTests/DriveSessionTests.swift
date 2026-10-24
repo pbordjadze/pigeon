@@ -121,6 +121,17 @@ struct DriveSessionTests {
         #expect(session.screen.status == .signalLost && session.screen.map == .route(faint: false))
     }
 
+    @Test func aLongRedLightIsNotALostSignalButATunnelAfterItIs() {
+        let recorder = Recorder(route(.quiet))
+        let session = DriveSession(route: recorder.route, startTime: 0, record: recorder.record)
+        for (i, north) in stride(from: 0.0, through: 700, by: 14).enumerated() { session.handle(fix(0, north, Double(i))) }
+        session.reportStationary(true, at: 51)
+        session.tick(120)   // 70 s with no fixes, still at the light
+        #expect(session.screen.status == .onRoute && session.screen.map == .hidden)
+        session.tick(400)   // no update ever said it moved: after the hold, the signal is lost
+        #expect(session.screen.status == .signalLost && session.screen.map == .route(faint: false))
+    }
+
     @Test func theCarCountsAsMovingWithoutASpeedReading() {
         let recorder = Recorder(route(.full))
         let session = DriveSession(route: recorder.route, startTime: 0, record: recorder.record)

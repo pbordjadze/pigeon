@@ -42,7 +42,11 @@ final class DriveSession {
     static let settleAfterEnd: TimeInterval = 120
 
     private var tracker: RouteTracker
-    private var stationary = false
+    /// When Core Location last said the device is still, until an update says otherwise.
+    private var stationarySince: TimeInterval?
+    /// How long a stationary report holds off "No GPS signal": updates resume when the car moves,
+    /// but a car that pulls away into a tunnel gets no update to say so.
+    static let stationaryHold: TimeInterval = 180
     private var endTime: TimeInterval?
     private var rerouteAskedAt: TimeInterval = 0
     private var motion = Motion()
@@ -89,10 +93,7 @@ final class DriveSession {
             do {
                 for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
                     guard let self, !Task.isCancelled else { return }
-                    // Core Location pauses updates while the device is still: a long red light is
-                    // not a lost signal.
-                    self.stationary = update.stationary
-                    if update.stationary { self.motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
+                    self.reportStationary(update.stationary, at: Date().timeIntervalSinceReferenceDate)
                     if let location = update.location { self.handle(LocationFix(location)) }
                 }
             } catch {
@@ -130,6 +131,17 @@ final class DriveSession {
         }
         refresh()
         if phase == .arrived { finish() }
+    }
+
+    /// Core Location pauses updates while the device is still, and says so: a long red light is not
+    /// a lost signal, for up to `stationaryHold` seconds.
+    func reportStationary(_ stationary: Bool, at time: TimeInterval) {
+        if stationary {
+            stationarySince = stationarySince ?? time
+            motion.stopped(at: time)
+        } else {
+            stationarySince = nil
+        }
     }
 
     func tick(_ time: TimeInterval) {
@@ -173,8 +185,13 @@ final class DriveSession {
         sessions = []
     }
 
+    private var heldStill: Bool {
+        guard let since = stationarySince else { return false }
+        return now - since < Self.stationaryHold
+    }
+
     private func refresh() {
-        var screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now) && !stationary,
+        var screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now) && !heldStill,
                                      along: tracker.lastMatch?.along ?? 0, speed: position?.speed, maneuvers: maneuvers)
         if rerouting { screen = GuidanceScreen(map: .route(faint: false), banner: nil, status: .rerouting) }
         self.screen = screen
