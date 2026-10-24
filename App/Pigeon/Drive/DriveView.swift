@@ -1,6 +1,7 @@
 import CoreLocation
 import Foundation
 import MapKit
+import os
 import PigeonCore
 import SwiftUI
 import UIKit

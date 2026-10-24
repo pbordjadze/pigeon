@@ -29,11 +29,24 @@ public struct GuidanceScreen: Sendable, Equatable {
         public var distance: Double?
         public var instruction: String?
         public var landmark: String?
+
+        public init(turn: Turn, distance: Double?, instruction: String?, landmark: String?) {
+            self.turn = turn
+            self.distance = distance
+            self.instruction = instruction
+            self.landmark = landmark
+        }
     }
 
     public var map: Map
     public var banner: Banner?
     public var status: Status
+
+    public init(map: Map, banner: Banner?, status: Status) {
+        self.map = map
+        self.banner = banner
+        self.status = status
+    }
 }
 
 /// Decides what the drive screen shows from the route's stage and where the driver is.

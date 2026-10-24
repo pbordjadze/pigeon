@@ -84,7 +84,8 @@ UserDefaults, doesn't ship and doesn't count). Location is While Using only, wit
   is a separate module (nonisolated). The test targets have neither setting: suites that touch app
   types are `@MainActor`.
 - `MemberImportVisibility` is enabled: every file that touches members of a type from another
-  module imports that module itself (`import PigeonCore`, `import CoreLocation`, …).
+  module imports that module itself (`import PigeonCore`, `import CoreLocation`, …); a file that
+  logs through `Log` imports `os`.
 - Closures handed to system APIs that call back on arbitrary threads (Core Location delegates,
   AVFoundation, NotificationCenter with a queue) must not be MainActor-isolated: form them in
   `nonisolated` code or they trap at runtime under Swift 6.

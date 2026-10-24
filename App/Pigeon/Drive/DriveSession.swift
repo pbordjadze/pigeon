@@ -3,6 +3,7 @@ import CoreLocation
 import Foundation
 import MapKit
 import Observation
+import os
 import PigeonCore
 
 /// One drive along a saved route: follows the location, decides what the screen shows, and when
@@ -126,7 +127,7 @@ final class DriveSession {
     #if DEBUG
     /// A drive frozen `along` metres down `route` at `speed`, for demo scenarios: no location, no
     /// clock.
-    init(demo route: SavedRoute, along: Double, speed: Double, leftRoute: Bool = false, arrived: Bool = false) {
+    convenience init(demo route: SavedRoute, along: Double, speed: Double, leftRoute: Bool = false, arrived: Bool = false) {
         self.init(route: route, startTime: 0)
         var t = 0.0
         var at = 0.0
