@@ -1,6 +1,7 @@
 import CoreLocation
 import Foundation
 import MapKit
+import os
 import PigeonCore
 import SwiftUI
 
@@ -16,7 +17,7 @@ struct AddRouteView: View {
     @State private var searching = false
     @State private var building: String?
     @State private var failure: String?
-    @State private var moving = false
+    @State private var motion = Motion()
 
     var body: some View {
         NavigationStack {
@@ -35,7 +36,13 @@ struct AddRouteView: View {
         #endif
     }
 
-    @ViewBuilder private var content: some View {
+    private var content: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            form(moving: motion.isMoving(at: context.date.timeIntervalSinceReferenceDate))
+        }
+    }
+
+    @ViewBuilder private func form(moving: Bool) -> some View {
         if moving {
             ContentUnavailableView {
                 Label("Pull Over to Add a Route", systemImage: "car.side")
@@ -120,7 +127,7 @@ struct AddRouteView: View {
         }
     }
 
-    /// Keeps `moving` current while this screen is open.
+    /// Keeps `motion` current while this screen is open.
     private func watchMotion() async {
         #if DEBUG
         if DemoMode.isActive { return }  // no permission prompt over a screenshot
@@ -129,10 +136,10 @@ struct AddRouteView: View {
         defer { withExtendedLifetime(session) {} }
         do {
             for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
-                moving = (update.location?.speed ?? 0) > 3
+                if let location = update.location { motion.update(LocationFix(location)) }
             }
         } catch {
-            moving = false
+            Log.maps.error("location updates ended: \(error.localizedDescription, privacy: .public)")
         }
     }
 }

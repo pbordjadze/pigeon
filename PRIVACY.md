@@ -32,7 +32,8 @@ them with your Apple Account.
 ## Permissions
 
 - **Location, While Using the App.** Needed to guide you. During a drive Pigeon keeps receiving
-  your location with the screen locked (iOS shows that it is in use); it stops when the drive ends.
+  your location with the screen locked (iOS shows that it is in use); it stops once the drive has
+  ended and the car has stopped, and never more than two minutes after the drive ends.
   Pigeon never asks for Always.
 - Pigeon asks for nothing else.
 

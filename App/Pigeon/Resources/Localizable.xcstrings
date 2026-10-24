@@ -30,7 +30,7 @@
       "extractionState": "manual"
     },
     "Drive Ended": {
-      "comment": "After-drive headline: the driver ended the drive before arriving.",
+      "comment": "After-drive headline: the driver ended the drive before arriving; also the screen after a drive whose route was deleted meanwhile.",
       "extractionState": "manual"
     },
     "End Drive": {

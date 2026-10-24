@@ -21,13 +21,20 @@ struct DriveView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            if let result = session.result, let outcome = session.outcome {
+            if let outcome = session.outcome {
                 // The summary is for reading: it waits until the car has stopped.
                 TimelineView(.periodic(from: .now, by: 1)) { context in
                     if session.isMoving(at: context.date) {
                         ArrivedView(name: session.name)
-                    } else {
+                    } else if let result = session.result {
                         ArrivalView(route: result, outcome: outcome) { dismiss() }
+                    } else {
+                        // The route is gone from the list (deleted meanwhile): nothing to show but the way out.
+                        ContentUnavailableView {
+                            Label("Drive Ended", systemImage: "stop.circle")
+                        } actions: {
+                            Button("Done") { dismiss() }
+                        }
                     }
                 }
             } else {

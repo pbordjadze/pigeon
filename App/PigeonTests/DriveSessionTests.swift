@@ -80,10 +80,12 @@ struct DriveSessionTests {
         #expect(s.screen.status == .rerouting && s.screen.map == .route(faint: false))
         await waitForReroute(s)
         #expect(!s.rerouting)
-        // Already some way along the new route by the time it came: still on it, at full.
-        s.handle(fix(400, 600, t)); t += 1
+        // More than 500 m along the new route by the time it came (the old join limit): still on
+        // it, at full.
+        t += 40
+        s.handle(fix(700, 600, t)); t += 1
         #expect(s.screen.status == .onRoute && s.screen.map == .route(faint: false))
-        for east in stride(from: 414.0, through: 1000, by: 14) { s.handle(fix(east, 600, t)); t += 1 }
+        for east in stride(from: 714.0, through: 1000, by: 14) { s.handle(fix(east, 600, t)); t += 1 }
         for north in stride(from: 600.0, through: 2000, by: 14) { s.handle(fix(1000, north, t)); t += 1 }
         #expect(recorder.outcomes == [.leftRoute])
         #expect(s.result?.progress.stage == .turnsOnly)
@@ -122,9 +124,16 @@ struct DriveSessionTests {
     @Test func theCarCountsAsMovingWithoutASpeedReading() {
         let recorder = Recorder(route(.full))
         let session = DriveSession(route: recorder.route, startTime: 0, record: recorder.record)
-        session.handle(LocationFix(point: Self.point(0, 0), horizontalAccuracy: 30, time: 100))
-        session.handle(LocationFix(point: Self.point(0, 15), horizontalAccuracy: 30, time: 101))
+        session.handle(LocationFix(point: Self.point(0, 0), horizontalAccuracy: 5, time: 100))
+        session.handle(LocationFix(point: Self.point(0, 25), horizontalAccuracy: 5, time: 101))
         #expect(session.isMoving(at: Date(timeIntervalSinceReferenceDate: 102)))
-        #expect(!session.isMoving(at: Date(timeIntervalSinceReferenceDate: 120)))
+        #expect(!session.isMoving(at: Date(timeIntervalSinceReferenceDate: 300)))
+    }
+
+    @Test func theRouteGoneFromTheListStillEndsTheDrive() {
+        let session = DriveSession(route: route(.full), startTime: 0, record: { _, _ in nil })
+        session.handle(fix(0, 0, 0))
+        session.finish()
+        #expect(session.outcome == .unchanged && session.result == nil)
     }
 }

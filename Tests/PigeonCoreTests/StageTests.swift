@@ -153,15 +153,31 @@ struct MotionTests {
     @Test func aMissingSpeedIsEstimatedFromTheFixes() {
         var motion = Motion()
         motion.update(R.fix(east: 0, north: 0, t: 0))
-        motion.update(R.fix(east: 0, north: 15, t: 1))   // 15 m in a second, no speed reported
+        motion.update(R.fix(east: 0, north: 15, t: 1))   // 15 m in a second, 5 m fixes, no speed
         #expect(motion.isMoving(at: 1))
     }
 
-    @Test func standingStillWithLooseFixesIsStill() {
+    @Test func aParkedPhoneWithLooseFixesIsStill() {
+        // Indoors: 40 m fixes jumping 30-60 m about, no speed reported.
         var motion = Motion()
-        motion.update(R.fix(east: 0, north: 0, t: 0))
-        motion.update(R.fix(east: 0, north: 2, t: 1))
-        motion.update(R.fix(east: 1, north: 0, t: 2, speed: 0.3))
-        #expect(!motion.isMoving(at: 2))
+        let jumps: [(Double, Double)] = [(0, 0), (45, 10), (-10, 40), (30, -20), (-40, 5), (20, 50)]
+        for (i, (e, n)) in jumps.enumerated() {
+            motion.update(R.fix(east: e, north: n, t: TimeInterval(i), accuracy: 40))
+        }
+        #expect(!motion.isMoving(at: 5))
+    }
+
+    @Test func noFixesAfterMovingIsMovingForAWhile() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0, speed: 14))
+        #expect(motion.isMoving(at: 60))     // a tunnel: unknown counts as moving
+        #expect(!motion.isMoving(at: 130))   // not forever
+    }
+
+    @Test func noFixesAfterStoppingIsStopped() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0, speed: 14))
+        motion.update(R.fix(east: 0, north: 5, t: 1, speed: 0))
+        #expect(!motion.isMoving(at: 30))
     }
 }

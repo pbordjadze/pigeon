@@ -8,7 +8,9 @@ import PigeonCore
 
 /// One drive along a saved route: follows the location, decides what the screen shows, brings full
 /// guidance back and finds a new route when the driver leaves the route, and records how the drive
-/// went on the route the moment it ends, whether or not the screen is on.
+/// went on the route the moment it ends, whether or not the screen is on. After the end it keeps
+/// reading the location only to tell when the car has stopped (`Motion`), for at most
+/// `settleAfterEnd` seconds.
 ///
 /// The route's stage is fixed for the drive; leaving the route switches the rest of the drive to
 /// `full` (CLAUDE.md › Safety).
@@ -37,7 +39,11 @@ final class DriveSession {
     private(set) var result: SavedRoute?
     private(set) var outcome: RouteProgress.Outcome?
 
+    static let settleAfterEnd: TimeInterval = 120
+
     private var tracker: RouteTracker
+    private var endTime: TimeInterval?
+    private var rerouteAskedAt: TimeInterval = 0
     private var motion = Motion()
     private var now: TimeInterval
     private var tasks: [Task<Void, Never>] = []
@@ -81,7 +87,7 @@ final class DriveSession {
         tasks.append(Task { [weak self] in
             do {
                 for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
-                    guard let self, self.result == nil else { return }
+                    guard let self, !Task.isCancelled else { return }
                     if let location = update.location { self.handle(LocationFix(location)) }
                 }
             } catch {
@@ -92,17 +98,20 @@ final class DriveSession {
         tasks.append(Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))
-                guard let self, self.result == nil else { return }
+                guard let self else { return }
                 self.tick(Date().timeIntervalSinceReferenceDate)
             }
         })
     }
 
     func handle(_ fix: LocationFix) {
-        guard outcome == nil else { return }
-        position = fix
         motion.update(fix)
         now = max(now, fix.time)
+        guard outcome == nil else {
+            stopOnceSettled()
+            return
+        }
+        position = fix
         let before = tracker.phase
         let phase = tracker.update(fix)
         if !leftRoute && tracker.joined { joinedSavedRoute = true }
@@ -110,6 +119,7 @@ final class DriveSession {
             Log.drive.info("left the route (\(String(describing: reason), privacy: .public)); rerouting")
             leftRoute = true
             rerouting = true
+            rerouteAskedAt = now
             AudioServicesPlaySystemSound(1007)  // one chime, voice or not
             tasks.append(Task { [weak self] in await self?.reroute() })
         }
@@ -118,9 +128,19 @@ final class DriveSession {
     }
 
     func tick(_ time: TimeInterval) {
-        guard outcome == nil else { return }
         now = max(now, time)
+        guard outcome == nil else {
+            stopOnceSettled()
+            return
+        }
         refresh()
+    }
+
+    /// After the end: stop reading the location once the car has stopped, or after
+    /// `settleAfterEnd` seconds whatever it does.
+    private func stopOnceSettled() {
+        guard let endTime else { return }
+        if !motion.isMoving(at: now) || now - endTime > Self.settleAfterEnd { stop() }
     }
 
     /// Ends the drive (on arrival, or when the driver ends it), stops following the location and
@@ -136,7 +156,8 @@ final class DriveSession {
             outcome = tracker.phase == .arrived ? .clean : .unchanged
         }
         self.outcome = outcome
-        stop()
+        endTime = now
+        stopOnceSettled()
         Log.drive.info("drive ended: \(String(describing: outcome), privacy: .public)")
         result = record(routeID, outcome)
     }
@@ -155,8 +176,9 @@ final class DriveSession {
     }
 
     /// Asks for a route from here to the destination until one comes, then follows it in full. The
-    /// new line starts where the car was when it was asked for, so its whole length is searched
-    /// for the car's first fix on it.
+    /// new line starts where the car was when it was asked for, so the car's first fix on it is
+    /// searched for as far along as it could have driven since (and no further: a new route that
+    /// turns and comes back past the car mustn't be joined on its way back).
     private func reroute() async {
         while outcome == nil && !Task.isCancelled {
             do {
@@ -165,7 +187,7 @@ final class DriveSession {
                 line = built.line
                 maneuvers = built.maneuvers
                 var settings = RouteTracker.Settings()
-                settings.joinSearch = built.line.length
+                settings.joinSearch = settings.joinSearch + settings.maximumSpeed * max(0, now - rerouteAskedAt)
                 tracker = RouteTracker(line: built.line, startTime: now, settings: settings)
                 rerouting = false
                 refresh()
