@@ -124,9 +124,10 @@ struct DriveSessionTests {
     @Test func theCarCountsAsMovingWithoutASpeedReading() {
         let recorder = Recorder(route(.full))
         let session = DriveSession(route: recorder.route, startTime: 0, record: recorder.record)
-        session.handle(LocationFix(point: Self.point(0, 0), horizontalAccuracy: 5, time: 100))
-        session.handle(LocationFix(point: Self.point(0, 25), horizontalAccuracy: 5, time: 101))
-        #expect(session.isMoving(at: Date(timeIntervalSinceReferenceDate: 102)))
+        for i in 0...12 {
+            session.handle(LocationFix(point: Self.point(0, Double(i) * 14), horizontalAccuracy: 30, time: 100 + Double(i)))
+        }
+        #expect(session.isMoving(at: Date(timeIntervalSinceReferenceDate: 112)))
         #expect(!session.isMoving(at: Date(timeIntervalSinceReferenceDate: 300)))
     }
 

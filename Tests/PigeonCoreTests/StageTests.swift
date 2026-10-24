@@ -157,6 +157,24 @@ struct MotionTests {
         #expect(motion.isMoving(at: 1))
     }
 
+    @Test func aMovingCarWithLooseFixesAndNoSpeedStaysMoving() {
+        // 14 m/s on 30 m fixes, never a speed reading: moving within 10 s, and it stays moving.
+        var motion = Motion()
+        for t in 0...60 {
+            motion.update(R.fix(east: 0, north: Double(t) * 14, t: TimeInterval(t), accuracy: 30))
+            if t >= 10 { #expect(motion.isMoving(at: TimeInterval(t)), "at \(t) s") }
+        }
+    }
+
+    @Test func aGuessNeverClearsAReportedSpeed() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0, accuracy: 30, speed: 30))
+        for t in 1...30 {
+            motion.update(R.fix(east: 0, north: Double(t) * 30, t: TimeInterval(t), accuracy: 30))
+            #expect(motion.isMoving(at: TimeInterval(t)), "at \(t) s")
+        }
+    }
+
     @Test func aParkedPhoneWithLooseFixesIsStill() {
         // Indoors: 40 m fixes jumping 30-60 m about, no speed reported.
         var motion = Motion()
