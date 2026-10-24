@@ -10,10 +10,16 @@ the rules.
   this package (local reference `..`); its iOS 26 / macOS 15 platforms are a floor.
 - `Sources/PigeonCore`: the portable, dependency-free logic (builds on Linux too). `Geo` (distance,
   bearing, a local flat frame), `RouteLine` (a saved route's path; matching a point to it),
-  `RouteTracker` (one drive: on the route, left it, arrived; its doc comment is the off-route rule).
+  `RouteTracker` (one drive: on the route, left it, arrived; its doc comment is the off-route rule),
+  `Stage` and `RouteProgress` (the four stages and the rule that moves a route between them),
+  `Guidance` (what the drive screen shows at each stage: the one place the fading is decided),
+  `Maneuver` and `Turn`, `SavedRoute` and `RouteFile` (the routes file and its version).
 - `Tests/PigeonCoreTests` (Swift Testing; `TestRoutes` lays routes and drives out in metres).
 - `App/`: `Pigeon.xcodeproj` (synchronized folders: adding files needs no project edit), `Pigeon/`
-  (`App/` the app and its root, `Resources/` the catalogs, privacy manifest and assets),
+  (`App/` the app, its root list and `DemoMode`; `Model/` `RouteStore`, the routes file on the
+  device, and `RouteBuilder`, Apple Maps' directions and landmarks into a `SavedRoute`; `Routes/`
+  the new route screen; `Drive/` `DriveSession`, `DriveView` and `ArrivalView`; `Resources/` the
+  catalogs, privacy manifest and assets),
   `PigeonTests` (Swift Testing), `PigeonUITests` (XCTest), `Config/Info.plist` (background modes,
   export compliance; the rest is the target's `INFOPLIST_KEY_*` settings).
 - `ci/` and `.github/workflows/ci.yml`: jobs `core` (Linux: PigeonCore tests, warnings, string

@@ -23,7 +23,7 @@ CATALOG = os.path.join(SOURCES, "Resources", "Localizable.xcstrings")
 STRING = r'"((?:[^"\\\n]|\\.)*)"'
 # Initializers and modifiers whose first string literal is a LocalizedStringKey.
 SWIFTUI = re.compile(
-    r'(?<![\w.])(?:Text|Button|Label|Toggle|Section|NavigationLink|Picker|LabeledContent|ContentUnavailableView|Stepper)\(\s*'
+    r'(?<![\w.])(?:Text|Button|Label|Toggle|Section|NavigationLink|Picker|LabeledContent|ContentUnavailableView|Stepper|Annotation)\(\s*'
     + STRING
     + r'|\.(?:navigationTitle|accessibilityLabel|accessibilityHint|accessibilityValue|alert|confirmationDialog|help)\(\s*'
     + STRING)
