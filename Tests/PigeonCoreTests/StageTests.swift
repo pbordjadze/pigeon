@@ -175,6 +175,33 @@ struct MotionTests {
         }
     }
 
+    @Test func aStopWithNoSpeedReadingsUnlocksWithinHalfAMinute() {
+        // 14 m/s on 30 m fixes with no speed, then parked with fixes still coming.
+        var motion = Motion()
+        for t in 0...30 { motion.update(R.fix(east: 0, north: Double(t) * 14, t: TimeInterval(t), accuracy: 30)) }
+        for t in 31...60 { motion.update(R.fix(east: 0, north: 420, t: TimeInterval(t), accuracy: 30)) }
+        #expect(!motion.isMoving(at: 60))
+        // And then the updates pause: still not moving.
+        #expect(!motion.isMoving(at: 100))
+    }
+
+    @Test func oneJumpIndoorsLocksBriefly() {
+        var motion = Motion()
+        for t in 0...20 { motion.update(R.fix(east: 0, north: 0, t: TimeInterval(t), accuracy: 50)) }
+        motion.update(R.fix(east: 150, north: 0, t: 21, accuracy: 50))
+        for t in 22...45 { motion.update(R.fix(east: 0, north: 0, t: TimeInterval(t), accuracy: 50)) }
+        #expect(!motion.isMoving(at: 45))
+        #expect(!motion.isMoving(at: 90))   // updates paused after: no two-minute lock
+    }
+
+    @Test func stationaryFromCoreLocationIsStopped() {
+        var motion = Motion()
+        motion.update(R.fix(east: 0, north: 0, t: 0, speed: 14))
+        motion.stopped(at: 2)
+        #expect(!motion.isMoving(at: 2))
+        #expect(!motion.isMoving(at: 60))
+    }
+
     @Test func aParkedPhoneWithLooseFixesIsStill() {
         // Indoors: 40 m fixes jumping 30-60 m about, no speed reported.
         var motion = Motion()

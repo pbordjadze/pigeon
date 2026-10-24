@@ -88,6 +88,7 @@ final class DriveSession {
             do {
                 for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
                     guard let self, !Task.isCancelled else { return }
+                    if update.stationary { self.motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
                     if let location = update.location { self.handle(LocationFix(location)) }
                 }
             } catch {

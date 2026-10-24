@@ -136,6 +136,7 @@ struct AddRouteView: View {
         defer { withExtendedLifetime(session) {} }
         do {
             for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
+                if update.stationary { motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
                 if let location = update.location { motion.update(LocationFix(location)) }
             }
         } catch {
