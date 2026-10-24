@@ -1,0 +1,17 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-24 21:35:13.027 I  Pigeon[17032:d25a] [com.pbordjadze.pigeon:drive] drive ended: clean
+2026-10-24 21:35:13.245 I  Pigeon[17032:d25a] [com.pbordjadze.pigeon:demo] demo-ready arrival-clean
+2026-10-24 21:35:56.093 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] drive ended: clean
+2026-10-24 21:35:56.097 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] left the route (offLine); rerouting
+2026-10-24 21:35:56.237 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] drive ended: leftRoute
+2026-10-24 21:35:56.238 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] left the route (neverJoined); rerouting
+2026-10-24 21:35:56.238 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] drive ended: unchanged
+2026-10-24 21:35:56.240 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] drive ended: unchanged
+2026-10-24 21:35:56.245 I  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:drive] drive ended: unchanged
+2026-10-24 21:35:56.276 E  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:store] routes.json can't be read now: The file “routes.json” couldn’t be opened.
+2026-10-24 21:35:56.278 E  Pigeon[18617:e1d7] [com.pbordjadze.pigeon:store] routes.json unreadable, moved aside: The data couldn’t be read because it isn’t in the correct format.
+2026-10-24 21:36:13.610 I  Pigeon[19338:e9b8] [com.pbordjadze.pigeon:drive] drive ended: clean
+2026-10-24 21:36:15.904 I  Pigeon[19338:e9b8] [com.pbordjadze.pigeon:demo] demo-ready arrival-clean
+2026-10-24 21:36:25.353 I  Pigeon[20160:f15b] [com.pbordjadze.pigeon:demo] demo-ready routes-empty
+2026-10-24 21:36:32.629 I  Pigeon[20487:f4e3] [com.pbordjadze.pigeon:demo] demo-ready drive-quiet
+2026-10-24 21:36:39.976 I  Pigeon[21197:fb1e] [com.pbordjadze.pigeon:demo] demo-ready routes-list

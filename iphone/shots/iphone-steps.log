@@ -1,0 +1,44 @@
+21:32:58 iphone: booted
+21:33:20 iphone: installed
+21:33:24 iphone: launch routes-empty: com.pbordjadze.pigeon: 12484 
+21:33:25 iphone: routes-empty ready after 1 s
+21:33:30 iphone: captured routes-empty
+21:33:34 iphone: launch routes-empty-dark: com.pbordjadze.pigeon: 13122 
+21:33:34 iphone: routes-empty-dark ready after 0 s
+21:33:37 iphone: captured routes-empty-dark
+21:33:41 iphone: launch routes-empty-long-text: com.pbordjadze.pigeon: 13212 
+21:33:41 iphone: routes-empty-long-text ready after 0 s
+21:33:54 iphone: captured routes-empty-long-text
+21:34:00 iphone: launch routes-list: com.pbordjadze.pigeon: 14346 
+21:34:01 iphone: routes-list ready after 0 s
+21:34:06 iphone: captured routes-list
+21:34:11 iphone: launch routes-list-dark: com.pbordjadze.pigeon: 14739 
+21:34:11 iphone: routes-list-dark ready after 0 s
+21:34:14 iphone: captured routes-list-dark
+21:34:20 iphone: launch add-route: com.pbordjadze.pigeon: 15106 
+21:34:20 iphone: add-route ready after 0 s
+21:34:23 iphone: captured add-route
+21:34:25 iphone: launch drive-full: com.pbordjadze.pigeon: 15140 
+21:34:28 iphone: drive-full ready after 2 s
+21:34:33 iphone: captured drive-full
+21:34:36 iphone: launch drive-full-long-text: com.pbordjadze.pigeon: 15390 
+21:34:36 iphone: drive-full-long-text ready after 0 s
+21:34:39 iphone: captured drive-full-long-text
+21:34:40 iphone: launch drive-landmarks: com.pbordjadze.pigeon: 15879 
+21:34:41 iphone: drive-landmarks ready after 1 s
+21:34:43 iphone: captured drive-landmarks
+21:34:44 iphone: launch drive-turns: com.pbordjadze.pigeon: 15913 
+21:34:45 iphone: drive-turns ready after 0 s
+21:34:48 iphone: captured drive-turns
+21:34:50 iphone: launch drive-quiet: com.pbordjadze.pigeon: 15987 
+21:34:51 iphone: drive-quiet ready after 1 s
+21:34:53 iphone: captured drive-quiet
+21:34:57 iphone: launch drive-quiet-dark: com.pbordjadze.pigeon: 16468 
+21:34:58 iphone: drive-quiet-dark ready after 0 s
+21:35:01 iphone: captured drive-quiet-dark
+21:35:05 iphone: launch drive-rerouting: com.pbordjadze.pigeon: 16852 
+21:35:07 iphone: drive-rerouting ready after 1 s
+21:35:10 iphone: captured drive-rerouting
+21:35:13 iphone: launch arrival-clean: com.pbordjadze.pigeon: 17032 
+21:35:13 iphone: arrival-clean ready after 0 s
+21:35:16 iphone: captured arrival-clean
