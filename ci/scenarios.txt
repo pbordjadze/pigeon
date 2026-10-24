@@ -1,3 +1,14 @@
 routes-empty@20
 routes-empty-dark@20
 routes-empty-long-text@20
+routes-list@20
+routes-list-dark@20
+add-route@20
+drive-full@30
+drive-full-long-text@30
+drive-landmarks@30
+drive-turns@30
+drive-quiet@20
+drive-quiet-dark@20
+drive-rerouting@30
+arrival-clean@20

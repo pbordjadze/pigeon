@@ -1,8 +1,108 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Arrived": {
+      "comment": "Drive screen after arriving, while the car is still moving; the summary follows once it stops.",
+      "extractionState": "manual"
+    },
+    "Bear left": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Bear right": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Cancel": {
+      "comment": "Closes the new route screen without saving.",
+      "extractionState": "manual"
+    },
+    "Clean Drive": {
+      "comment": "After-drive headline: arrived without leaving the route.",
+      "extractionState": "manual"
+    },
+    "Continue straight": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Done": {
+      "comment": "Closes the after-drive summary.",
+      "extractionState": "manual"
+    },
+    "Drive Ended": {
+      "comment": "After-drive headline: the driver ended the drive before arriving; also the screen after a drive whose route was deleted meanwhile.",
+      "extractionState": "manual"
+    },
+    "End Drive": {
+      "comment": "Button on the drive screen, shown only while the car is stopped.",
+      "extractionState": "manual"
+    },
+    "Finding the route…": {
+      "comment": "While Apple Maps works out the route to the chosen place.",
+      "extractionState": "manual"
+    },
+    "Full Directions": {
+      "comment": "Stage name: the map, the route and every turn with its distance.",
+      "extractionState": "manual"
+    },
+    "Head to the start of the route": {
+      "comment": "Drive screen notice while the drive starts away from the route.",
+      "extractionState": "manual"
+    },
+    "Landmarks": {
+      "comment": "Stage name: turns named by a place beside them, no distances.",
+      "extractionState": "manual"
+    },
+    "Learned: you don’t need Pigeon for this one": {
+      "comment": "Under a route that has been learned (two clean drives at Quiet).",
+      "extractionState": "manual"
+    },
+    "Make a U-turn": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Naming the turns…": {
+      "comment": "While Pigeon looks for a landmark near each turn of a new route.",
+      "extractionState": "manual"
+    },
+    "New Route": {
+      "comment": "Title of the screen for saving a route, and the button that opens it.",
+      "extractionState": "manual"
+    },
+    "Next Drive": {
+      "comment": "After-drive section title: the stage the route's next drive will use.",
+      "extractionState": "manual"
+    },
+    "No GPS signal: showing the whole route": {
+      "comment": "Drive screen notice when the location has been lost for a while.",
+      "extractionState": "manual"
+    },
     "No Routes Yet": {
       "comment": "Title of the empty route list, before any route is saved.",
+      "extractionState": "manual"
+    },
+    "Off route: finding a new route": {
+      "comment": "Drive screen notice after the driver leaves the route, until a new route comes; full guidance follows.",
+      "extractionState": "manual"
+    },
+    "On Route": {
+      "comment": "Large title of the drive screen at the Quiet stage.",
+      "extractionState": "manual"
+    },
+    "Pigeon couldn’t open your saved routes. They’re kept as they are; open Pigeon again to retry.": {
+      "comment": "Route list notice when the routes file can't be read right now; nothing is saved over it.",
+      "extractionState": "manual"
+    },
+    "Pull Over to Add a Route": {
+      "comment": "Shown instead of the new route screen while the car moves.",
+      "extractionState": "manual"
+    },
+    "Quiet": {
+      "comment": "Stage name: no map, nothing unless you leave the route.",
+      "extractionState": "manual"
+    },
+    "Route": {
+      "comment": "Name of a new route when its place has none.",
       "extractionState": "manual"
     },
     "Routes": {
@@ -12,6 +112,130 @@
     "Save a route you drive often. Each time you drive it, Pigeon helps a little less, until you don’t need it.": {
       "comment": "Explains the app on the empty route list.",
       "extractionState": "manual"
+    },
+    "Search for a place": {
+      "comment": "Placeholder of the destination search field.",
+      "extractionState": "manual"
+    },
+    "Search for a place you drive to often. Pigeon saves the route from here.": {
+      "comment": "Under 'Where To?' on the new route screen.",
+      "extractionState": "manual"
+    },
+    "Setting up a route waits until the car stops.": {
+      "comment": "Under 'Pull Over to Add a Route'.",
+      "extractionState": "manual"
+    },
+    "Starts a drive on this route": {
+      "comment": "VoiceOver hint of a route in the list.",
+      "extractionState": "manual"
+    },
+    "The drive ended before you arrived, so the route stays where it was.": {
+      "comment": "After a drive ended early: what it means.",
+      "extractionState": "manual"
+    },
+    "The next drive gives a little more help. Leaving the route never sends it back to the start.": {
+      "comment": "After a drive that left the route: what it means.",
+      "extractionState": "manual"
+    },
+    "Turn left": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Turn right": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Turn sharply left": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Turn sharply right": {
+      "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
+      "extractionState": "manual"
+    },
+    "Turns Only": {
+      "comment": "Stage name: an arrow only as each turn comes up.",
+      "extractionState": "manual"
+    },
+    "Where To?": {
+      "comment": "Title on the new route screen before a search.",
+      "extractionState": "manual"
+    },
+    "You Left the Route": {
+      "comment": "After-drive headline: the drive left the route at least once.",
+      "extractionState": "manual"
+    },
+    "You got there without leaving the route, so the next drive gives a little less help.": {
+      "comment": "After a clean drive: what it means.",
+      "extractionState": "manual"
+    },
+    "Your position": {
+      "comment": "Accessibility title of the car's marker on the drive map (hidden from VoiceOver with the map).",
+      "extractionState": "manual"
+    },
+    "Your routes were saved by a newer version of Pigeon. Update Pigeon to see them.": {
+      "comment": "Route list notice when the routes file is from a newer app.",
+      "extractionState": "manual"
+    },
+    "banner.landmark": {
+      "comment": "Drive screen: names the next turn by a place beside it. Argument: the place's name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "By %@"
+          }
+        }
+      }
+    },
+    "error.noRoute": {
+      "comment": "Error when no driving directions exist to the chosen place.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Maps found no driving route there."
+          }
+        }
+      }
+    },
+    "error.search": {
+      "comment": "Shown when a destination search finds nothing. Argument: what was searched for.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No places found for “%@”."
+          }
+        }
+      }
+    },
+    "route.drivesToGo": {
+      "comment": "Under a route's stage: how many clean drives until the route is learned. Argument: the count.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld clean drive to go"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld clean drives to go"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "version": "1.0"

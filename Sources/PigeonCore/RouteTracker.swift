@@ -107,6 +107,9 @@ public struct RouteTracker: Sendable {
         self.settings = settings
     }
 
+    /// Whether the drive was ever on the line (a drive that never joined it didn't leave it).
+    public var joined: Bool { lastMatch != nil }
+
     public var isFinal: Bool {
         switch phase {
         case .left, .arrived: true
@@ -136,7 +139,8 @@ public struct RouteTracker: Sendable {
         }
         // The course breaks a tie between two legs of the route only when it means something.
         let heading = (fix.speed ?? 0) >= settings.wrongWayMinimumSpeed ? fix.course : nil
-        guard let match = line.match(fix.point, within: range, near: lastMatch?.along, heading: heading) else {
+        // Before the first match, a tie (a route that comes back past its start) goes to the earlier leg.
+        guard let match = line.match(fix.point, within: range, near: lastMatch?.along ?? 0, heading: heading) else {
             phase = .left(.offLine)
             return phase
         }

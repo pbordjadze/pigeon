@@ -313,4 +313,21 @@ struct RouteTrackerTests {
         // The price of tolerating wobble at stops: caught within 150 m of driving back, not sooner.
         #expect(reversed <= 150)
     }
+
+    @Test func joiningAnOutAndBackRouteSlowlyTakesTheOutwardLeg() {
+        // A reroute that goes 600 m out, turns and comes back past the car, joined at a red light
+        // with the whole line searched: the car is at the start of the outward leg.
+        let out = (0...6).map { R.point(east: 0, north: Double($0) * 100) }
+        let line = RouteLine(points: out + out.reversed().dropFirst() + [R.point(east: 0, north: -800)])!
+        var settings = RouteTracker.Settings()
+        settings.joinSearch = line.length
+        var tracker = RouteTracker(line: line, startTime: 0, settings: settings)
+        #expect(tracker.update(R.fix(east: 0, north: 20, t: 0, speed: 0)) == .onRoute)
+        #expect(tracker.lastMatch!.along < 100)
+        var t = 1.0
+        for north in stride(from: 30.0, through: 590, by: 14) {
+            tracker.update(R.fix(east: 0, north: north, t: t, course: 0, speed: 14)); t += 1
+        }
+        #expect(tracker.phase == .onRoute)
+    }
 }
