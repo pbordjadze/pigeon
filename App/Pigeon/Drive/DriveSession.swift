@@ -42,6 +42,7 @@ final class DriveSession {
     static let settleAfterEnd: TimeInterval = 120
 
     private var tracker: RouteTracker
+    private var stationary = false
     private var endTime: TimeInterval?
     private var rerouteAskedAt: TimeInterval = 0
     private var motion = Motion()
@@ -88,6 +89,9 @@ final class DriveSession {
             do {
                 for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
                     guard let self, !Task.isCancelled else { return }
+                    // Core Location pauses updates while the device is still: a long red light is
+                    // not a lost signal.
+                    self.stationary = update.stationary
                     if update.stationary { self.motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
                     if let location = update.location { self.handle(LocationFix(location)) }
                 }
@@ -170,7 +174,7 @@ final class DriveSession {
     }
 
     private func refresh() {
-        var screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now),
+        var screen = Guidance.screen(stage: stage, phase: tracker.phase, signalLost: tracker.signalLost(at: now) && !stationary,
                                      along: tracker.lastMatch?.along ?? 0, speed: position?.speed, maneuvers: maneuvers)
         if rerouting { screen = GuidanceScreen(map: .route(faint: false), banner: nil, status: .rerouting) }
         self.screen = screen

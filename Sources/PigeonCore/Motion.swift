@@ -8,8 +8,10 @@ import Foundation
 ///   speed from the oldest fix of the last `window` seconds, counting only the distance beyond the
 ///   two fixes' accuracy: a parked phone's jitter indoors doesn't read as driving, and a moving car
 ///   soon outruns the uncertainty. Such a guess says "moving" on its own, but "stopped" only when
-///   it spans at least `stillSpan` seconds and comes out under half the threshold; a reported
-///   speed, or Core Location saying the device is stationary (`stopped(at:)`), says either.
+///   it spans at least `stillSpan` seconds and even the fastest the car could have gone (the
+///   distance plus both accuracies) is under the threshold, which loose fixes never show; a
+///   reported speed, or Core Location saying the device is stationary (`stopped(at:)`), says
+///   either.
 /// - The car counts as moving until `settle` seconds after the last reading above `threshold`, so a
 ///   red light doesn't unlock the screen at once.
 /// - With no fixes at all (a tunnel, location stopped), the last reading stands: a car last seen
@@ -37,10 +39,10 @@ public struct Motion: Sendable, Equatable {
             lastReadingMoving = speed > threshold
         } else if let anchor = recent.first, fix.time > anchor.time {
             let uncertainty = max(0, anchor.horizontalAccuracy) + max(0, fix.horizontalAccuracy)
-            let guess = max(0, Geo.distance(anchor.point, fix.point) - uncertainty) / (fix.time - anchor.time)
-            if guess > threshold {
+            let distance = Geo.distance(anchor.point, fix.point), span = fix.time - anchor.time
+            if max(0, distance - uncertainty) / span > threshold {
                 lastReadingMoving = true
-            } else if fix.time - anchor.time >= stillSpan && guess < threshold / 2 {
+            } else if span >= stillSpan && (distance + uncertainty) / span < threshold {
                 lastReadingMoving = false
             } else {
                 return

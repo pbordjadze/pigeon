@@ -181,8 +181,27 @@ struct MotionTests {
         for t in 0...30 { motion.update(R.fix(east: 0, north: Double(t) * 14, t: TimeInterval(t), accuracy: 30)) }
         for t in 31...60 { motion.update(R.fix(east: 0, north: 420, t: TimeInterval(t), accuracy: 30)) }
         #expect(!motion.isMoving(at: 60))
-        // And then the updates pause: still not moving.
+        // Core Location pauses updates for a stationary device, saying so: still not moving.
+        motion.stopped(at: 61)
         #expect(!motion.isMoving(at: 100))
+    }
+
+    @Test func slowTrafficOnLooseFixesNeverReadsAsStopped() {
+        // 4 m/s on 30 m fixes, no speed: too slow to prove moving, but never proof of stopping, so
+        // when updates stop without a stationary report the car still counts as moving.
+        var motion = Motion()
+        for t in 0...20 { motion.update(R.fix(east: 0, north: Double(t) * 14, t: TimeInterval(t), accuracy: 30)) }
+        for t in 21...80 { motion.update(R.fix(east: 0, north: 280 + Double(t - 20) * 4, t: TimeInterval(t), accuracy: 30)) }
+        #expect(motion.isMoving(at: 100))
+    }
+
+    @Test func precisePauseClearsMoving() {
+        // 5 m fixes without speed, parked for 20 s: even the fastest it could have gone is slow.
+        var motion = Motion()
+        for t in 0...20 { motion.update(R.fix(east: 0, north: Double(t) * 14, t: TimeInterval(t), accuracy: 5)) }
+        for t in 21...50 { motion.update(R.fix(east: 0, north: 280, t: TimeInterval(t), accuracy: 5)) }
+        #expect(!motion.isMoving(at: 50))
+        #expect(!motion.isMoving(at: 100))   // and when updates pause
     }
 
     @Test func oneJumpIndoorsLocksBriefly() {
@@ -191,7 +210,6 @@ struct MotionTests {
         motion.update(R.fix(east: 150, north: 0, t: 21, accuracy: 50))
         for t in 22...45 { motion.update(R.fix(east: 0, north: 0, t: TimeInterval(t), accuracy: 50)) }
         #expect(!motion.isMoving(at: 45))
-        #expect(!motion.isMoving(at: 90))   // updates paused after: no two-minute lock
     }
 
     @Test func stationaryFromCoreLocationIsStopped() {
