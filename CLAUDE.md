@@ -14,12 +14,14 @@ the rules.
   `Stage` and `RouteProgress` (the four stages and the rule that moves a route between them),
   `Guidance` (what the drive screen shows at each stage: the one place the fading is decided),
   `Maneuver` and `Turn`, `SavedRoute` and `RouteFile` (the routes file and its version), `Motion`
-  (whether the car is moving, for the lock on reading and touching).
+  (whether the car is moving, for the lock on reading and touching), `SampleRoute` and
+  `DriveSimulation` (the demo drive: a made-up route that drives itself, wrong turn optional).
 - `Tests/PigeonCoreTests` (Swift Testing; `TestRoutes` lays routes and drives out in metres).
 - `App/`: `Pigeon.xcodeproj` (synchronized folders: adding files needs no project edit), `Pigeon/`
   (`App/` the app, its root list and `DemoMode`; `Model/` `RouteStore`, the routes file on the
   device, and `RouteBuilder`, Apple Maps' directions and landmarks into a `SavedRoute`; `Routes/`
-  the new route screen; `Drive/` `DriveSession`, `DriveView` and `ArrivalView`; `Resources/` the
+  the new route screen and the demo drive's setup (`DemoDriveView`; `DriveSession.demo` plays it,
+  saving nothing); `Drive/` `DriveSession`, `DriveView` and `ArrivalView`; `Resources/` the
   catalogs, privacy manifest and assets),
   `PigeonTests` (Swift Testing), `PigeonUITests` (XCTest), `Config/Info.plist` (background modes,
   export compliance; the rest is the target's `INFOPLIST_KEY_*` settings).

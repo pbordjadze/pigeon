@@ -7,11 +7,12 @@ import SwiftUI
 /// Demo scenarios (Debug builds, `ci/scenarios.txt`): `routes-empty` (and its `-dark` and
 /// `-long-text` variants) with no routes saved, `routes-list` (and `-dark`) with one route at each
 /// stage; the drive and arrival scenarios open a drive over the list (`DriveView`), `add-route`
-/// the new route screen (`AddRouteView`).
+/// the new route screen (`AddRouteView`), `demo-setup` the demo drive's (`DemoDriveView`).
 struct RootView: View {
     @Environment(RouteStore.self) private var store
     @State private var drive: DriveSession?
     @State private var adding = false
+    @State private var demo = false
 
     var body: some View {
         NavigationStack {
@@ -41,17 +42,23 @@ struct RootView: View {
                         Label("No Routes Yet", systemImage: "point.topleft.down.to.point.bottomright.curvepath")
                     } description: {
                         Text("Save a route you drive often. Each time you drive it, Pigeon helps a little less, until you don’t need it.")
+                    } actions: {
+                        Button("Try a Demo Drive", systemImage: "play.circle") { demo = true }
                     }
                 }
             }
             .navigationTitle("Routes")
             .toolbar {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button("Try a Demo Drive", systemImage: "play.circle") { demo = true }
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button("New Route", systemImage: "plus") { adding = true }
                         .disabled(store.needsNewerApp || store.unreadable)
                 }
             }
             .sheet(isPresented: $adding) { AddRouteView() }
+            .sheet(isPresented: $demo) { DemoDriveView { drive = $0 } }
             .fullScreenCover(item: $drive) { session in
                 DriveView(session: session)
             }
@@ -60,6 +67,7 @@ struct RootView: View {
                 switch DemoMode.screen(record: record) {
                 case .drive(let session): drive = session
                 case .addRoute: adding = true
+                case .demoSetup: demo = true
                 case .list: DemoMode.markReady()
                 case nil: break
                 }

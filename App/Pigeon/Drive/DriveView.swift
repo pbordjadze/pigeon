@@ -45,7 +45,7 @@ struct DriveView: View {
             UIApplication.shared.isIdleTimerDisabled = true
             follow()
             #if DEBUG
-            if DemoMode.isActive {
+            if DemoMode.isActive && !session.isDemo {  // a frozen screenshot drive
                 DemoMode.markReady()
                 return
             }
@@ -77,7 +77,13 @@ struct DriveView: View {
         }
         .overlay(alignment: .bottom) {
             TimelineView(.periodic(from: .now, by: 1)) { context in
-                if !session.isMoving(at: context.date) {
+                if session.isDemo {
+                    // A simulated drive: the phone isn't the one moving.
+                    Button("Stop Demo", systemImage: "stop.fill") { dismiss() }
+                        .buttonStyle(.glass)
+                        .controlSize(.large)
+                        .padding()
+                } else if !session.isMoving(at: context.date) {
                     Button("End Drive", role: .destructive) { session.finish() }
                         .buttonStyle(.glassProminent)
                         .controlSize(.large)
