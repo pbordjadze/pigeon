@@ -38,4 +38,20 @@ final class LaunchTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Clean Drive"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["Turns Only"].exists)
     }
+
+    @MainActor
+    func testADemoDriveWithAWrongTurnComesBackAndArrives() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-demo", "routes-empty"]
+        app.launch()
+        app.buttons["Try a Demo Drive"].firstMatch.tap()
+        app.buttons["Turns Only"].firstMatch.tap()
+        let wrongTurn = app.switches["Take a wrong turn"].firstMatch
+        wrongTurn.switches.firstMatch.tap()
+        XCTAssertEqual(wrongTurn.value as? String, "1")
+        app.buttons["Start Demo Drive"].tap()
+        XCTAssertTrue(app.buttons["Stop Demo"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["You Left the Route"].waitForExistence(timeout: 150))
+        XCTAssertTrue(app.staticTexts["Landmarks"].exists)
+    }
 }

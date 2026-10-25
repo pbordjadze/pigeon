@@ -39,7 +39,7 @@ struct DriveSessionTests {
 
     /// A new route from wherever the car is now to the destination, going east then north.
     func directions(from session: @escaping () -> DriveSession?) -> DriveSession.Directions {
-        { _ in
+        { _, _ in
             let here = session()?.position?.point ?? Self.origin
             let line = RouteLine(points: [here, GeoPoint(latitude: here.latitude, longitude: Self.point(1000, 0).longitude),
                                           Self.point(1000, 2000)])!
@@ -147,5 +147,15 @@ struct DriveSessionTests {
         session.handle(fix(0, 0, 0))
         session.finish()
         #expect(session.outcome == .unchanged && session.result == nil)
+    }
+
+    @Test func aDemoDriveRecordsOnItsOwnCopyOnly() {
+        let session = DriveSession.demo(stage: .landmarks, wrongTurn: false)
+        #expect(session.isDemo && session.routeStage == .landmarks)
+        var simulation = DriveSimulation(line: SampleRoute.line)
+        var t = 0.0
+        while let fix = simulation.next(following: session.line, at: t) { session.handle(fix); t += 0.25 }
+        #expect(session.outcome == .clean)
+        #expect(session.result?.progress.stage == .turnsOnly)
     }
 }

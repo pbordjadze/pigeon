@@ -25,6 +25,14 @@
       "comment": "VoiceOver label of the next turn's arrow on the drive screen.",
       "extractionState": "manual"
     },
+    "Demo Drive": {
+      "comment": "Title of the demo drive setup screen; also the name of the demo's made-up route.",
+      "extractionState": "manual"
+    },
+    "Demo drive: not real directions": {
+      "comment": "Notice that stays on the drive screen throughout a demo drive.",
+      "extractionState": "manual"
+    },
     "Done": {
       "comment": "Closes the after-drive summary.",
       "extractionState": "manual"
@@ -89,12 +97,24 @@
       "comment": "Large title of the drive screen at the Quiet stage.",
       "extractionState": "manual"
     },
+    "Partway along, the demo turns off the route: the off-route notice shows, a new route is found, and full directions come back for the rest of the drive.": {
+      "comment": "Footer under the demo's 'Take a wrong turn' switch.",
+      "extractionState": "manual"
+    },
     "Pigeon couldn’t open your saved routes. They’re kept as they are; open Pigeon again to retry.": {
       "comment": "Route list notice when the routes file can't be read right now; nothing is saved over it.",
       "extractionState": "manual"
     },
+    "Pigeon drives a made-up route around Boston Common by itself, about four times faster than real, so you can see what each stage shows.": {
+      "comment": "Explains the demo drive at the top of its setup screen.",
+      "extractionState": "manual"
+    },
     "Pull Over to Add a Route": {
       "comment": "Shown instead of the new route screen while the car moves.",
+      "extractionState": "manual"
+    },
+    "Pull Over to Try the Demo": {
+      "comment": "Shown instead of the demo setup while the car moves.",
       "extractionState": "manual"
     },
     "Quiet": {
@@ -125,8 +145,28 @@
       "comment": "Under 'Pull Over to Add a Route'.",
       "extractionState": "manual"
     },
+    "Stage": {
+      "comment": "Demo setup: section title and picker label for the stage to show (Full Directions, Landmarks, Turns Only, Quiet).",
+      "extractionState": "manual"
+    },
+    "Start Demo Drive": {
+      "comment": "Button that starts the simulated demo drive.",
+      "extractionState": "manual"
+    },
     "Starts a drive on this route": {
       "comment": "VoiceOver hint of a route in the list.",
+      "extractionState": "manual"
+    },
+    "Stop Demo": {
+      "comment": "Button on the drive screen during a demo drive: ends it and returns to the routes.",
+      "extractionState": "manual"
+    },
+    "Take a wrong turn": {
+      "comment": "Demo setup switch: the simulated drive leaves the route partway.",
+      "extractionState": "manual"
+    },
+    "The demo waits until the car stops.": {
+      "comment": "Under 'Pull Over to Try the Demo'.",
       "extractionState": "manual"
     },
     "The drive ended before you arrived, so the route stays where it was.": {
@@ -135,6 +175,14 @@
     },
     "The next drive gives a little more help. Leaving the route never sends it back to the start.": {
       "comment": "After a drive that left the route: what it means.",
+      "extractionState": "manual"
+    },
+    "This was a demo: on a saved route, its next drive would use this stage. Nothing was saved.": {
+      "comment": "Footer under 'Next Drive' after a demo drive.",
+      "extractionState": "manual"
+    },
+    "Try a Demo Drive": {
+      "comment": "Button on the routes screen (toolbar menu and empty list) that opens the demo drive setup.",
       "extractionState": "manual"
     },
     "Turn left": {
@@ -185,6 +233,42 @@
           "stringUnit": {
             "state": "translated",
             "value": "By %@"
+          }
+        }
+      }
+    },
+    "demo.turn1": {
+      "comment": "The demo drive's first turn instruction (a made-up route near Boston Common).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn right onto Charles Street"
+          }
+        }
+      }
+    },
+    "demo.turn2": {
+      "comment": "The demo drive's second turn instruction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn left onto Beacon Street"
+          }
+        }
+      }
+    },
+    "demo.turn3": {
+      "comment": "The demo drive's third turn instruction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn right onto Park Street"
           }
         }
       }

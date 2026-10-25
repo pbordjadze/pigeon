@@ -16,8 +16,9 @@ import PigeonCore
 /// `full` (CLAUDE.md › Safety).
 @Observable
 final class DriveSession {
-    /// Driving directions from here to a place: Apple Maps' in the app, a stand-in in tests.
-    typealias Directions = (GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver])
+    /// Driving directions from where the car is (when known) to a place: Apple Maps' in the app
+    /// (which reads the device's location itself), a stand-in in tests and the demo.
+    typealias Directions = (_ from: GeoPoint?, _ to: GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver])
     /// Records a finished drive's outcome on its route and returns the route as it now stands.
     typealias Record = (SavedRoute.ID, RouteProgress.Outcome) -> SavedRoute?
 
@@ -56,6 +57,11 @@ final class DriveSession {
     private let destination: GeoPoint
     private let directions: Directions
     private let record: Record
+    /// A demo drive's fixes, played instead of the location (`start()`); nil for a real drive.
+    private var simulation: DriveSimulation?
+
+    /// Whether this is a demo drive (no location read, nothing saved).
+    var isDemo: Bool { simulation != nil }
 
     var stage: Stage { leftRoute ? .full : routeStage }
 
@@ -80,13 +86,58 @@ final class DriveSession {
         self.record = record
     }
 
-    static func appleMaps(to destination: GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver]) {
+    /// A demo drive on `SampleRoute` at `stage`, played at about four times speed; its outcome moves
+    /// only `recorded`, a copy no list keeps.
+    static func demo(stage: Stage, wrongTurn: Bool) -> DriveSession {
+        let instructions = [
+            String(localized: "demo.turn1", defaultValue: "Turn right onto Charles Street",
+                   comment: "The demo drive's first turn instruction (a made-up route near Boston Common)."),
+            String(localized: "demo.turn2", defaultValue: "Turn left onto Beacon Street",
+                   comment: "The demo drive's second turn instruction."),
+            String(localized: "demo.turn3", defaultValue: "Turn right onto Park Street",
+                   comment: "The demo drive's third turn instruction."),
+        ]
+        let maneuvers = zip(SampleRoute.maneuvers, instructions).map { maneuver, instruction in
+            var m = maneuver
+            m.instruction = instruction
+            return m
+        }
+        var route = SavedRoute(name: String(localized: "Demo Drive"), line: SampleRoute.line,
+                               maneuvers: maneuvers, progress: RouteProgress(stage: stage), savedAt: Date())
+        let session = DriveSession(route: route, directions: { here, _ in
+            guard let here, let reroute = SampleRoute.reroute(from: here) else { throw CancellationError() }
+            return reroute
+        }, record: { _, outcome in
+            route.recordDrive(outcome, at: Date())
+            return route
+        })
+        session.simulation = DriveSimulation(line: SampleRoute.line, wrongTurnAt: wrongTurn ? 600 : nil)
+        return session
+    }
+
+    static func appleMaps(from _: GeoPoint?, to destination: GeoPoint) async throws -> (line: RouteLine, maneuvers: [Maneuver]) {
         let place = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
         return try await RouteBuilder.directions(to: MKMapItem(location: place, address: nil))
     }
 
-    /// Starts following the location, in the background too, until the drive ends.
+    /// Starts following the location, in the background too, until the drive ends; a demo drive
+    /// plays its simulation instead, a fix every quarter second.
     func start() {
+        if simulation != nil {
+            tasks.append(Task { [weak self] in
+                while !Task.isCancelled {
+                    guard let self else { return }
+                    let time = Date().timeIntervalSinceReferenceDate
+                    guard let fix = self.simulation?.next(following: self.line, at: time) else {
+                        self.reportStationary(true, at: time)  // parked at the end
+                        return
+                    }
+                    self.handle(fix)
+                    try? await Task.sleep(for: .milliseconds(250))
+                }
+            })
+            return
+        }
         // Held for the drive: While Using authorization, and updates with the screen locked.
         sessions = [CLServiceSession(authorization: .whenInUse), CLBackgroundActivitySession()]
         tasks.append(Task { [weak self] in
@@ -204,7 +255,7 @@ final class DriveSession {
     private func reroute() async {
         while outcome == nil && !Task.isCancelled {
             do {
-                let built = try await directions(destination)
+                let built = try await directions(position?.point, destination)
                 guard outcome == nil else { return }
                 line = built.line
                 maneuvers = built.maneuvers
@@ -228,7 +279,7 @@ final class DriveSession {
                      arrived: Bool = false, record: @escaping Record) {
         // Fixes an hour ahead read as moving for the screenshot; an arrival's, long ago, as stopped.
         let base = arrived ? 0 : Date().timeIntervalSinceReferenceDate + 3600
-        self.init(route: route, startTime: base, directions: { _ in throw CancellationError() }, record: record)
+        self.init(route: route, startTime: base, directions: { _, _ in throw CancellationError() }, record: record)
         var t = base
         var at = 0.0
         while at < along {

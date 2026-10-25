@@ -42,6 +42,15 @@ public enum Geo {
         return d
     }
 
+    /// The point `distance` metres from `p` on `bearing` (degrees clockwise from north), on the
+    /// local flat frame: exact enough for the short hops of a simulated drive.
+    public static func offset(_ p: GeoPoint, bearing: Double, distance: Double) -> GeoPoint {
+        let frame = LocalFrame(origin: p)
+        let radians = bearing * .pi / 180
+        return GeoPoint(latitude: p.latitude + distance * cos(radians) / frame.metresPerDegreeLatitude,
+                        longitude: p.longitude + distance * sin(radians) / frame.metresPerDegreeLongitude)
+    }
+
     static func normalized(_ degrees: Double) -> Double {
         let d = degrees.truncatingRemainder(dividingBy: 360)
         return d < 0 ? d + 360 : d

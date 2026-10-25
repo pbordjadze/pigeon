@@ -28,6 +28,7 @@ enum DemoMode {
     enum Screen {
         case list
         case addRoute
+        case demoSetup
         case drive(DriveSession)
     }
 
@@ -56,7 +57,11 @@ enum DemoMode {
     static func screen(record: @escaping DriveSession.Record) -> Screen? {
         guard let base else { return nil }
         guard let stage = driveStage, var route = routes?.first else {
-            return base == "add-route" ? .addRoute : .list
+            return switch base {
+            case "add-route": .addRoute
+            case "demo-setup": .demoSetup
+            default: .list
+            }
         }
         route.progress = RouteProgress(stage: stage)
         let along: Double = base == "drive-turns" ? 1020 : 900

@@ -27,7 +27,7 @@ struct DriveView: View {
                     if session.isMoving(at: context.date) {
                         ArrivedView(name: session.name)
                     } else if let result = session.result {
-                        ArrivalView(route: result, outcome: outcome) { dismiss() }
+                        ArrivalView(route: result, outcome: outcome, demo: session.isDemo) { dismiss() }
                     } else {
                         // The route is gone from the list (deleted meanwhile): nothing to show but the way out.
                         ContentUnavailableView {
@@ -45,7 +45,7 @@ struct DriveView: View {
             UIApplication.shared.isIdleTimerDisabled = true
             follow()
             #if DEBUG
-            if DemoMode.isActive {
+            if DemoMode.isActive && !session.isDemo {  // a frozen screenshot drive
                 DemoMode.markReady()
                 return
             }
@@ -57,6 +57,36 @@ struct DriveView: View {
             session.stop()
         }
         .onChange(of: session.position) { follow() }
+        .task {
+            if session.isDemo { await endDemoIfReallyMoving() }
+        }
+    }
+
+    /// A demo is for a parked phone: the moment the real car moves, it ends.
+    private func endDemoIfReallyMoving() async {
+        #if DEBUG
+        if DemoMode.isActive { return }  // no permission prompt in screenshots and UI tests
+        #endif
+        var motion = Motion()
+        let started = Date()
+        let session = CLServiceSession(authorization: .whenInUse)
+        defer { withExtendedLifetime(session) {} }
+        do {
+            for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
+                if update.stationary { motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
+                // A cached fix from before the demo (the car was driving a minute ago) isn't now.
+                if let location = update.location, location.timestamp >= started {
+                    motion.update(LocationFix(location))
+                }
+                if motion.isMoving(at: Date().timeIntervalSinceReferenceDate) {
+                    Log.drive.info("demo ended: the phone is moving")
+                    dismiss()
+                    return
+                }
+            }
+        } catch {
+            Log.drive.error("location updates ended: \(error.localizedDescription, privacy: .public)")
+        }
     }
 
     @ViewBuilder private var guidance: some View {
@@ -66,6 +96,9 @@ struct DriveView: View {
                 BannerView(banner: banner)
             }
             notice(screen.status)
+            if session.isDemo {
+                NoticeView(symbol: "play.circle.fill", text: Text("Demo drive: not real directions"), tint: .indigo)
+            }
             switch screen.map {
             case .route(let faint):
                 map(routeOpacity: faint ? 0.35 : 1)
@@ -77,7 +110,13 @@ struct DriveView: View {
         }
         .overlay(alignment: .bottom) {
             TimelineView(.periodic(from: .now, by: 1)) { context in
-                if !session.isMoving(at: context.date) {
+                if session.isDemo {
+                    // A simulated drive: the phone isn't the one moving.
+                    Button("Stop Demo", systemImage: "stop.fill") { dismiss() }
+                        .buttonStyle(.glass)
+                        .controlSize(.large)
+                        .padding()
+                } else if !session.isMoving(at: context.date) {
                     Button("End Drive", role: .destructive) { session.finish() }
                         .buttonStyle(.glassProminent)
                         .controlSize(.large)

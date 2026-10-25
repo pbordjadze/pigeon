@@ -12,3 +12,4 @@ drive-quiet@20
 drive-quiet-dark@20
 drive-rerouting@30
 arrival-clean@20
+demo-setup@20
