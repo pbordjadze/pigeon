@@ -1,0 +1,6 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-25 15:17:11.400 E  Pigeon[19638:ea8e] [com.pbordjadze.pigeon:store] routes.json can't be read now: The file “routes.json” couldn’t be opened.
+2026-10-25 15:17:11.402 E  Pigeon[19638:ea8e] [com.pbordjadze.pigeon:store] routes.json unreadable, moved aside: The data couldn’t be read because it isn’t in the correct format.
+2026-10-25 15:19:02.252 I  Pigeon[25956:12724] [com.pbordjadze.pigeon:demo] demo-ready routes-empty
+2026-10-25 15:19:10.300 I  Pigeon[26495:12c2e] [com.pbordjadze.pigeon:demo] demo-ready drive-quiet
+2026-10-25 15:19:16.122 I  Pigeon[26508:12cbb] [com.pbordjadze.pigeon:demo] demo-ready routes-list

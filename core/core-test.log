@@ -1,0 +1,168 @@
+Building for debugging...
+Build complete! (14.17s)
+Test Suite 'All tests' started at 2026-10-25 15:07:48.888
+Test Suite 'debug.xctest' started at 2026-10-25 15:07:48.889
+Test Suite 'debug.xctest' passed at 2026-10-25 15:07:48.889
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.0 (0.0) seconds
+Test Suite 'All tests' passed at 2026-10-25 15:07:48.890
+	 Executed 0 tests, with 0 failures (0 unexpected) in 0.0 (0.0) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: x86_64-unknown-linux-gnu
+◇ Suite RouteTrackerTests started.
+◇ Suite SavedRouteTests started.
+◇ Suite MotionTests started.
+◇ Suite RouteLineTests started.
+◇ Suite GuidanceTests started.
+◇ Suite StageTests started.
+◇ Suite DriveSimulationTests started.
+◇ Test poorFixesNeitherCountNorClear() started.
+◇ Test gpsWobbleInsideTheLimitIsStillOnRoute() started.
+◇ Test oneStrayFixAlongTheRoadAtAStopIsForgiven() started.
+◇ Test outOfOrderFixesAreIgnored() started.
+◇ Test finalPhasesStayFinal() started.
+◇ Test aDriveStartingInAParkingLotJoins() started.
+◇ Test anIdenticalOutAndBackRouteTurnsAroundCleanly() started.
+◇ Test anOutAndBackRouteFollowsTheRightLeg() started.
+◇ Test joiningPastHalfwayStillArrives() started.
+◇ Test backingUpIsCaughtWithLooseFixesToo() started.
+◇ Test aFixWithNoCourseDoesNotRestartTheUTurnCount() started.
+◇ Test aLooseFixNeedsToBeFurtherOffThanItsAccuracy() started.
+◇ Test standingStillIsNotGoingBack() started.
+◇ Test signalLossIsNoticedAfterTheTimeout() started.
+◇ Test slowManoeuvresAreNotWrongWay() started.
+◇ Test aTunnelGapStillFindsTheDriverAhead() started.
+◇ Test oneStrayFixIsForgiven() started.
+◇ Test goingBackWithNoCourseIsLeaving() started.
+◇ Test joiningAnOutAndBackRouteSlowlyTakesTheOutwardLeg() started.
+◇ Test startingFarFromTheRouteIsLeavingIt() started.
+◇ Test turningOffTheRouteIsCaughtWithinTwoFixes() started.
+◇ Test aLongRunOfInconclusiveFixesIsLeaving() started.
+◇ Test theFileRoundTripsAndRefusesANewerOne() started.
+◇ Test aCleanDriveArrives() started.
+◇ Test startingMidwayIsLeavingIt() started.
+◇ Test drivingPastTheEndStillArrives() started.
+◇ Test aShortRunOfInconclusiveFixesDoesNotNarrowTheSearch() started.
+◇ Test noFixAtAllIsSignalLoss() started.
+◇ Test maneuversAreKeptInRouteOrder() started.
+◇ Test aVeryShortRouteDoesNotArriveOnItsFirstFix() started.
+◇ Test aParallelRoadIsCaughtThroughLooseFixes() started.
+◇ Test aDriveMovesTheStage() started.
+◇ Test aShortcutThatRejoinsLaterIsLeaving() started.
+◇ Test backingUpSlowlyIsLeaving() started.
+◇ Test neverReachingTheLineTimesOut() started.
+◇ Test bearingAndTurn() started.
+◇ Test aUTurnOnTheRouteIsLeavingIt() started.
+◇ Test degenerateLinesAreRejected() started.
+◇ Test aStopWithNoSpeedReadingsUnlocksWithinHalfAMinute() started.
+◇ Test codingRebuildsDistancesAndRejectsDamage() started.
+◇ Test matchFindsOffsetAndProgress() started.
+◇ Test matchStaysInsideTheRange() started.
+◇ Test noFixesAfterMovingIsMovingForAWhile() started.
+◇ Test stationaryFromCoreLocationIsStopped() started.
+◇ Test aMovingCarStaysMovingThroughAShortStop() started.
+◇ Test aMovingCarWithLooseFixesAndNoSpeedStaysMoving() started.
+◇ Test distanceMatchesAKnownPair() started.
+◇ Test aMissingSpeedIsEstimatedFromTheFixes() started.
+◇ Test lengthIsTheSumOfItsLegs() started.
+◇ Test oneJumpIndoorsLocksBriefly() started.
+◇ Test slowTrafficOnLooseFixesNeverReadsAsStopped() started.
+◇ Test aGuessNeverClearsAReportedSpeed() started.
+◇ Test precisePauseClearsMoving() started.
+◇ Test aTurnJustMadeGivesWayToTheNext() started.
+◇ Test aParkedPhoneWithLooseFixesIsStill() started.
+◇ Test helpComesBackWhateverTheStage() started.
+◇ Test pointAtIsOnTheLine() started.
+◇ Test landmarksNameTheTurnWithoutDistance() started.
+◇ Test turnsOnlyCuesFifteenSecondsAhead() started.
+◇ Test fullShowsDistanceAndStreet() started.
+◇ Test noFixesAfterStoppingIsStopped() started.
+◇ Test quietShowsNothing() started.
+◇ Test turnsFromGeometry() started.
+◇ Test fiveCleanDrivesLearnARoute() started.
+◇ Test anUnfinishedDriveChangesNothing() started.
+◇ Test leavingTheRouteStepsBackOneAndRestartsTheQuietCount() started.
+◇ Test decodingIsForgiving() started.
+◇ Test theSampleRouteIsWhatItSays() started.
+◇ Test theWrongTurnGoesOffToTheRight() started.
+◇ Test aCleanDemoDriveArrives() started.
+◇ Test aWrongTurnLeavesTheRouteThenArrivesOnTheReroute() started.
+✔ Test poorFixesNeitherCountNorClear() passed after 0.007 seconds.
+✔ Test oneStrayFixAlongTheRoadAtAStopIsForgiven() passed after 0.007 seconds.
+✔ Test gpsWobbleInsideTheLimitIsStillOnRoute() passed after 0.007 seconds.
+✔ Test outOfOrderFixesAreIgnored() passed after 0.008 seconds.
+✔ Test finalPhasesStayFinal() passed after 0.007 seconds.
+✔ Test joiningPastHalfwayStillArrives() passed after 0.008 seconds.
+✔ Test aDriveStartingInAParkingLotJoins() passed after 0.008 seconds.
+✔ Test backingUpIsCaughtWithLooseFixesToo() passed after 0.008 seconds.
+✔ Test aLooseFixNeedsToBeFurtherOffThanItsAccuracy() passed after 0.008 seconds.
+✔ Test aFixWithNoCourseDoesNotRestartTheUTurnCount() passed after 0.008 seconds.
+✔ Test anOutAndBackRouteFollowsTheRightLeg() passed after 0.008 seconds.
+✔ Test anIdenticalOutAndBackRouteTurnsAroundCleanly() passed after 0.008 seconds.
+✔ Test signalLossIsNoticedAfterTheTimeout() passed after 0.008 seconds.
+✔ Test aTunnelGapStillFindsTheDriverAhead() passed after 0.008 seconds.
+✔ Test oneStrayFixIsForgiven() passed after 0.008 seconds.
+✔ Test standingStillIsNotGoingBack() passed after 0.008 seconds.
+✔ Test slowManoeuvresAreNotWrongWay() passed after 0.008 seconds.
+✔ Test startingFarFromTheRouteIsLeavingIt() passed after 0.008 seconds.
+✔ Test aLongRunOfInconclusiveFixesIsLeaving() passed after 0.008 seconds.
+✔ Test goingBackWithNoCourseIsLeaving() passed after 0.008 seconds.
+✔ Test joiningAnOutAndBackRouteSlowlyTakesTheOutwardLeg() passed after 0.008 seconds.
+✔ Test startingMidwayIsLeavingIt() passed after 0.008 seconds.
+✔ Test turningOffTheRouteIsCaughtWithinTwoFixes() passed after 0.008 seconds.
+✔ Test aShortRunOfInconclusiveFixesDoesNotNarrowTheSearch() passed after 0.008 seconds.
+✔ Test maneuversAreKeptInRouteOrder() passed after 0.007 seconds.
+✔ Test noFixAtAllIsSignalLoss() passed after 0.008 seconds.
+✔ Test aVeryShortRouteDoesNotArriveOnItsFirstFix() passed after 0.007 seconds.
+✔ Test aParallelRoadIsCaughtThroughLooseFixes() passed after 0.007 seconds.
+✔ Test aDriveMovesTheStage() passed after 0.008 seconds.
+✔ Test aCleanDriveArrives() passed after 0.008 seconds.
+✔ Test aShortcutThatRejoinsLaterIsLeaving() passed after 0.007 seconds.
+✔ Test drivingPastTheEndStillArrives() passed after 0.008 seconds.
+✔ Test degenerateLinesAreRejected() passed after 0.007 seconds.
+✔ Test bearingAndTurn() passed after 0.007 seconds.
+✔ Test backingUpSlowlyIsLeaving() passed after 0.008 seconds.
+✔ Test neverReachingTheLineTimesOut() passed after 0.007 seconds.
+✔ Test aUTurnOnTheRouteIsLeavingIt() passed after 0.007 seconds.
+✔ Test matchFindsOffsetAndProgress() passed after 0.007 seconds.
+✔ Test aStopWithNoSpeedReadingsUnlocksWithinHalfAMinute() passed after 0.007 seconds.
+✔ Test stationaryFromCoreLocationIsStopped() passed after 0.007 seconds.
+✔ Test noFixesAfterMovingIsMovingForAWhile() passed after 0.007 seconds.
+✔ Test matchStaysInsideTheRange() passed after 0.007 seconds.
+✔ Test aMovingCarStaysMovingThroughAShortStop() passed after 0.007 seconds.
+✔ Test aMissingSpeedIsEstimatedFromTheFixes() passed after 0.007 seconds.
+✔ Test distanceMatchesAKnownPair() passed after 0.007 seconds.
+✔ Test lengthIsTheSumOfItsLegs() passed after 0.007 seconds.
+✔ Test oneJumpIndoorsLocksBriefly() passed after 0.007 seconds.
+✔ Test aMovingCarWithLooseFixesAndNoSpeedStaysMoving() passed after 0.007 seconds.
+✔ Test precisePauseClearsMoving() passed after 0.007 seconds.
+✔ Test aGuessNeverClearsAReportedSpeed() passed after 0.007 seconds.
+✔ Test slowTrafficOnLooseFixesNeverReadsAsStopped() passed after 0.007 seconds.
+✔ Test aParkedPhoneWithLooseFixesIsStill() passed after 0.007 seconds.
+✔ Test aTurnJustMadeGivesWayToTheNext() passed after 0.007 seconds.
+✔ Test pointAtIsOnTheLine() passed after 0.007 seconds.
+✔ Test helpComesBackWhateverTheStage() passed after 0.007 seconds.
+✔ Test landmarksNameTheTurnWithoutDistance() passed after 0.007 seconds.
+✔ Test turnsOnlyCuesFifteenSecondsAhead() passed after 0.007 seconds.
+✔ Test noFixesAfterStoppingIsStopped() passed after 0.007 seconds.
+✔ Test fullShowsDistanceAndStreet() passed after 0.007 seconds.
+✔ Test quietShowsNothing() passed after 0.007 seconds.
+✔ Test anUnfinishedDriveChangesNothing() passed after 0.007 seconds.
+✔ Test leavingTheRouteStepsBackOneAndRestartsTheQuietCount() passed after 0.006 seconds.
+✔ Test turnsFromGeometry() passed after 0.007 seconds.
+✔ Test decodingIsForgiving() passed after 0.006 seconds.
+✔ Test theSampleRouteIsWhatItSays() passed after 0.006 seconds.
+✔ Test theWrongTurnGoesOffToTheRight() passed after 0.006 seconds.
+✔ Test theFileRoundTripsAndRefusesANewerOne() passed after 0.009 seconds.
+✔ Test fiveCleanDrivesLearnARoute() passed after 0.007 seconds.
+✔ Test aCleanDemoDriveArrives() passed after 0.006 seconds.
+✔ Test aWrongTurnLeavesTheRouteThenArrivesOnTheReroute() passed after 0.006 seconds.
+✔ Test codingRebuildsDistancesAndRejectsDamage() passed after 0.008 seconds.
+✔ Suite SavedRouteTests passed after 0.010 seconds.
+✔ Suite GuidanceTests passed after 0.010 seconds.
+✔ Suite MotionTests passed after 0.010 seconds.
+✔ Suite StageTests passed after 0.010 seconds.
+✔ Suite RouteTrackerTests passed after 0.011 seconds.
+✔ Suite RouteLineTests passed after 0.011 seconds.
+✔ Suite DriveSimulationTests passed after 0.010 seconds.
+✔ Test run with 71 tests in 7 suites passed after 0.011 seconds.
