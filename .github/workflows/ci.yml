@@ -11,7 +11,8 @@ name: CI
 #            the Debug build (app and both test targets), the Release build and its check and the
 #            warnings gate, on one runner with no simulator; `core` only builds. A branch's quick
 #            check before it takes a full slot.
-#   ipa      on main (or `[ipa]` in a branch commit's message, without publishing): an unsigned
+#   ipa      after a green `apple` job, on main (or `[ipa]` in a branch commit's message, without
+#            publishing; so a failing push never reaches SideStore): an unsigned
 #            Release IPA, published as the `build-<n>` prerelease (the five newest are kept), and
 #            the SideStore source on the `sidestore` branch (ci/sidestore_source.py), which
 #            SideStore reads at https://raw.githubusercontent.com/pbordjadze/pigeon/sidestore/source.json
@@ -176,14 +177,14 @@ jobs:
 
   ipa:
     name: IPA for SideStore (unsigned device build)
-    if: github.ref_name == 'main' || contains(github.event.head_commit.message, '[ipa]')
+    needs: apple
+    if: ${{ !cancelled() && needs.apple.result == 'success' && (github.ref_name == 'main' || contains(github.event.head_commit.message, '[ipa]')) }}
     permissions:
       contents: write
     runs-on: macos-26
     timeout-minutes: 30
     env:
       BUILD: ${{ github.run_number }}
-      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v5
       - name: Archive
@@ -207,10 +208,18 @@ jobs:
           /usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" -c "Print CFBundleVersion" "$APP/Info.plist"
       - name: Publish release and SideStore source
         if: github.ref_name == 'main'
+        # The token reaches this step only, not the build tools.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git log -1 --format=%s > out/notes.txt
-          gh release create "build-$BUILD" out/Pigeon.ipa --prerelease --target "$GITHUB_SHA" \
-            --title "Build $BUILD" --notes-file out/notes.txt
+          # A re-run of this job has the same run number: replace the asset rather than fail.
+          if gh release view "build-$BUILD" > /dev/null 2>&1; then
+            gh release upload "build-$BUILD" out/Pigeon.ipa --clobber
+          else
+            gh release create "build-$BUILD" out/Pigeon.ipa --prerelease --target "$GITHUB_SHA" \
+              --title "Build $BUILD" --notes-file out/notes.txt
+          fi
           # Keep the five newest builds (KEEP in ci/sidestore_source.py: the same number).
           gh release list --limit 100 --json tagName -q '.[].tagName' | grep '^build-' | tail -n +6 |
             while read -r tag; do gh release delete "$tag" --yes --cleanup-tag; done
