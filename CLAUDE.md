@@ -25,7 +25,10 @@ the rules.
   export compliance; the rest is the target's `INFOPLIST_KEY_*` settings).
 - `ci/` and `.github/workflows/ci.yml`: jobs `core` (Linux: PigeonCore tests, warnings, string
   catalog), `apple` (`iphone` on every push: Debug build, screenshots, unit and UI tests, Release
-  check; or `compile`), `report` (`ci/report.py` writes `STATUS.md`). The scripts came from
+  check; or `compile`), `ipa` (on `main`: an unsigned IPA as the `build-<n>` prerelease and the
+  SideStore source on the `sidestore` branch, `ci/sidestore_source.py`; CI owns that branch, never
+  push it; `[ipa]` on a branch archives without publishing), `report` (`ci/report.py` writes
+  `STATUS.md`). The scripts came from
   `pbordjadze/paint-by-number`'s `ci/` and keep its shape.
 - `tools/`: `swift.sh` (SwiftPM in Docker), `strings_check.py` (its docstring is the manual).
 - `PRIVACY.md`: the privacy policy, word for word what the app does (below).
