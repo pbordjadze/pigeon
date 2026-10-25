@@ -11,11 +11,16 @@ name: CI
 #            the Debug build (app and both test targets), the Release build and its check and the
 #            warnings gate, on one runner with no simulator; `core` only builds. A branch's quick
 #            check before it takes a full slot.
+#   ipa      after a green `apple` job, on main (or `[ipa]` in a branch commit's message, without
+#            publishing; so a failing push never reaches SideStore): an unsigned
+#            Release IPA, published as the `build-<n>` prerelease (the five newest are kept), and
+#            the SideStore source on the `sidestore` branch (ci/sidestore_source.py), which
+#            SideStore reads at https://raw.githubusercontent.com/pbordjadze/pigeon/sidestore/source.json
 # The macOS runners (5 at once) are shared with pbordjadze/paint-by-number: one job per push here.
 
 on:
   push:
-    branches-ignore: ['ci-shots/**']
+    branches-ignore: ['ci-shots/**', 'sidestore']
   workflow_dispatch:
     inputs:
       scenarios:
@@ -170,9 +175,79 @@ jobs:
         if: always()
         with: { name: "${{ matrix.job }}", path: out, if-no-files-found: ignore }
 
+  ipa:
+    name: IPA for SideStore (unsigned device build)
+    needs: apple
+    if: ${{ !cancelled() && needs.apple.result == 'success' && (github.ref_name == 'main' || contains(github.event.head_commit.message, '[ipa]')) }}
+    permissions:
+      contents: write
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      BUILD: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Archive
+        run: |
+          set -o pipefail
+          mkdir -p out
+          # Version 1.0.<run>, build <run>: every build is an update to the installed one.
+          xcodebuild archive -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/Pigeon.xcarchive -quiet \
+            MARKETING_VERSION="1.0.$BUILD" CURRENT_PROJECT_VERSION="$BUILD" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            2>&1 | tee out/ipa-build.log | tail -80
+      - name: Package
+        run: |
+          # SideStore signs the app with the user's Apple ID when installing it.
+          APP=build/Pigeon.xcarchive/Products/Applications/Pigeon.app
+          mkdir -p build/ipa/Payload
+          cp -R "$APP" build/ipa/Payload/
+          (cd build/ipa && zip -qry ../../out/Pigeon.ipa Payload)
+          ls -l out/Pigeon.ipa
+          /usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" -c "Print CFBundleVersion" "$APP/Info.plist"
+      - name: Publish release and SideStore source
+        if: github.ref_name == 'main'
+        # The token reaches this step only, not the build tools.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git log -1 --format=%s > out/notes.txt
+          # A re-run of this job has the same run number: replace the asset rather than fail.
+          if gh release view "build-$BUILD" > /dev/null 2>&1; then
+            gh release upload "build-$BUILD" out/Pigeon.ipa --clobber
+          else
+            gh release create "build-$BUILD" out/Pigeon.ipa --prerelease --target "$GITHUB_SHA" \
+              --title "Build $BUILD" --notes-file out/notes.txt
+          fi
+          # Keep the five newest builds (KEEP in ci/sidestore_source.py: the same number).
+          gh release list --limit 100 --json tagName -q '.[].tagName' | grep '^build-' | tail -n +6 |
+            while read -r tag; do gh release delete "$tag" --yes --cleanup-tag; done
+          SOURCE="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/sidestore"
+          mkdir -p build/source
+          python3 ci/sidestore_source.py build/Pigeon.xcarchive/Products/Applications/Pigeon.app \
+            "$SOURCE/icon.png" > build/source/source.json
+          # A placeholder until the app has its icon.
+          cp ci/sidestore-icon.png build/source/icon.png
+          printf '# SideStore source\n\nAdd %s/source.json in SideStore (Sources → +).\n' "$SOURCE" > build/source/README.md
+          cp build/source/source.json out/
+          cd build/source
+          git init -q && git checkout -q -b sidestore && git add -A
+          git -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -qm "SideStore source for build $BUILD"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "sidestore:refs/heads/sidestore"
+      - uses: actions/upload-artifact@v5
+        if: always()
+        # The IPA is the build-<n> release asset; the report doesn't carry it.
+        with:
+          name: ipa
+          path: |
+            out
+            !out/*.ipa
+          if-no-files-found: ignore
+
   report:
     name: Publish report
-    needs: [core, apple]
+    needs: [core, apple, ipa]
     # Not always(): a run cancelled by a newer push must not overwrite the newer run's report.
     if: ${{ !cancelled() }}
     permissions:
@@ -200,8 +275,8 @@ jobs:
             echo "run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             if [[ "$COMPILE" == 1 ]]; then JOB=compile; else JOB=iphone; fi
             # Should the script break, the jobs' results still reach the ref (and its waiters).
-            python3 ../src/ci/report.py . core=${{ needs.core.result }} "$JOB=${{ needs.apple.result }}" \
-              || printf '%s\n' "core: ${{ needs.core.result }}" "$JOB: ${{ needs.apple.result }}" \
+            python3 ../src/ci/report.py . core=${{ needs.core.result }} "$JOB=${{ needs.apple.result }}" ipa=${{ needs.ipa.result }} \
+              || printf '%s\n' "core: ${{ needs.core.result }}" "$JOB: ${{ needs.apple.result }}" "ipa: ${{ needs.ipa.result }}" \
                 "" "ci/report.py failed: no details (its error is in this job's log)"
           } > STATUS.md
           cat STATUS.md
