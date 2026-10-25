@@ -68,12 +68,16 @@ struct DriveView: View {
         if DemoMode.isActive { return }  // no permission prompt in screenshots and UI tests
         #endif
         var motion = Motion()
+        let started = Date()
         let session = CLServiceSession(authorization: .whenInUse)
         defer { withExtendedLifetime(session) {} }
         do {
             for try await update in CLLocationUpdate.liveUpdates(.automotiveNavigation) {
                 if update.stationary { motion.stopped(at: Date().timeIntervalSinceReferenceDate) }
-                if let location = update.location { motion.update(LocationFix(location)) }
+                // A cached fix from before the demo (the car was driving a minute ago) isn't now.
+                if let location = update.location, location.timestamp >= started {
+                    motion.update(LocationFix(location))
+                }
                 if motion.isMoving(at: Date().timeIntervalSinceReferenceDate) {
                     Log.drive.info("demo ended: the phone is moving")
                     dismiss()
