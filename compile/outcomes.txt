@@ -1,0 +1,1 @@
+simulator=skipped build=success boot=skipped screenshots=skipped tests=skipped release=success warnings=success
