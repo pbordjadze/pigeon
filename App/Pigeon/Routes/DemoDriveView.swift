@@ -61,7 +61,7 @@ struct DemoDriveView: View {
             Section {
                 Toggle("Take a wrong turn", isOn: $wrongTurn)
             } footer: {
-                Text("Partway along, the demo turns off the route, to show full directions coming back.")
+                Text("Partway along, the demo turns off the route: the off-route notice shows, a new route is found, and full directions come back for the rest of the drive.")
             }
             Section {
                 Button("Start Demo Drive", systemImage: "play.fill") {

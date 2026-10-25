@@ -4,7 +4,8 @@ import Testing
 
 struct DriveSimulationTests {
     /// Plays a simulation against trackers as the app's drive does: on leaving the route, a new
-    /// tracker on `SampleRoute.reroute` from where the car is. Returns the phases seen in order.
+    /// tracker on `SampleRoute.reroute` from where the car is, joined within the app's bound (500 m,
+    /// the reroute coming at once). Returns the phases seen in order.
     func play(_ simulation: inout DriveSimulation, interval: TimeInterval = 0.25) -> [RouteTracker.Phase] {
         var line = SampleRoute.line
         var tracker = RouteTracker(line: line, startTime: 0)
@@ -15,9 +16,7 @@ struct DriveSimulationTests {
             if phases.last != phase { phases.append(phase) }
             if case .left = phase, tracker.line == SampleRoute.line, let reroute = SampleRoute.reroute(from: fix.point) {
                 line = reroute.line
-                var settings = RouteTracker.Settings()
-                settings.joinSearch = reroute.line.length
-                tracker = RouteTracker(line: line, startTime: t, settings: settings)
+                tracker = RouteTracker(line: line, startTime: t)
             }
             t += interval
             if t > 600 { break }
@@ -43,7 +42,8 @@ struct DriveSimulationTests {
     @Test func theWrongTurnGoesOffToTheRight() {
         var simulation = DriveSimulation(line: SampleRoute.line, wrongTurnAt: 600)
         var last: LocationFix?
-        for i in 0..<14 { last = simulation.next(following: SampleRoute.line, at: Double(i)) }
+        // 43 fixes of 14 m reach 600 m; the next 12 go off to the right. The 52nd is 9 of them in.
+        for i in 0..<52 { last = simulation.next(following: SampleRoute.line, at: Double(i)) }
         let match = SampleRoute.line.match(last!.point)!
         #expect(match.offset > 100)
         #expect(last!.course.map { abs(Geo.turn(from: 0, to: $0) - 90) < 1 } == true)

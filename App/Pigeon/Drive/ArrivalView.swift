@@ -7,6 +7,8 @@ struct ArrivalView: View {
     /// The route as the drive left it.
     let route: SavedRoute
     let outcome: RouteProgress.Outcome
+    /// A demo drive's: nothing was saved.
+    var demo = false
     let done: () -> Void
 
     var body: some View {
@@ -22,10 +24,16 @@ struct ArrivalView: View {
                     }
                     .padding(.vertical, 4)
                 }
-                Section("Next Drive") {
+                Section {
                     Label(route.progress.stage.title, systemImage: route.progress.stage.symbol)
                     Text(route.progress.summary)
                         .foregroundStyle(.secondary)
+                } header: {
+                    Text("Next Drive")
+                } footer: {
+                    if demo {
+                        Text("This was a demo: on a saved route, its next drive would use this stage. Nothing was saved.")
+                    }
                 }
             }
             .navigationTitle(route.name)

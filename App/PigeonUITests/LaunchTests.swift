@@ -46,7 +46,9 @@ final class LaunchTests: XCTestCase {
         app.launch()
         app.buttons["Try a Demo Drive"].firstMatch.tap()
         app.buttons["Turns Only"].firstMatch.tap()
-        app.switches["Take a wrong turn"].firstMatch.tap()
+        let wrongTurn = app.switches["Take a wrong turn"].firstMatch
+        wrongTurn.switches.firstMatch.tap()
+        XCTAssertEqual(wrongTurn.value as? String, "1")
         app.buttons["Start Demo Drive"].tap()
         XCTAssertTrue(app.buttons["Stop Demo"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["You Left the Route"].waitForExistence(timeout: 150))

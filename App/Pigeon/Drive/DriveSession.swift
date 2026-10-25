@@ -89,9 +89,21 @@ final class DriveSession {
     /// A demo drive on `SampleRoute` at `stage`, played at about four times speed; its outcome moves
     /// only `recorded`, a copy no list keeps.
     static func demo(stage: Stage, wrongTurn: Bool) -> DriveSession {
+        let instructions = [
+            String(localized: "demo.turn1", defaultValue: "Turn right onto Charles Street",
+                   comment: "The demo drive's first turn instruction (a made-up route near Boston Common)."),
+            String(localized: "demo.turn2", defaultValue: "Turn left onto Beacon Street",
+                   comment: "The demo drive's second turn instruction."),
+            String(localized: "demo.turn3", defaultValue: "Turn right onto Park Street",
+                   comment: "The demo drive's third turn instruction."),
+        ]
+        let maneuvers = zip(SampleRoute.maneuvers, instructions).map { maneuver, instruction in
+            var m = maneuver
+            m.instruction = instruction
+            return m
+        }
         var route = SavedRoute(name: String(localized: "Demo Drive"), line: SampleRoute.line,
-                               maneuvers: SampleRoute.maneuvers, progress: RouteProgress(stage: stage),
-                               savedAt: Date())
+                               maneuvers: maneuvers, progress: RouteProgress(stage: stage), savedAt: Date())
         let session = DriveSession(route: route, directions: { here, _ in
             guard let here, let reroute = SampleRoute.reroute(from: here) else { throw CancellationError() }
             return reroute
@@ -99,7 +111,7 @@ final class DriveSession {
             route.recordDrive(outcome, at: Date())
             return route
         })
-        session.simulation = DriveSimulation(line: SampleRoute.line, wrongTurnAt: wrongTurn ? 700 : nil)
+        session.simulation = DriveSimulation(line: SampleRoute.line, wrongTurnAt: wrongTurn ? 600 : nil)
         return session
     }
 

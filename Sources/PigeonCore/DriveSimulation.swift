@@ -17,10 +17,12 @@ public enum SampleRoute {
         point(east: 900, north: 2100), point(east: 1500, north: 2100),
     ])!
 
+    /// The turns, with the places beside them (names, not sentences: the app words the
+    /// instructions in the user's language).
     public static let maneuvers = [
-        Maneuver(along: 1200, turn: .right, instruction: "Turn right onto Charles Street", landmark: "Public Garden"),
-        Maneuver(along: 2100, turn: .left, instruction: "Turn left onto Beacon Street"),
-        Maneuver(along: 3000, turn: .right, instruction: "Turn right onto Park Street", landmark: "State House"),
+        Maneuver(along: 1200, turn: .right, landmark: "Public Garden"),
+        Maneuver(along: 2100, turn: .left),
+        Maneuver(along: 3000, turn: .right, landmark: "State House"),
     ]
 
     /// A route from `here` to the sample route's end: along `here`'s latitude to the end's
@@ -36,8 +38,8 @@ public enum SampleRoute {
     }
 }
 
-/// A drive that drives itself, fix by fix: along the route at `speed`, `step` metres per fix (more
-/// than `speed` m/s when played faster than real time), optionally taking a wrong turn at
+/// A drive that drives itself, fix by fix: along the route at `speed`, `step` metres per fix (the
+/// app plays four fixes a second, so 14 m a fix is four times real time), optionally taking a wrong turn at
 /// `wrongTurnAt` metres (`offRouteFixes` fixes off to the right), then following whatever line
 /// the drive is on now (a reroute) to its end, where it stops.
 public struct DriveSimulation: Sendable {
@@ -53,7 +55,7 @@ public struct DriveSimulation: Sendable {
     private var last: GeoPoint
     private var stopped = 0
 
-    public init(line: RouteLine, speed: Double = 14, step: Double = 56, wrongTurnAt: Double? = nil) {
+    public init(line: RouteLine, speed: Double = 14, step: Double = 14, wrongTurnAt: Double? = nil) {
         self.line = line
         self.speed = speed
         self.step = step
