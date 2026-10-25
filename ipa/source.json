@@ -1,0 +1,52 @@
+{
+  "name": "Pigeon (CI builds)",
+  "identifier": "com.pbordjadze.pigeon.source",
+  "subtitle": "Automatic builds",
+  "iconURL": "https://raw.githubusercontent.com/pbordjadze/pigeon/sidestore/icon.png",
+  "website": "https://github.com/pbordjadze/pigeon",
+  "tintColor": "#2F7D6D",
+  "apps": [
+    {
+      "name": "Pigeon",
+      "bundleIdentifier": "com.pbordjadze.pigeon",
+      "developerName": "pbordjadze",
+      "subtitle": "Learn the routes you drive",
+      "localizedDescription": "Learn the routes you drive. Each clean drive of a saved route gives a little less help, from full directions to landmarks to a cue at each turn to silence, until you don't need it. Leave the route and full directions come back at once. Everything stays on your iPhone.",
+      "iconURL": "https://raw.githubusercontent.com/pbordjadze/pigeon/sidestore/icon.png",
+      "tintColor": "#2F7D6D",
+      "category": "utilities",
+      "versions": [
+        {
+          "version": "1.0.21",
+          "buildVersion": "21",
+          "date": "2026-10-25T15:35:28Z",
+          "localizedDescription": "Merge claude/demo-drive: a demo drive shows every stage without driving",
+          "downloadURL": "https://github.com/pbordjadze/pigeon/releases/download/build-21/Pigeon.ipa",
+          "size": 188957,
+          "minOSVersion": "26.0"
+        },
+        {
+          "version": "1.0.17",
+          "buildVersion": "17",
+          "date": "2026-10-25T14:27:46Z",
+          "localizedDescription": "Merge claude/sidestore: SideStore builds from every push to main",
+          "downloadURL": "https://github.com/pbordjadze/pigeon/releases/download/build-17/Pigeon.ipa",
+          "size": 164674,
+          "minOSVersion": "26.0"
+        }
+      ],
+      "version": "1.0.21",
+      "versionDate": "2026-10-25T15:35:28Z",
+      "versionDescription": "Merge claude/demo-drive: a demo drive shows every stage without driving",
+      "downloadURL": "https://github.com/pbordjadze/pigeon/releases/download/build-21/Pigeon.ipa",
+      "size": 188957,
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSLocationWhenInUseUsageDescription": "Pigeon uses your location to guide you along your saved routes and to notice when you leave one. Pigeon keeps your drives on this iPhone."
+        }
+      }
+    }
+  ],
+  "news": []
+}
