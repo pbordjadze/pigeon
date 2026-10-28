@@ -251,7 +251,7 @@ jobs:
             -e "s#{{MINUTES}}#$MINUTES#g" -e "s#{{TURNS}}#$TURNS#g" ci/qa/explore.md > "$WORK/brief.md"
           if [[ -n "$FOCUS" || -n "$LAUNCH_ARGS" ]]; then
             printf '\n## This session\n\n' >> "$WORK/brief.md"
-            if [[ -n "$LAUNCH_ARGS" ]]; then printf 'The app was first launched with `%s`; a relaunch through Maestro goes without them.\n\n' "$LAUNCH_ARGS" >> "$WORK/brief.md"; fi
+            if [[ -n "$LAUNCH_ARGS" ]]; then printf 'The app was first launched with `%s`. A plain `launchApp` goes without them; to keep them, give `launchApp` its `arguments:` (`cheat_sheet`).\n\n' "$LAUNCH_ARGS" >> "$WORK/brief.md"; fi
             if [[ -n "$FOCUS" ]]; then printf '%s\n' "$FOCUS" >> "$WORK/brief.md"; fi
           fi
           # Claude Code hands its own environment to Maestro: env takes the secrets out.
