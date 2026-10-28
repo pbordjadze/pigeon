@@ -30,7 +30,10 @@ the rules.
   check; or `compile`), `ipa` (on `main`: an unsigned IPA as the `build-<n>` prerelease and the
   SideStore source on the `sidestore` branch, `ci/sidestore_source.py`; CI owns that branch, never
   push it; `[ipa]` on a branch archives without publishing), `report` (`ci/report.py` writes
-  `STATUS.md`). The scripts came from
+  `STATUS.md`); `qa-explore.yml`, exploratory QA on request (an agent uses the app in a
+  simulator through Maestro's MCP server and reports; `ci/qa/README.md`), generated with `ci/qa/`
+  from the copy all the apps share (painting-company row 152): change them there and sync, never
+  here. The scripts came from
   `pbordjadze/paint-by-number`'s `ci/` and keep its shape.
 - `tools/`: `swift.sh` (SwiftPM in Docker), `strings_check.py` (its docstring is the manual).
 - `PRIVACY.md`: the privacy policy, word for word what the app does (below).

@@ -1,0 +1,350 @@
+name: QA explore
+run-name: "QA explore: ${{ inputs.mode }}, ${{ inputs.build }}, ${{ inputs.device }}${{ inputs.label != '' && format(' · {0}', inputs.label) || '' }}"
+
+# Generated from the shared QA explore (painting-company row 152): change it there and
+# sync; an edit here is overwritten.
+#
+# An exploratory QA pass of Pigeon: the app built from source on one iOS simulator
+# (`build`: its Release or Debug configuration, as the input says) and used through Maestro's MCP
+# server (`maestro mcp`: screenshots, the screen's elements, flows of taps, swipes and text) by an
+# agent that is given goals, not a script. Manual only (Actions › QA explore › Run workflow, or the
+# API), in concurrency groups of its own (below) that cancel no running run; it leaves ci.yml, its
+# reports (refs/ci-shots/*) and main alone. The app's own steps before its first launch (hosts to
+# block, media, a location) are ci/qa/prepare.sh's, when there is one; `launch_args` go to that
+# launch.
+#
+# Modes:
+#   agent  Claude Code runs on the runner beside the simulator: ci/qa/explore.md is its brief (the
+#          goals and the report), bounded by `minutes` of wall clock, `max_turns` and
+#          `max_budget_usd` (Claude Code's own estimate of the spend, which can pass it a little).
+#          It has Maestro's local tools and Read and Write in its own folder outside the checkout:
+#          no shell, git, web tools or Maestro Cloud, so it can report but not change code, push or
+#          publish (a Maestro flow's scripts could still reach the web, but they see no secret: Maestro
+#          runs without them, and the steps after it run copies of qa.py and collect.sh made before
+#          it started). One secret:
+#          CLAUDE_CODE_OAUTH_TOKEN (`claude setup-token`; uses the subscription's limits) or
+#          ANTHROPIC_API_KEY (Claude Console; billed per token). With both, the key is used.
+#   relay  The agent is somewhere else, e.g. a Claude Code cloud session, which has no Mac:
+#          `ci/qa/qa.py relay` runs the Maestro calls it commits to `relay_branch` (`qa.py send`;
+#          each commit `[skip ci]`, so no workflow runs on it) and publishes every result. Uses no
+#          model on the runner. The branch is deleted when the run ends.
+# Every run first probes the toolchain (`qa.py probe`: Maestro's tools, a screenshot, the screen's
+# elements), so a broken simulator or Maestro fails before any model is used. The report (STATUS.md,
+# the agent's report.md and transcript, the probe, screenshots, the app's log, crash reports) is the
+# `qa` artifact and the ref refs/qa-runs/<run id>, readable with plain git
+# (`git fetch origin refs/qa-runs/<id>:refs/qa-runs/<id>`), both kept when a step fails; the screen
+# recording is the `qa-video` artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'agent: Claude Code explores on the runner (needs a secret); relay: an agent elsewhere drives it'
+        type: choice
+        options: [agent, relay]
+        default: agent
+      build:
+        description: "release: what SideStore gets; debug: the Debug build, which takes -demo <scenario> (DemoMode)"
+        type: choice
+        options: [release, debug]
+        default: release
+      device:
+        description: 'Simulator'
+        type: choice
+        options: [iphone]
+        default: iphone
+      minutes:
+        description: 'Session length in minutes (5-60)'
+        default: '15'
+      max_turns:
+        description: 'agent: most model turns'
+        default: '120'
+      max_budget_usd:
+        description: "agent: stop once Claude Code's estimate of the spend reaches this many USD"
+        default: '5'
+      model:
+        description: 'agent: model'
+        default: 'claude-opus-5-5'
+      focus:
+        description: 'agent: what to look at this time, added to the goals (optional)'
+        required: false
+      relay_branch:
+        description: 'relay: the branch the agent commits its calls to (claude/qa-relay…)'
+        default: 'claude/qa-relay'
+      launch_args:
+        description: "Arguments for the app's first launch, e.g. a debug build's scenario (optional)"
+        required: false
+      label:
+        description: 'Who asked and why, shown in the run list (optional)'
+        required: false
+
+permissions:
+  # refs/qa-runs/<run id>, and the relay branch's deletion.
+  contents: write
+
+# One queue per device and build (relay runs share one): an iPhone and an iPad run go side by
+# side. GitHub keeps one waiting run per queue, and a new dispatch silently cancels the waiting
+# one (run 9, October 21): before dispatching, look for a waiting run of the same queue.
+concurrency:
+  group: ${{ inputs.mode == 'relay' && 'qa-explore-relay' || format('qa-explore-{0}-{1}', inputs.device, inputs.build) }}
+  cancel-in-progress: false
+
+env:
+  PROJECT: App/Pigeon.xcodeproj
+  SCHEME: Pigeon
+  PRODUCT: Pigeon
+  BUNDLE_ID: com.pbordjadze.pigeon
+  LOG_SUBSYSTEM: com.pbordjadze.pigeon
+  MAESTRO_VERSION: '2.11.0'
+  CLAUDE_CODE_VERSION: '2.1.301'
+  MAESTRO_CLI_NO_ANALYTICS: '1'
+  MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: 'true'
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: '240000'
+  MODE: ${{ inputs.mode }}
+  BUILD: ${{ inputs.build }}
+  DEVICE: ${{ inputs.device }}
+  MINUTES: ${{ inputs.minutes }}
+  TURNS: ${{ inputs.max_turns }}
+  BUDGET: ${{ inputs.max_budget_usd }}
+  MODEL: ${{ inputs.model }}
+  FOCUS: ${{ inputs.focus }}
+  RELAY_BRANCH: ${{ inputs.relay_branch }}
+  LAUNCH_ARGS: ${{ inputs.launch_args }}
+
+jobs:
+  explore:
+    name: Explore (${{ inputs.mode }}, ${{ inputs.device }})
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with: { persist-credentials: false }
+      - name: Xcode
+        run: ci/qa/xcode.sh 26.6
+      - name: Check inputs and credentials
+        env:
+          HAS_OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          fail() { echo "::error::$*"; exit 1; }
+          [[ "$MINUTES" =~ ^[0-9]+$ && "$MINUTES" -ge 5 && "$MINUTES" -le 60 ]] || fail "minutes: 5 to 60"
+          [[ "$TURNS" =~ ^[0-9]+$ && "$TURNS" -ge 1 ]] || fail "max_turns: a whole number"
+          [[ "$BUDGET" =~ ^[0-9]+(\.[0-9]+)?$ ]] || fail "max_budget_usd: a number"
+          [[ "$MODEL" =~ ^[a-z0-9.-]+$ ]] || fail "model: a model id or alias"
+          [[ "$LAUNCH_ARGS" =~ ^[A-Za-z0-9\ ._:/=,@+-]*$ ]] || fail "launch_args: letters, digits, spaces and ._:/=,@+- only"
+          # The run deletes this branch at its end: only a relay branch.
+          [[ "$RELAY_BRANCH" =~ ^claude/qa-relay[A-Za-z0-9._-]*$ ]] || fail "relay_branch: claude/qa-relay…"
+          if [[ "$MODE" == agent ]]; then
+            if [[ "$HAS_KEY" == true ]]; then echo "credential: ANTHROPIC_API_KEY (API billing)"
+            elif [[ "$HAS_OAUTH" == true ]]; then echo "credential: CLAUDE_CODE_OAUTH_TOKEN (subscription)"
+            else fail "agent mode needs the secret CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY (Settings › Secrets and variables › Actions)"; fi
+          fi
+          WORK="$RUNNER_TEMP/qa"
+          mkdir -p out "$WORK/shots" "$WORK/crashes" "$RUNNER_TEMP/qa-video" "$RUNNER_TEMP/qa-tools"
+          # What runs later with the push token, copied before anything else runs.
+          cp ci/qa/qa.py ci/qa/collect.sh "$RUNNER_TEMP/qa-tools/"
+          echo "WORK=$WORK" >> "$GITHUB_ENV"
+          echo "TOOLS=$RUNNER_TEMP/qa-tools" >> "$GITHUB_ENV"
+          echo "$MODE on $DEVICE for $MINUTES min (agent: $MODEL, $TURNS turns, \$$BUDGET)"
+      - name: Start simulator
+        id: sim
+        run: |
+          # As ci.yml: the first boot overlaps the build.
+          read -r _ UDID MODEL_NAME RUNTIME < <(ci/simulators.sh "$DEVICE")
+          echo "$MODEL_NAME $RUNTIME $UDID" | tee out/simulator.txt
+          nohup xcrun simctl boot "$UDID" > out/boot.log 2>&1 &
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+      - name: Build
+        id: build
+        run: |
+          # ci.yml's Debug build or its Release check's build, the app alone.
+          set -o pipefail
+          CONFIG=Debug; [[ "$BUILD" == release ]] && CONFIG=Release
+          xcodebuild build -project "$PROJECT" -scheme "$SCHEME" -configuration "$CONFIG" \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd -quiet \
+            ARCHS=arm64 COMPILER_INDEX_STORE_ENABLE=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee out/app-build.log | tail -80
+          echo "APP=build/dd/Build/Products/$CONFIG-iphonesimulator/$PRODUCT.app" >> "$GITHUB_ENV"
+      - name: Install Maestro
+        run: |
+          set -o pipefail
+          curl -fsSL -o "$RUNNER_TEMP/maestro.zip" \
+            "https://github.com/mobile-dev-inc/maestro/releases/download/cli-$MAESTRO_VERSION/maestro.zip"
+          unzip -q "$RUNNER_TEMP/maestro.zip" -d "$RUNNER_TEMP"
+          # Maestro needs Java 17 or later.
+          for v in 21 17; do
+            var="JAVA_HOME_${v}_arm64"
+            if [[ -n "${!var:-}" ]]; then echo "JAVA_HOME=${!var}" >> "$GITHUB_ENV"; export JAVA_HOME="${!var}"; break; fi
+          done
+          echo "MAESTRO=$RUNNER_TEMP/maestro/bin/maestro" >> "$GITHUB_ENV"
+          java -version 2>&1 | head -1
+          "$RUNNER_TEMP/maestro/bin/maestro" --version
+      - name: Prepare the simulator
+        id: prepare
+        run: |
+          xcrun simctl bootstatus "$UDID" -b > /dev/null
+          xcrun simctl install "$UDID" "$APP"
+          # The app's own preparation, before its first launch.
+          if [[ -f ci/qa/prepare.sh ]]; then bash ci/qa/prepare.sh "$UDID"; fi
+          # The app's live log and crash reports, which the agent can read, and the screen's recording.
+          nohup xcrun simctl spawn "$UDID" log stream --level info --style compact \
+            --predicate "subsystem == \"$LOG_SUBSYSTEM\"" > "$WORK/app.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/log.pid"
+          # The agent can't list a folder: crashes.txt names what crashes/ holds (empty: none).
+          # shellcheck disable=SC2016
+          nohup bash -c 'while true; do cp -n ~/Library/Logs/DiagnosticReports/"$1"* "$0/" 2>/dev/null; ls -1 "$0" > "$0.tmp" && mv "$0.tmp" "$0.txt"; sleep 5; done' \
+            "$WORK/crashes" "$PRODUCT" > /dev/null 2>&1 &
+          echo $! > "$RUNNER_TEMP/crashes.pid"
+          nohup xcrun simctl io "$UDID" recordVideo --codec=h264 --force "$RUNNER_TEMP/qa-video/session.mp4" \
+            > "$RUNNER_TEMP/qa-video/record.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/video.pid"
+          # Split into words on purpose: the arguments, checked above.
+          # shellcheck disable=SC2086
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" $LAUNCH_ARGS
+          # A first launch can be minutes of CPU on a 3-core runner (Paint by Moonlight's starter
+          # paintings), and Maestro's driver started beside that came up broken (paint-by-number run
+          # 39551789796): wait, up to 5 minutes, until the app has been quiet for 15 s.
+          quiet=0
+          for _ in $(seq 1 60); do
+            pid=$(pgrep -x "$PRODUCT" | head -1)
+            if [[ -z "$pid" ]]; then echo "the app isn't running"; break; fi
+            cpu=$(ps -o %cpu= -p "$pid" | tr -d ' ' | cut -d. -f1)
+            if [[ -n "$cpu" && "$cpu" -lt 15 ]]; then quiet=$((quiet + 1)); else quiet=0; fi
+            if [[ $quiet -ge 3 ]]; then break; fi
+            sleep 5
+          done
+          echo "the app's CPU: ${cpu:-?}% after $SECONDS s"
+      - name: Probe Maestro's MCP server
+        id: probe
+        run: python3 -I "$TOOLS/qa.py" probe out/probe --udid "$UDID"
+      - name: Relay
+        id: relay
+        if: inputs.mode == 'relay'
+        # The session's own clock stops it first (minutes is at most 60).
+        timeout-minutes: 75
+        env:
+          QA_PUSH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -I "$TOOLS/qa.py" relay out/relay --udid "$UDID" --run "$GITHUB_RUN_ID" --branch "$RELAY_BRANCH" \
+            --publish out --minutes "$MINUTES" --log "$WORK/app.log"
+      - name: Install Claude Code
+        if: inputs.mode == 'agent'
+        run: |
+          npm install -g --no-fund --no-audit "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION" > /dev/null
+          claude --version
+      - name: Explore
+        id: explore
+        if: inputs.mode == 'agent'
+        # The session's own clock stops it first (minutes is at most 60).
+        timeout-minutes: 75
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1'
+          # Maestro's first call on a session installs its driver on the simulator: minutes.
+          MCP_TIMEOUT: '120000'
+          MCP_TOOL_TIMEOUT: '600000'
+        run: |
+          # An empty secret is no credential: unset, it can't shadow the other.
+          [[ -n "$ANTHROPIC_API_KEY" ]] || unset ANTHROPIC_API_KEY
+          [[ -n "$CLAUDE_CODE_OAUTH_TOKEN" ]] || unset CLAUDE_CODE_OAUTH_TOKEN
+          sed -e "s#{{DIR}}#$WORK#g" -e "s#{{UDID}}#$UDID#g" -e "s#{{BUILD}}#$BUILD#g" -e "s#{{DEVICE}}#$(cat out/simulator.txt | cut -d' ' -f1 | tr _ ' ')#g" \
+            -e "s#{{MINUTES}}#$MINUTES#g" -e "s#{{TURNS}}#$TURNS#g" ci/qa/explore.md > "$WORK/brief.md"
+          if [[ -n "$FOCUS" || -n "$LAUNCH_ARGS" ]]; then
+            printf '\n## This session\n\n' >> "$WORK/brief.md"
+            if [[ -n "$LAUNCH_ARGS" ]]; then printf 'The app was first launched with `%s`; a relaunch through Maestro goes without them.\n\n' "$LAUNCH_ARGS" >> "$WORK/brief.md"; fi
+            if [[ -n "$FOCUS" ]]; then printf '%s\n' "$FOCUS" >> "$WORK/brief.md"; fi
+          fi
+          # Claude Code hands its own environment to Maestro: env takes the secrets out.
+          python3 - "$RUNNER_TEMP/qa-mcp.json" <<'PY'
+          import json, os, sys
+          env = {k: os.environ[k] for k in os.environ if k.startswith("MAESTRO_") or k in ("JAVA_HOME", "DEVELOPER_DIR")}
+          args = ["-u", "ANTHROPIC_API_KEY", "-u", "CLAUDE_CODE_OAUTH_TOKEN", os.environ["MAESTRO"], "mcp", "--no-viewer"]
+          json.dump({"mcpServers": {"maestro": {"command": "/usr/bin/env", "args": args, "env": env}}},
+                    open(sys.argv[1], "w"), indent=1)
+          PY
+          LOCAL=list_devices,take_screenshot,inspect_screen,run,cheat_sheet
+          CLOUD=run_on_cloud,list_cloud_devices,get_cloud_run_status,describe_cloud_run,open_maestro_viewer
+          # Its folder, outside the checkout: no CLAUDE.md of the repository's reaches it, and Read
+          # and Write reach nothing else (`//` starts an absolute path; Edit rules are what Write
+          # is checked against, and a bare Read or Write rule would allow every path).
+          cd "$WORK"
+          claude -p --model "$MODEL" --max-turns "$TURNS" --max-budget-usd "$BUDGET" \
+            --mcp-config "$RUNNER_TEMP/qa-mcp.json" --strict-mcp-config \
+            --tools "Read,Write" --permission-mode dontAsk \
+            --allowedTools "Read(/$WORK/**),Edit(/$WORK/**),mcp__maestro__${LOCAL//,/,mcp__maestro__}" \
+            --disallowedTools "mcp__maestro__${CLOUD//,/,mcp__maestro__}" \
+            --output-format stream-json --verbose --no-session-persistence \
+            < brief.md > transcript.jsonl 2> claude-stderr.log &
+          pid=$!
+          # The wall clock: an interrupt at the end of the session, then a kill. A session that runs
+          # its full time ends as planned, not as a failure.
+          ( sleep $((MINUTES * 60)); touch "$RUNNER_TEMP/qa-clock"; kill -INT "$pid" 2>/dev/null
+            sleep 30; kill -TERM "$pid" 2>/dev/null ) &
+          watchdog=$!
+          status=0
+          wait "$pid" || status=$?
+          kill "$watchdog" 2>/dev/null || true
+          tail -5 claude-stderr.log || true
+          if [[ -f "$RUNNER_TEMP/qa-clock" ]]; then echo "stopped by the clock after $MINUTES min"; exit 0; fi
+          echo "claude exited with $status"
+          exit "$status"
+      - name: Collect diagnostics
+        if: always()
+        env:
+          QA_PUSH_TOKEN: ${{ github.token }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          OUTCOMES: >-
+            build=${{ steps.build.outcome }} prepare=${{ steps.prepare.outcome }} probe=${{ steps.probe.outcome }}
+            relay=${{ steps.relay.outcome }} explore=${{ steps.explore.outcome }}
+        run: |
+          # Every line runs: the scrub, the report and the cleanup must not be skipped.
+          set +e
+          mkdir -p out
+          # An interrupt lets the recording finish its file.
+          pkill -INT -f "simctl io .* recordVideo" || true
+          pkill -f "simctl spawn .* log stream" || true
+          [[ -f "$RUNNER_TEMP/crashes.pid" ]] && kill "$(cat "$RUNNER_TEMP/crashes.pid")" 2>/dev/null || true
+          for _ in $(seq 1 30); do pgrep -f "simctl io .* recordVideo" > /dev/null || break; sleep 0.5; done
+          # CI's own collection: crash reports, the app's log of the run, the build's errors.
+          [[ -n "${UDID:-}" && -n "${TOOLS:-}" ]] && "$TOOLS/collect.sh" "$UDID" "$PRODUCT" "$LOG_SUBSYSTEM"
+          # Maestro's own logs (its driver's too), for automation failures.
+          [[ -d ~/.maestro/tests ]] && mkdir -p out/maestro && cp -R ~/.maestro/tests/ out/maestro/
+          if [[ -n "${WORK:-}" && -d "$WORK" ]]; then
+            mkdir -p out/session && cp -R "$WORK/" out/session/
+            if [[ -s "$WORK/transcript.jsonl" ]]; then python3 -I "$TOOLS/qa.py" transcript "$WORK/transcript.jsonl" out/agent; fi
+          fi
+          python3 -I "$TOOLS/qa.py" scrub out QA_PUSH_TOKEN ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
+          {
+            echo "# QA explore: $MODE, $BUILD build, on $(cat out/simulator.txt 2>/dev/null)"
+            echo
+            echo "- commit: $GITHUB_SHA"
+            [[ -n "$LAUNCH_ARGS" ]] && echo "- launch arguments: $LAUNCH_ARGS"
+            echo "- run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo "- steps: $OUTCOMES"
+            echo "- Maestro $MAESTRO_VERSION$( [[ "$MODE" == agent ]] && echo ", Claude Code $CLAUDE_CODE_VERSION, $MODEL, $MINUTES min, $TURNS turns, \$$BUDGET")"
+            [[ -f "$RUNNER_TEMP/qa-clock" ]] && echo "- the agent ran its full $MINUTES minutes and was stopped by the clock"
+            echo
+            [[ -f out/probe/summary.md ]] && sed 1,2d out/probe/summary.md && echo
+            [[ -f out/agent/transcript.md ]] && sed -n 3,5p out/agent/transcript.md && echo
+            [[ -f out/session/report.md ]] && echo "The agent's report: session/report.md" || echo "No report.md from an agent."
+          } > out/STATUS.md
+          cat out/STATUS.md
+          python3 -I "$TOOLS/qa.py" publish out "refs/qa-runs/$GITHUB_RUN_ID" "QA explore $GITHUB_RUN_ID: $MODE"
+          # Only a relay branch, whatever the input said: this step runs when the check failed too.
+          if [[ "$MODE" == relay && "$RELAY_BRANCH" =~ ^claude/qa-relay[A-Za-z0-9._-]*$ ]] \
+            && git ls-remote --exit-code origin "refs/heads/$RELAY_BRANCH" > /dev/null; then
+            AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$QA_PUSH_TOKEN" | base64 | tr -d '\n')"
+            git -c "http.https://github.com/.extraheader=$AUTH" push -q origin --delete "$RELAY_BRANCH" \
+              && echo "deleted $RELAY_BRANCH" || echo "::warning::couldn't delete $RELAY_BRANCH"
+          fi
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with: { name: qa, path: out, if-no-files-found: ignore }
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: qa-video
+          path: ${{ runner.temp }}/qa-video
+          retention-days: 7
+          if-no-files-found: ignore
