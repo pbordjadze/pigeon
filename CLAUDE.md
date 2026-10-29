@@ -81,6 +81,9 @@ UserDefaults, doesn't ship and doesn't count). Location is While Using only, wit
 - Simulated drives: the simulator's location follows a GPX route (`xcrun simctl location`), and
   PigeonCore's tests drive `TestRoutes` fix by fix.
 - Scratch output goes outside the repo. Keep a diff to what the task needs.
+- A tool you write to check or measure your own work (a harness, a preview, a shim) is committed
+  before you finish, in `tools/` (or painting-company's when it holds anything private), its
+  header saying how to run it: a scratch directory dies with its session (painting-company row 159).
 
 ## App rules
 
